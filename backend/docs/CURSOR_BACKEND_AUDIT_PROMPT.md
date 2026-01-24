@@ -53,9 +53,9 @@ You MUST produce:
 
 # STEP 0 — REPO DISCOVERY
 Start by discovering and summarizing:
-- Backend framework: Express / NestJS / Fastify
-- ORM / DB layer: Prisma / TypeORM / Sequelize / raw SQL
-- Auth system: JWT / session / OAuth
+- Backend framework: Express
+- ORM / DB layer: Prisma
+- Auth system: JWT / session
 - Main resources: Users, internships, tasks, applications, etc.
 
 Generate:
@@ -103,8 +103,7 @@ For each item below: find problems and FIX THEM.
 - Validation must be consistent
 - Reject unknown fields when appropriate
 - Strict schema validation using:
-  - Zod (preferred) OR
-  - class-validator for NestJS
+  - Zod (preferred)
 
 Add missing schemas.
 
