@@ -47,16 +47,38 @@ export async function getFunnel(userId: string) {
   const cached = await redis.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  const totalApplied = await prisma.application.count({
+  // const totalApplied = await prisma.application.count({
+  //   where: { userId },
+  // });
+
+  // const interviewCount = await prisma.application.count({
+  //   where: { userId, status: "INTERVIEW" },
+  // });
+
+  // const offerCount = await prisma.application.count({
+  //   where: { userId, status: "OFFER" },
+  // });
+
+  // 1. Single DB Call: Get counts for ALL statuses at once
+  const counts = await prisma.application.groupBy({
+    by: ["status"],
     where: { userId },
+    _count: { status: true },
   });
 
-  const interviewCount = await prisma.application.count({
-    where: { userId, status: "INTERVIEW" },
-  });
+  // 2. Process the results in memory
+  let totalApplied = 0;
+  let interviewCount = 0;
+  let offerCount = 0;
 
-  const offerCount = await prisma.application.count({
-    where: { userId, status: "OFFER" },
+  counts.forEach((item) => {
+    totalApplied += item._count.status; // Add every status to the total
+    
+    if (item.status === "INTERVIEW") {
+      interviewCount = item._count.status;
+    } else if (item.status === "OFFER") {
+      offerCount = item._count.status;
+    }
   });
 
   const result = {
@@ -73,5 +95,9 @@ export async function getFunnel(userId: string) {
 }
 
 export async function invalidateAnalyticsCache(userId: string) {
-  await redis.del(statusCountsKey(userId), funnelKey(userId));
+  // await redis.del(statusCountsKey(userId), funnelKey(userId));
+  const pipeline = redis.pipeline();
+  pipeline.del(statusCountsKey(userId));
+  pipeline.del(funnelKey(userId));
+  await pipeline.exec();
 }
