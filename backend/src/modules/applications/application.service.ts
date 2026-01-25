@@ -4,18 +4,18 @@ import { invalidateAnalyticsCache } from "../analytics/analytics.service.ts";
 export async function createApplication(userId: string, data: any) {
   const app = prisma.application.create({
     data: {
-            userId,
-            companyName: data.companyName,
-            role: data.role,
-            status: data.status,
-            appliedDate: new Date(data.appliedDate),
-            applicationLink: data.applicationLink,
-            notes: data.notes,
-            ...(data.followUpDate && {
-            followUpDate: new Date(data.followUpDate),
-            }),
-        },
-    });
+      userId,
+      companyName: data.companyName,
+      role: data.role,
+      status: data.status,
+      appliedDate: new Date(data.appliedDate),
+      applicationLink: data.applicationLink,
+      notes: data.notes,
+      ...(data.followUpDate && {
+        followUpDate: new Date(data.followUpDate),
+      }),
+    },
+  });
   await invalidateAnalyticsCache(userId);
   return app;
 }
@@ -60,11 +60,11 @@ export async function deleteApplication(userId: string, id: string) {
 export async function listApplications(
   userId: string,
   query: {
-    status?: string;
-    page?: number;
-    limit?: number;
-    sort?: string;
-    order?: string;
+    status?: string | undefined;
+    page?: number | undefined;
+    limit?: number | undefined;
+    sort?: string | undefined;
+    order?: string | undefined;
   }
 ) {
   const page = query.page ?? 1;

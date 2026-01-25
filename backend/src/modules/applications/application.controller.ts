@@ -58,18 +58,18 @@ export async function remove(req: AuthRequest & Request<Params>, res: Response) 
   }
 }
 
-export async function list(req: AuthRequest, res: Response) {  
+export async function list(req: AuthRequest, res: Response) {
   const parsed = listApplicationsQuerySchema.safeParse(req.query);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
 
-    const page = parsed.data.page ?? 1;
-    const limit = parsed.data.limit ?? 10;
+  const page = parsed.data.page ?? 1;
+  const limit = parsed.data.limit ?? 10;
 
-    const result = await listApplications(req.userId!, {
-      ...parsed,
-      page,
-      limit,
-    });
+  const result = await listApplications(req.userId!, {
+    ...parsed.data,
+    page,
+    limit,
+  });
 
   return res.status(200).json(result);
 }
