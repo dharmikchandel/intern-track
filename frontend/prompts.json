@@ -1,0 +1,48 @@
+{
+  "project": {
+    "name": "Backend-driven NeoBrutal UI",
+    "goal": "Analyze backend codebase, extract contract, and generate a complete NeoBrutal frontend UI with production quality."
+  },
+  "phases": [
+    {
+      "id": "phase_01_backend_map",
+      "title": "Backend Inventory + Architecture Map",
+      "prompt": "Scan the entire backend repo. Produce BACKEND_MAP.md with: framework, folder structure, controllers/routes, services, ORM layer, auth, guards, roles, DTO/validation approach, error format, pagination format, file uploads/queues/cron. Do not write UI code yet. Be precise and cite file paths for each conclusion."
+    },
+    {
+      "id": "phase_02_api_contract",
+      "title": "Generate API Contract",
+      "prompt": "Derive every API endpoint from controllers/routes. Create API_CONTRACT.json capturing: method, path, auth required, roles required, request schema, response schema, status codes, pagination, rate limits if implemented. Also output ERROR_SHAPES.md describing error format."
+    },
+    {
+      "id": "phase_03_domain_model",
+      "title": "Infer Domain Model + Entities",
+      "prompt": "From ORM schemas/models and service logic infer domain entities and relationships. Output DOMAIN_MODEL.md with entity table, fields, relations, and which UI modules should exist."
+    },
+    {
+      "id": "phase_04_ui_requirements",
+      "title": "Create UI Requirements Doc",
+      "prompt": "From API_CONTRACT.json and DOMAIN_MODEL.md generate UI_REQUIREMENTS.md: sitemap, routes, pages, CRUD screens per entity, role-based access rules, user flows, empty/loading/error states. Include acceptance criteria per page."
+    },
+    {
+      "id": "phase_05_design_system",
+      "title": "Design System (NeoBrutalism)",
+      "prompt": "Create DESIGN_SYSTEM.md with: tokens (colors, spacing, typography), layout rules, components list, border/shadow rules, button interactions, table styles. Match NeoBrutal: thick outlines, hard shadows, bold typography, no gradients."
+    },
+    {
+      "id": "phase_06_implementation_plan",
+      "title": "Implementation Plan + File Structure",
+      "prompt": "Create IMPLEMENTATION_PLAN.md describing step-by-step build order, folder structure, and risks. Include recommended stack: Next.js + TS + Tailwind + TanStack Query + Zod. Include auth strategy based on backend."
+    },
+    {
+      "id": "phase_07_build_frontend",
+      "title": "Generate the Full Frontend",
+      "prompt": "Implement the full frontend UI. Must include: routing, auth, RBAC guards, API client, component library (NeoButton, NeoCard, NeoInput, NeoTable, NeoModal, etc.), CRUD pages per entity, skeleton loaders, toasts, and error boundaries. All pages must be wired to API calls from API_CONTRACT.json. No mock endpoints."
+    },
+    {
+      "id": "phase_08_quality_pass",
+      "title": "QA + Final Fixes",
+      "prompt": "Run lint/typecheck/tests. Fix all issues. Ensure no console errors. Validate flows: login, logout, token refresh (if exists), CRUD, permission denied, empty states. Output QA_REPORT.md with what was tested and what was fixed."
+    }
+  ]
+}
