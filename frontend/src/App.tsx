@@ -5,6 +5,7 @@ import { RequireAuth } from "./features/auth/RequireAuth";
 import { MainLayout } from "./components/layout/MainLayout";
 
 // Pages
+import { LandingPage } from "./pages/LandingPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { DashboardPage } from "./pages/DashboardPage";
@@ -21,13 +22,13 @@ function App() {
         <BrowserRouter>
           <Routes>
             {/* Public Routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
             {/* Protected Routes */}
             <Route element={<RequireAuth />}>
               <Route element={<MainLayout />}>
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/applications" element={<ApplicationsPage />} />
                 <Route path="/applications/new" element={<CreateApplicationPage />} />
@@ -36,7 +37,7 @@ function App() {
             </Route>
 
             {/* Fallback */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

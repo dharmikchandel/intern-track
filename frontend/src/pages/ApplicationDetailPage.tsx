@@ -95,13 +95,13 @@ export function ApplicationDetailPage() {
             </Link>
 
             <NeoCard className="mb-6">
-                <div className="flex justify-between items-start mb-6 border-b-2 border-black pb-4">
-                    <div>
-                        <h1 className="text-4xl font-black uppercase">{application.companyName}</h1>
-                        <p className="text-xl font-bold text-gray-600">{application.role}</p>
+                <div className="flex flex-col md:flex-row justify-between items-start mb-6 border-b-2 border-black pb-4 gap-4">
+                    <div className="flex-1 min-w-0 pr-4">
+                        <h1 className="text-3xl md:text-4xl font-black break-words leading-tight">{application.companyName}</h1>
+                        <p className="text-lg md:text-xl font-bold text-gray-600 truncate">{application.role}</p>
                     </div>
                     {!isEditing && (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 shrink-0">
                             <NeoButton variant="secondary" onClick={() => setIsEditing(true)}>Edit</NeoButton>
                             <NeoButton variant="destructive" onClick={() => setShowDeleteModal(true)}><Trash2 className="w-4 h-4" /></NeoButton>
                         </div>

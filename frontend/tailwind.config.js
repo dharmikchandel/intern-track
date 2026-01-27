@@ -9,7 +9,8 @@ export default {
             colors: {
                 'neo-bg': '#F1F5F9', // slate-100
                 'neo-primary': '#3B82F6', // blue-500
-                'neo-secondary': '#0EA5E9', // sky-500
+                // 'neo-secondary': '#0EA5E9', // sky-500
+                'neo-secondary': '#8e51ff',
                 'neo-tertiary': '#F97316', // orange-500
                 'neo-destructive': '#EF4444', // red-500
                 'neo-accent': '#6366F1', // indigo-500

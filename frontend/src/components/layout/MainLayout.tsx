@@ -4,11 +4,12 @@ import { LayoutDashboard, FileText, PlusCircle, LogOut, Menu, X } from "lucide-r
 import { useAuth } from "../../features/auth/AuthContext";
 import { cn } from "../../lib/utils";
 import { Footer } from "./Footer";
+import { DotGrid } from "../ui/DotGrid";
 
 export function MainLayout() {
     const { logout, user } = useAuth();
     const location = useLocation();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -42,7 +43,11 @@ export function MainLayout() {
                     </button>
 
                     <h1 className="text-xl md:text-2xl font-black tracking-tighter text-black flex items-center gap-2">
-                        TRACKr. <span className="text-neo-primary text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
+                        <Link to="/">
+                            TRACKr. 
+                        </Link>
+                        <span className="text-neo-primary text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
+                        
                     </h1>
                 </div>
 
@@ -157,11 +162,12 @@ export function MainLayout() {
                 )}
 
                 {/* Main Content Area */}
-                <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
-                    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+                <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden relative">
+                    <DotGrid />
+                    <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
                         <div className="max-w-6xl mx-auto h-full flex flex-col">
                             <Outlet />
-                            <Footer />
+                            <Footer className="mt-8" />
                         </div>
                     </div>
                 </main>

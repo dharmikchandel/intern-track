@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
+import { cn } from "../../lib/utils";
 
-export function Footer() {
+interface FooterProps {
+    className?: string;
+}
+
+export function Footer({ className }: FooterProps) {
     return (
-        <footer className="w-full py-8 mt-8 border-2 rounded-lg border-black bg-white shadow-neo">
+        <footer className={cn("w-full py-8 border-2 rounded-lg border-black bg-white shadow-neo", className)}>
             <div className="container mx-auto px-6 flex flex-col justify-center items-center gap-6 text-center">
                 <div className="max-w-xl">
                     <p className="text-xl font-black text-slate-800 italic tracking-tight">

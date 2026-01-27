@@ -68,7 +68,7 @@ export async function listApplications(
   }
 ) {
   const page = query.page ?? 1;
-  const limit = query.limit ?? 10;
+  const limit = query.limit ?? 8;
   const skip = (page - 1) * limit;
 
   const where: any = { userId };

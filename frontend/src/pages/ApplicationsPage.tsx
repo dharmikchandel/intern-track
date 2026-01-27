@@ -21,14 +21,15 @@ export function ApplicationsPage() {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["applications", page, statusFilter],
-        queryFn: () => listApplications({ page, limit: 10, status: statusFilter || undefined }),
+        queryFn: () => listApplications({ page, limit: 8, status: statusFilter || undefined }),
     });
 
     const statusColors: Record<string, string> = {
         APPLIED: "bg-blue-100 text-blue-800",
         OA: "bg-yellow-100 text-yellow-800",
         INTERVIEW: "bg-purple-100 text-purple-800",
-        OFFER: "bg-neo-primary text-black",
+        // OFFER: "bg-neo-primary text-black",
+        OFFER: "bg-green-300 text-black",
         REJECTED: "bg-neo-destructive text-white",
     };
 
@@ -128,7 +129,7 @@ export function ApplicationsPage() {
                         <span className="font-bold">Page {page} of {Math.max(1, Math.ceil((data?.meta.total || 0) / 10))}</span>
                         <NeoButton
                             variant="secondary"
-                            disabled={!data || data.items.length < 10} // Simple check, ideally use totalPages
+                            disabled={!data || data.items.length < 8} // Simple check, ideally use totalPages
                             onClick={() => setPage(p => p + 1)}
                         >
                             Next

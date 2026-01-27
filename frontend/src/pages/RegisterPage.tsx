@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
+import { DotGrid } from "../components/ui/DotGrid";
 import { type RegisterFormData, registerSchema } from "../lib/schemas";
 import { registerUser } from "../api/auth";
 import { useAuth } from "../features/auth/AuthContext";
@@ -42,8 +44,16 @@ export function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4">
-            <div className="w-full max-w-md">
+        <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
+            <DotGrid />
+
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="w-full max-w-md relative z-10"
+            >
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-black tracking-tighter text-neo-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                         TRACKr.
@@ -100,7 +110,7 @@ export function RegisterPage() {
                         </Link>
                     </div>
                 </NeoCard>
-            </div>
+            </motion.div>
         </div>
     );
 }
