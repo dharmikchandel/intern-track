@@ -1,7 +1,7 @@
 import { Router } from "express";
-import authRoutes from "./modules/auth/auth.routes.ts";
-import analyticsRoutes from "./modules/analytics/analytics.routes.ts";
-import applicationRoutes from "./modules/applications/application.routes.ts";
+import authRoutes from "./modules/auth/auth.routes.js";
+import analyticsRoutes from "./modules/analytics/analytics.routes.js";
+import applicationRoutes from "./modules/applications/application.routes.js";
 
 const router = Router();
 

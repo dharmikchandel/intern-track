@@ -1,5 +1,5 @@
-import { prisma } from "../../config/prisma.ts";
-import { redis } from "../../config/redis.ts";
+import { prisma } from "../../config/prisma.js";
+import { redis } from "../../config/redis.js";
 
 const TTL_SECONDS = 60 * 5; // 5 minutes
 

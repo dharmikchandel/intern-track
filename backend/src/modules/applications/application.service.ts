@@ -1,5 +1,5 @@
-import { prisma } from "../../config/prisma.ts";
-import { invalidateAnalyticsCache } from "../analytics/analytics.service.ts";
+import { prisma } from "../../config/prisma.js";
+import { invalidateAnalyticsCache } from "../analytics/analytics.service.js";
 
 export async function createApplication(userId: string, data: any) {
   const app = prisma.application.create({

@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import routes from "./routes.ts";
-import { apiRateLimiter } from "./middlewares/rateLimit.middleware.ts";
-import { errorHandler } from "./middlewares/error.middleware.ts";
+import routes from "./routes.js";
+import { apiRateLimiter } from "./middlewares/rateLimit.middleware.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 

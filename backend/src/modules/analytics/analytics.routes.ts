@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { requireAuth } from "../../middlewares/auth.middleware.ts";
-import { funnel, statusCounts } from "./analytics.controller.ts";
+import { requireAuth } from "../../middlewares/auth.middleware.js";
+import { funnel, statusCounts } from "./analytics.controller.js";
 
 const router = Router();
 

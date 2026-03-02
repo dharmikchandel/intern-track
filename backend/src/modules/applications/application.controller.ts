@@ -1,17 +1,17 @@
 import type { Request, Response } from "express";
-import type { AuthRequest } from "../../middlewares/auth.middleware.ts";
+import type { AuthRequest } from "../../middlewares/auth.middleware.js";
 import {
   createApplicationSchema,
   updateApplicationSchema,
   listApplicationsQuerySchema,
-} from "./application.schema.ts";
+} from "./application.schema.js";
 import {
   createApplication,
   deleteApplication,
   getApplicationById,
   listApplications,
   updateApplication,
-} from "./application.service.ts";
+} from "./application.service.js";
 
 type Params = {
   id: string;

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { registerSchema, loginSchema } from "./auth.schema.ts";
-import { registerUser, loginUser } from "./auth.service.ts";
+import { registerSchema, loginSchema } from "./auth.schema.js";
+import { registerUser, loginUser } from "./auth.service.js";
 
 export async function register(req: Request, res: Response) {
   const parsed = registerSchema.safeParse(req.body);

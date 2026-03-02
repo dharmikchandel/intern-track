@@ -1,7 +1,7 @@
-import { prisma } from "../../config/prisma.ts";
-import { hashPassword, comparePassword } from "../../utils/password.ts";
-import { signAccessToken, signRefreshToken } from "../../utils/jwt.ts";
-import { AppError } from "../../utils/AppError.ts";
+import { prisma } from "../../config/prisma.js";
+import { hashPassword, comparePassword } from "../../utils/password.js";
+import { signAccessToken, signRefreshToken } from "../../utils/jwt.js";
+import { AppError } from "../../utils/AppError.js";
 
 export async function registerUser(email: string, password: string) {
   const existing = await prisma.user.findUnique({ where: { email } });

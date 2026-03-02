@@ -1,6 +1,6 @@
 import type { Response } from "express";
-import type { AuthRequest } from "../../middlewares/auth.middleware.ts";
-import { getFunnel, getStatusCounts } from "./analytics.service.ts";
+import type { AuthRequest } from "../../middlewares/auth.middleware.js";
+import { getFunnel, getStatusCounts } from "./analytics.service.js";
 
 export async function statusCounts(req: AuthRequest, res: Response) {
   const result = await getStatusCounts(req.userId!);
