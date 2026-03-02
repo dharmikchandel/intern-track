@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 
 const API_URL = "http://localhost:3000/api/v1";
 
@@ -10,7 +10,7 @@ export const client = axios.create({
 });
 
 // Add auth token to requests
-client.interceptors.request.use((config) => {
+client.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("token");
     if (token) {
         config.headers.Authorization = `Bearer ${token.replace(/^Bearer\s+/i, "")}`;

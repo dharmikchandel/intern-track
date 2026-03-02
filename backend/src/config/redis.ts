@@ -1,4 +1,3 @@
-// src/config/redis.ts
 import { Redis } from "ioredis";
 import { env } from "./env.ts";
 
@@ -43,7 +42,6 @@ redis.on("end", () => {
   console.log("👋 Redis: Connection ended");
 });
 
-// Graceful shutdown
 export async function disconnectRedis(): Promise<void> {
   try {
     await redis.quit();
