@@ -8,7 +8,14 @@ import { errorHandler } from "./middlewares/error.middleware.ts";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins: string[] = process.env.NODE_ENV === "production" ? [ process.env.CLIENT_URL! ] : [ `http://localhost:5173` ]
+
+app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true
+    }
+));
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
