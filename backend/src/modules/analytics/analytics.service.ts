@@ -32,7 +32,7 @@ export async function getStatusCounts(userId: string) {
     REJECTED: 0,
   };
 
-  grouped.forEach((g) => {
+  grouped.forEach((g: any) => {
     result[g.status] = g._count.status;
   });
 
@@ -71,7 +71,7 @@ export async function getFunnel(userId: string) {
   let interviewCount = 0;
   let offerCount = 0;
 
-  counts.forEach((item) => {
+  counts.forEach((item: any) => {
     totalApplied += item._count.status; // Add every status to the total
     
     if (item.status === "INTERVIEW") {
