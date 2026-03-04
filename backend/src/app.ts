@@ -13,7 +13,7 @@ const allowedOrigins: string[] = process.env.NODE_ENV === "production" ? [ proce
 app.use(
     cors({
         origin: allowedOrigins,
-        credentials: true
+        // credentials: true
     }
 ));
 app.use(express.json());
