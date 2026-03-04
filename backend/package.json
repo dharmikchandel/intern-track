@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --esm src/index.ts",
+    "dev": "ts-node-dev --respawn --esm src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "prisma:studio": "prisma studio"
