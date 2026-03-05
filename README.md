@@ -2,6 +2,10 @@
 
 > **The Job Application Tracker That Actually Looks Good.**
 
+## 🌐 Try it yourself here
+
+> **https://intern-track-alpha.vercel.app**
+
 ![License](https://img.shields.io/badge/license-MIT-black?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
 
