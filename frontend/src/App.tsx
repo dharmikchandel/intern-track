@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./features/auth/AuthContext";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import { MainLayout } from "./components/layout/MainLayout";
-import { Analytics } from "@vercel/analytics/react";
+
 
 // Pages
 import { LandingPage } from "./pages/LandingPage";
@@ -40,7 +40,6 @@ function App() {
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-          <Analytics />
         </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>
