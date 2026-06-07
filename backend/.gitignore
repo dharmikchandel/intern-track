@@ -3,6 +3,6 @@ node_modules
 .env
 
 #build
-/backend/dist
+/dist/*
 
 /generated/prisma
