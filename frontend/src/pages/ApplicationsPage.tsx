@@ -126,10 +126,10 @@ export function ApplicationsPage() {
                         >
                             Previous
                         </NeoButton>
-                        <span className="font-bold">Page {page} of {Math.max(1, Math.ceil((data?.meta.total || 0) / 10))}</span>
+                        <span className="font-bold">Page {page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
                         <NeoButton
                             variant="secondary"
-                            disabled={!data || data.items.length < 8} // Simple check, ideally use totalPages
+                            disabled={!data || page >= data.meta.totalPages}
                             onClick={() => setPage(p => p + 1)}
                         >
                             Next

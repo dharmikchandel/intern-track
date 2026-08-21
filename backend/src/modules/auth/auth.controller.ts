@@ -6,28 +6,17 @@ export async function register(req: Request, res: Response) {
   const parsed = registerSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
 
-  try {
-    const result = await registerUser(parsed.data.email, parsed.data.password);
-    return res.status(201).json(result);
-  } catch (err: any) {
-    if (err.message === "EMAIL_ALREADY_EXISTS") {
-      return res.status(409).json({ error: "Email already registered" });
-    }
-    return res.status(500).json({ error: "Server error" });
-  }
+  // registerUser throws AppError on failure; Express 5 forwards the
+  // rejection to errorHandler automatically, which already knows how to
+  // turn it into the right status code.
+  const result = await registerUser(parsed.data.email, parsed.data.password);
+  return res.status(201).json(result);
 }
 
 export async function login(req: Request, res: Response) {
   const parsed = loginSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
 
-  try {
-    const result = await loginUser(parsed.data.email, parsed.data.password);
-    return res.status(200).json(result);
-  } catch (err: any) {
-    if (err.message === "INVALID_CREDENTIALS") {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
-    return res.status(500).json({ error: "Server error" });
-  }
+  const result = await loginUser(parsed.data.email, parsed.data.password);
+  return res.status(200).json(result);
 }

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const techs = ["React", "TypeScript", "TailwindCSS", "Vite", "Golang", "PostgreSQL", "Framer Motion"];
+const techs = ["React", "TypeScript", "TailwindCSS", "Vite", "Node.js", "PostgreSQL", "Redis", "Prisma"];
 
 export function TechStackSection() {
     return (

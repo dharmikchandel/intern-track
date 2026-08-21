@@ -9,7 +9,8 @@ import { NeoButton } from "../components/ui/NeoButton";
 import { DotGrid } from "../components/ui/DotGrid";
 import { type RegisterFormData, registerSchema } from "../lib/schemas";
 import { registerUser } from "../api/auth";
-import { useAuth } from "../features/auth/AuthContext";
+import { useAuth } from "../features/auth/useAuth";
+import { getErrorMessage } from "../lib/utils";
 import { useState } from "react";
 
 export function RegisterPage() {
@@ -31,10 +32,8 @@ export function RegisterPage() {
             login(data.accessToken, data.user);
             navigate("/dashboard");
         },
-        onError: (error: any) => {
-            setServerError(
-                error.response?.data?.error || "Failed to register. Please try again."
-            );
+        onError: (error) => {
+            setServerError(getErrorMessage(error, "Failed to register. Please try again."));
         },
     });
 

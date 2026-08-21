@@ -9,7 +9,8 @@ import { NeoButton } from "../components/ui/NeoButton";
 import { DotGrid } from "../components/ui/DotGrid";
 import { type LoginFormData, loginSchema } from "../lib/schemas";
 import { loginUser } from "../api/auth";
-import { useAuth } from "../features/auth/AuthContext";
+import { useAuth } from "../features/auth/useAuth";
+import { getErrorMessage } from "../lib/utils";
 import { useState } from "react";
 
 export function LoginPage() {
@@ -34,10 +35,8 @@ export function LoginPage() {
             login(data.accessToken, data.user);
             navigate(from, { replace: true });
         },
-        onError: (error: any) => {
-            setServerError(
-                error.response?.data?.error || "Failed to login. Please try again."
-            );
+        onError: (error) => {
+            setServerError(getErrorMessage(error, "Failed to login. Please try again."));
         },
     });
 

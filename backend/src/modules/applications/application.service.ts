@@ -1,8 +1,9 @@
 import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../utils/AppError.js";
 import { invalidateAnalyticsCache } from "../analytics/analytics.service.js";
 
 export async function createApplication(userId: string, data: any) {
-  const app = prisma.application.create({
+  const app = await prisma.application.create({
     data: {
       userId,
       companyName: data.companyName,
@@ -16,6 +17,8 @@ export async function createApplication(userId: string, data: any) {
       }),
     },
   });
+  // Invalidate only after the write commits, so a concurrent analytics read
+  // can never cache stale (pre-write) numbers.
   await invalidateAnalyticsCache(userId);
   return app;
 }
@@ -24,7 +27,7 @@ export async function getApplicationById(userId: string, id: string) {
   const app = await prisma.application.findFirst({
     where: { id, userId },
   });
-  if (!app) throw new Error("NOT_FOUND");
+  if (!app) throw new AppError("Application not found", 404, "NOT_FOUND");
   return app;
 }
 
@@ -32,7 +35,7 @@ export async function updateApplication(userId: string, id: string, data: any) {
   // ownership check
   await getApplicationById(userId, id);
 
-  const app = prisma.application.update({
+  const app = await prisma.application.update({
     where: { id },
     data: {
       ...data,

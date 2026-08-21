@@ -69,12 +69,12 @@ export function ApplicationDetailPage() {
     });
 
     const onSubmit = (data: CreateApplicationFormData) => {
-        const payload = {
+        const payload: CreateApplicationFormData = {
             ...data,
             appliedDate: new Date(data.appliedDate).toISOString(),
             followUpDate: data.followUpDate ? new Date(data.followUpDate).toISOString() : undefined,
         };
-        updateMutation.mutate(payload as any);
+        updateMutation.mutate(payload);
     };
 
     if (isLoading) return <div className="p-10 text-center font-bold">Loading...</div>;

@@ -37,13 +37,12 @@ export function CreateApplicationPage() {
     });
 
     const onSubmit = (data: CreateApplicationFormData) => {
-        // Ensure date is ISO string if needed by backend, but backend accepts ISO date string.
-        // Zod schema expects string date.
-        const payload = {
+        // The date input gives "YYYY-MM-DD"; the backend expects a full ISO datetime.
+        const payload: CreateApplicationFormData = {
             ...data,
             appliedDate: new Date(data.appliedDate).toISOString(),
         };
-        mutation.mutate(payload as any);
+        mutation.mutate(payload);
     };
 
     return (

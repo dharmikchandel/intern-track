@@ -43,13 +43,24 @@ export async function getApplication(id: string) {
     return res.data;
 }
 
+// The form gives "" for an empty optional field; the backend expects the
+// key to be absent instead ("" fails its URL/date validation). Normalized
+// here, once, rather than in every submit handler that sends this data.
+function stripBlanks<T extends Record<string, unknown>>(data: T): T {
+    const cleaned = { ...data };
+    for (const key of ["applicationLink", "followUpDate"] as const) {
+        if (cleaned[key] === "") delete cleaned[key];
+    }
+    return cleaned;
+}
+
 export async function createApplication(data: CreateApplicationFormData) {
-    const res = await client.post<Application>("/applications", data);
+    const res = await client.post<Application>("/applications", stripBlanks(data));
     return res.data;
 }
 
 export async function updateApplication(id: string, data: Partial<CreateApplicationFormData>) {
-    const res = await client.patch<Application>(`/applications/${id}`, data);
+    const res = await client.patch<Application>(`/applications/${id}`, stripBlanks(data));
     return res.data;
 }
 

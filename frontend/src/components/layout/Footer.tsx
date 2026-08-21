@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { cn } from "../../lib/utils";
 
 interface FooterProps {
@@ -18,10 +17,7 @@ export function Footer({ className }: FooterProps) {
                 </div>
 
                 <div className="flex items-center gap-6 text-sm font-bold text-slate-500 mt-2">
-                    <Link to="/about" className="hover:text-neo-primary hover:underline underline-offset-4 transition-all">About</Link>
-                    <Link to="/privacy" className="hover:text-neo-primary hover:underline underline-offset-4 transition-all">Privacy</Link>
-                    <span className="text-slate-300">•</span>
-                    <span className="text-slate-400">© 2024 TRACKr.</span>
+                    <span className="text-slate-400">© {new Date().getFullYear()} TRACKr.</span>
                 </div>
             </div>
         </footer>

@@ -20,7 +20,7 @@ export function NeoModal({ isOpen, onClose, title, children }: NeoModalProps) {
             />
 
             {/* Content */}
-            <div className="relative w-full max-w-lg bg-white border-2 border-black shadow-neo-modal p-6 z-10 animate-in fade-in zoom-in-95 duration-200">
+            <div className="relative w-full max-w-lg bg-white border-2 border-black shadow-neo-modal p-6 z-10">
                 <div className="flex items-center justify-between mb-4">
                     {title && <h2 className="text-xl font-black uppercase">{title}</h2>}
                     <button

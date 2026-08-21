@@ -25,37 +25,24 @@ export async function create(req: AuthRequest, res: Response) {
   return res.status(201).json(app);
 }
 
+// Ownership/not-found failures throw AppError from the service layer and are
+// handled centrally by errorHandler, so no per-route try/catch is needed.
 export async function getById(req: AuthRequest & Request<Params>, res: Response) {
-  try {
-    const app = await getApplicationById(req.userId!, req.params.id);
-    return res.status(200).json(app);
-  } catch (err: any) {
-    if (err.message === "NOT_FOUND") return res.status(404).json({ error: "Application not found" });
-    return res.status(500).json({ error: "Server error" });
-  }
+  const app = await getApplicationById(req.userId!, req.params.id);
+  return res.status(200).json(app);
 }
 
 export async function update(req: AuthRequest & Request<Params>, res: Response) {
   const parsed = updateApplicationSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
 
-  try {
-    const app = await updateApplication(req.userId!, req.params.id, parsed.data);
-    return res.status(200).json(app);
-  } catch (err: any) {
-    if (err.message === "NOT_FOUND") return res.status(404).json({ error: "Application not found" });
-    return res.status(500).json({ error: "Server error" });
-  }
+  const app = await updateApplication(req.userId!, req.params.id, parsed.data);
+  return res.status(200).json(app);
 }
 
 export async function remove(req: AuthRequest & Request<Params>, res: Response) {
-  try {
-    const result = await deleteApplication(req.userId!, req.params.id);
-    return res.status(200).json(result);
-  } catch (err: any) {
-    if (err.message === "NOT_FOUND") return res.status(404).json({ error: "Application not found" });
-    return res.status(500).json({ error: "Server error" });
-  }
+  const result = await deleteApplication(req.userId!, req.params.id);
+  return res.status(200).json(result);
 }
 
 export async function list(req: AuthRequest, res: Response) {

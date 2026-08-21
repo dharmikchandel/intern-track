@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, FileText, Calendar, Bell, PieChart, Shield } from "lucide-react";
+import { LayoutDashboard, ListFilter, ClipboardEdit, Bell, PieChart, Shield } from "lucide-react";
 
 const features = [
     {
@@ -9,15 +9,15 @@ const features = [
         color: "bg-neo-primary"
     },
     {
-        icon: FileText,
-        title: "Smart Resume Parsing",
-        description: "Automatically extract details from your resume to fill applications faster.",
+        icon: ListFilter,
+        title: "Filter & Sort",
+        description: "Slice your applications by status, or sort by date applied — find what you need fast.",
         color: "bg-neo-secondary"
     },
     {
-        icon: Calendar,
-        title: "Interview Scheduler",
-        description: "Never miss an interview. Sync with your calendar and get reminders.",
+        icon: ClipboardEdit,
+        title: "Full CRUD Control",
+        description: "Add, edit, and delete applications any time. Your data, fully in your hands.",
         color: "bg-neo-tertiary"
     },
     {

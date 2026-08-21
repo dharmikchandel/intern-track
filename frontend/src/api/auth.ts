@@ -3,7 +3,6 @@ import { type LoginFormData, type RegisterFormData } from "../lib/schemas";
 
 interface AuthResponse {
     accessToken: string;
-    refreshToken: string;
     user: {
         id: string;
         email: string;

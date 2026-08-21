@@ -51,7 +51,7 @@ export function HeroSection() {
                         </Link>
                         <Link to="/login">
                             <NeoButton variant="secondary" className="text-lg px-8 py-4 h-auto">
-                                Live Demo
+                                Sign In
                             </NeoButton>
                         </Link>
                     </div>

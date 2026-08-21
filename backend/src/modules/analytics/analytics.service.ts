@@ -11,11 +11,31 @@ function funnelKey(userId: string) {
   return `analytics:user:${userId}:funnel`;
 }
 
+// Redis is a cache, not the source of truth (Postgres is). If it's slow or
+// down, analytics should fall back to computing straight from the DB rather
+// than take the whole endpoint down with it.
+async function safeCacheGet(key: string): Promise<Record<string, number> | null> {
+  try {
+    const cached = await redis.get(key);
+    return cached ? JSON.parse(cached) : null;
+  } catch (err) {
+    console.error("⚠️ Redis GET failed, falling back to DB:", (err as Error).message);
+    return null;
+  }
+}
+
+async function safeCacheSet(key: string, value: unknown): Promise<void> {
+  try {
+    await redis.set(key, JSON.stringify(value), "EX", TTL_SECONDS);
+  } catch (err) {
+    console.error("⚠️ Redis SET failed, response was still served:", (err as Error).message);
+  }
+}
+
 export async function getStatusCounts(userId: string) {
   const cacheKey = statusCountsKey(userId);
-
-  const cached = await redis.get(cacheKey);
-  if (cached) return JSON.parse(cached);
+  const cached = await safeCacheGet(cacheKey);
+  if (cached) return cached;
 
   // DB aggregation
   const grouped = await prisma.application.groupBy({
@@ -36,37 +56,24 @@ export async function getStatusCounts(userId: string) {
     result[g.status] = g._count.status;
   });
 
-  await redis.set(cacheKey, JSON.stringify(result), "EX", TTL_SECONDS);
+  await safeCacheSet(cacheKey, result);
 
   return result;
 }
 
 export async function getFunnel(userId: string) {
   const cacheKey = funnelKey(userId);
+  const cached = await safeCacheGet(cacheKey);
+  if (cached) return cached;
 
-  const cached = await redis.get(cacheKey);
-  if (cached) return JSON.parse(cached);
-
-  // const totalApplied = await prisma.application.count({
-  //   where: { userId },
-  // });
-
-  // const interviewCount = await prisma.application.count({
-  //   where: { userId, status: "INTERVIEW" },
-  // });
-
-  // const offerCount = await prisma.application.count({
-  //   where: { userId, status: "OFFER" },
-  // });
-
-  // 1. Single DB Call: Get counts for ALL statuses at once
+  // Single DB call: get counts for every status at once, then derive the
+  // funnel numbers in memory instead of running three separate COUNT queries.
   const counts = await prisma.application.groupBy({
     by: ["status"],
     where: { userId },
     _count: { status: true },
   });
 
-  // 2. Process the results in memory
   let totalApplied = 0;
   let interviewCount = 0;
   let offerCount = 0;
@@ -89,15 +96,22 @@ export async function getFunnel(userId: string) {
     offerRate: totalApplied ? (offerCount / totalApplied) * 100 : 0,
   };
 
-  await redis.set(cacheKey, JSON.stringify(result), "EX", TTL_SECONDS);
+  await safeCacheSet(cacheKey, result);
 
   return result;
 }
 
-export async function invalidateAnalyticsCache(userId: string) {
-  // await redis.del(statusCountsKey(userId), funnelKey(userId));
-  const pipeline = redis.pipeline();
-  pipeline.del(statusCountsKey(userId));
-  pipeline.del(funnelKey(userId));
-  await pipeline.exec();
+// Called after every application create/update/delete. Must never throw:
+// a Redis hiccup here would otherwise fail an already-successful DB write
+// from the caller's point of view. Worst case on failure, the cache just
+// serves stale numbers until the 5-minute TTL naturally expires.
+export async function invalidateAnalyticsCache(userId: string): Promise<void> {
+  try {
+    const pipeline = redis.pipeline();
+    pipeline.del(statusCountsKey(userId));
+    pipeline.del(funnelKey(userId));
+    await pipeline.exec();
+  } catch (err) {
+    console.error("⚠️ Redis cache invalidation failed:", (err as Error).message);
+  }
 }

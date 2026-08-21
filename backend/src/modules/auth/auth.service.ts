@@ -1,6 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { hashPassword, comparePassword } from "../../utils/password.js";
-import { signAccessToken, signRefreshToken } from "../../utils/jwt.js";
+import { signAccessToken } from "../../utils/jwt.js";
 import { AppError } from "../../utils/AppError.js";
 
 export async function registerUser(email: string, password: string) {
@@ -15,9 +15,8 @@ export async function registerUser(email: string, password: string) {
   });
 
   const accessToken = signAccessToken({ userId: user.id });
-  const refreshToken = signRefreshToken({ userId: user.id });
 
-  return { user, accessToken, refreshToken };
+  return { user, accessToken };
 }
 
 export async function loginUser(email: string, password: string) {
@@ -28,11 +27,9 @@ export async function loginUser(email: string, password: string) {
   if (!ok) throw new AppError("Invalid credentials", 401, "INVALID_CREDENTIALS");
 
   const accessToken = signAccessToken({ userId: user.id });
-  const refreshToken = signRefreshToken({ userId: user.id });
 
   return {
     user: { id: user.id, email: user.email, createdAt: user.createdAt },
     accessToken,
-    refreshToken,
   };
 }

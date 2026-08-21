@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard, FileText, PlusCircle, LogOut, Menu, X } from "lucide-react";
-import { useAuth } from "../../features/auth/AuthContext";
+import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
 import { Footer } from "./Footer";
 import { DotGrid } from "../ui/DotGrid";

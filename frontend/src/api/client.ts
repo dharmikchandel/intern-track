@@ -1,6 +1,9 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
-const API_URL = import.meta.env.VITE_NODE_ENV === "production" ? import.meta.env.VITE_API_URL_PROD : "http://localhost:3000/api/v1";
+// import.meta.env.PROD is set automatically by Vite (true for `vite build`,
+// false for `vite dev`) — no manual env var to keep in sync and no risk of
+// a stale local .env silently pointing dev at the production API.
+const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : "http://localhost:3000/api/v1";
 
 export const client = axios.create({
     baseURL: API_URL,
