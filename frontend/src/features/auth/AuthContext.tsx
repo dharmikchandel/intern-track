@@ -1,45 +1,62 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "./auth-context";
+import { setAccessToken } from "../../api/client";
+import { refreshSession, logoutUser } from "../../api/auth";
 
 interface User {
     id: string;
     email: string;
 }
 
-function readStoredUser(): User | null {
-    try {
-        const stored = localStorage.getItem("user");
-        return stored ? JSON.parse(stored) : null;
-    } catch {
-        return null;
-    }
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-    // Read localStorage directly during the initial render (lazy initial
-    // state) instead of in a useEffect — avoids an extra render on every
-    // app load just to hydrate session state that's already available.
-    const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
-    const [user, setUser] = useState<User | null>(() => (token ? readStoredUser() : null));
+    // No localStorage: the access token lives only in memory (see
+    // api/client.ts) and the refresh token is an httpOnly cookie neither
+    // this component nor any other JS on the page can read. On mount we
+    // trade that cookie for a fresh access token to rehydrate the session.
+    const [token, setToken] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        refreshSession()
+            .then(({ accessToken, user }) => {
+                if (cancelled) return;
+                setAccessToken(accessToken);
+                setToken(accessToken);
+                setUser(user);
+            })
+            .catch(() => {
+                // No valid refresh cookie — that's just "logged out", not an error.
+            })
+            .finally(() => {
+                if (!cancelled) setIsLoading(false);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     const login = (newToken: string, newUser: User) => {
-        localStorage.setItem("token", newToken);
-        localStorage.setItem("user", JSON.stringify(newUser));
+        setAccessToken(newToken);
         setToken(newToken);
         setUser(newUser);
     };
 
     const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        setAccessToken(null);
         setToken(null);
         setUser(null);
+        // Fire and forget: the UI should log the user out immediately
+        // regardless of whether the network call to revoke the refresh
+        // token on the server succeeds.
+        logoutUser().catch(() => {});
     };
 
-    // Sync token to axios client is handled in client.ts, but we keep state here for UI
-
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
+        <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

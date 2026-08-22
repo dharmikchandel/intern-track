@@ -165,8 +165,10 @@ export function MainLayout() {
                 <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden relative">
                     <DotGrid />
                     <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
-                        <div className="max-w-6xl mx-auto h-full flex flex-col">
-                            <Outlet />
+                        <div className="max-w-6xl mx-auto min-h-full flex flex-col">
+                            <div className="flex-1">
+                                <Outlet />
+                            </div>
                             <Footer className="mt-8" />
                         </div>
                     </div>

@@ -1,7 +1,23 @@
 import { prisma } from "../../config/prisma.js";
 import { hashPassword, comparePassword } from "../../utils/password.js";
 import { signAccessToken } from "../../utils/jwt.js";
+import { generateRefreshToken, hashRefreshToken, REFRESH_TOKEN_TTL_MS } from "../../utils/refreshToken.js";
 import { AppError } from "../../utils/AppError.js";
+
+async function issueSession(userId: string) {
+  const accessToken = signAccessToken({ userId });
+  const { token: refreshToken, tokenHash } = generateRefreshToken();
+
+  await prisma.refreshToken.create({
+    data: {
+      userId,
+      tokenHash,
+      expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_MS),
+    },
+  });
+
+  return { accessToken, refreshToken };
+}
 
 export async function registerUser(email: string, password: string) {
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -14,9 +30,9 @@ export async function registerUser(email: string, password: string) {
     select: { id: true, email: true, createdAt: true },
   });
 
-  const accessToken = signAccessToken({ userId: user.id });
+  const { accessToken, refreshToken } = await issueSession(user.id);
 
-  return { user, accessToken };
+  return { user, accessToken, refreshToken };
 }
 
 export async function loginUser(email: string, password: string) {
@@ -26,10 +42,67 @@ export async function loginUser(email: string, password: string) {
   const ok = await comparePassword(password, user.passwordHash);
   if (!ok) throw new AppError("Invalid credentials", 401, "INVALID_CREDENTIALS");
 
-  const accessToken = signAccessToken({ userId: user.id });
+  const { accessToken, refreshToken } = await issueSession(user.id);
 
   return {
     user: { id: user.id, email: user.email, createdAt: user.createdAt },
     accessToken,
+    refreshToken,
   };
+}
+
+// Rotation: every refresh consumes the presented token and issues a new one.
+// If a token that's already revoked gets presented again, that's a strong
+// signal it was stolen and used by someone else after the legitimate client
+// already rotated past it — the right response is to kill every session for
+// that user, not just this one.
+export async function refreshSession(rawToken: string) {
+  const tokenHash = hashRefreshToken(rawToken);
+  const stored = await prisma.refreshToken.findUnique({ where: { tokenHash } });
+
+  if (!stored) throw new AppError("Invalid refresh token", 401, "INVALID_REFRESH_TOKEN");
+
+  if (stored.revokedAt) {
+    await prisma.refreshToken.updateMany({
+      where: { userId: stored.userId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    throw new AppError("Refresh token reuse detected", 401, "REFRESH_TOKEN_REUSE");
+  }
+
+  if (stored.expiresAt < new Date()) {
+    throw new AppError("Refresh token expired", 401, "REFRESH_TOKEN_EXPIRED");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: stored.userId },
+    select: { id: true, email: true, createdAt: true },
+  });
+  if (!user) throw new AppError("Invalid refresh token", 401, "INVALID_REFRESH_TOKEN");
+
+  await prisma.refreshToken.update({
+    where: { id: stored.id },
+    data: { revokedAt: new Date() },
+  });
+
+  const { accessToken, refreshToken } = await issueSession(user.id);
+
+  return { user, accessToken, refreshToken };
+}
+
+export async function logoutSession(rawToken: string) {
+  const tokenHash = hashRefreshToken(rawToken);
+  // Idempotent: logging out with an already-revoked/unknown token is a no-op,
+  // not an error — the caller's goal (no active session) is already true.
+  await prisma.refreshToken.updateMany({
+    where: { tokenHash, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+}
+
+export async function logoutAllSessions(userId: string) {
+  await prisma.refreshToken.updateMany({
+    where: { userId, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
 }

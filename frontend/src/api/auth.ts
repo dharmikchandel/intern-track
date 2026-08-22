@@ -22,3 +22,15 @@ export async function registerUser(data: Omit<RegisterFormData, "confirmPassword
     });
     return res.data;
 }
+
+// Called on app load: the refresh token cookie (if any) rehydrates the
+// session without the user having to log in again. A 401 here just means
+// there's no valid session — not an error the caller needs to report.
+export async function refreshSession() {
+    const res = await client.post<AuthResponse>("/auth/refresh");
+    return res.data;
+}
+
+export async function logoutUser() {
+    await client.post("/auth/logout");
+}

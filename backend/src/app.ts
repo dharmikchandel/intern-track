@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import routes from "./routes.js";
 import { apiRateLimiter } from "./middlewares/rateLimit.middleware.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
@@ -21,10 +22,15 @@ const allowedOrigins: string[] = process.env.NODE_ENV === "production"
 app.use(
     cors({
         origin: allowedOrigins,
-        // credentials: true
+        // The refresh token travels as an httpOnly cookie, so the browser
+        // needs credentials: true on the CORS response to accept and send
+        // it cross-origin (frontend and backend are different domains in
+        // prod). This only works with an explicit origin above, never "*".
+        credentials: true,
     }
 ));
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(helmet());
 

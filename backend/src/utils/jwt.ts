@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 
-// No refresh-token flow: there's only one client (the SPA), it holds the
-// token in localStorage, and there's no server-side refresh endpoint. A
-// single longer-lived access token is simpler and just as correct at this
-// scale than issuing a refresh token nothing ever redeems.
+// Short-lived: this is the token the SPA holds in memory and sends as a
+// Bearer header. A leaked/XSS-read access token is only useful for 15
+// minutes; long-lived sessions come from the httpOnly refresh cookie
+// instead (see utils/refreshToken.ts), which JS on the page can't read.
 export function signAccessToken(payload: object) {
-  return jwt.sign(payload, env.JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign(payload, env.JWT_SECRET, { expiresIn: "15m" });
 }
 
 export function verifyAccessToken(token: string) {

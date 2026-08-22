@@ -100,7 +100,7 @@ export function ApplicationsPage() {
                                     <NeoTableCell className="font-bold">{app.companyName}</NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
-                                        <span className={`px-2 py-1 border-2 border-black font-bold text-xs ${statusColors[app.status] || "bg-gray-100"}`}>
+                                        <span className={`px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${statusColors[app.status] || "bg-gray-100"}`}>
                                             {app.status}
                                         </span>
                                     </NeoTableCell>

@@ -10,28 +10,71 @@ export const client = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    // The refresh token lives in an httpOnly cookie set by the backend —
+    // the browser needs this to send/accept it, since frontend and backend
+    // are different origins in production.
+    withCredentials: true,
 });
 
-// Add auth token to requests
+// The access token lives in memory only (never localStorage) so it isn't
+// readable by an XSS payload the way a persisted token would be. AuthContext
+// is the only writer; this module just holds the value axios needs.
+let accessToken: string | null = null;
+
+export function setAccessToken(token: string | null) {
+    accessToken = token;
+}
+
 client.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token.replace(/^Bearer\s+/i, "")}`;
+    if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
 });
 
-// Handle 401 Unauthorized (optional: redirect to login)
+// Silent refresh: on a 401 (expired access token), use the httpOnly refresh
+// cookie to get a new one and retry the original request once. Concurrent
+// 401s share a single in-flight refresh call instead of each firing their
+// own — a burst of requests right after expiry shouldn't race the backend
+// into rotating the refresh token multiple times.
+let refreshPromise: Promise<string> | null = null;
+
+async function refreshAccessToken(): Promise<string> {
+    if (!refreshPromise) {
+        refreshPromise = client
+            .post<{ accessToken: string }>("/auth/refresh")
+            .then((res) => {
+                accessToken = res.data.accessToken;
+                return res.data.accessToken;
+            })
+            .finally(() => {
+                refreshPromise = null;
+            });
+    }
+    return refreshPromise;
+}
+
 client.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            // Clear token if invalid, but avoid infinite loops if already on login
-            if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
-                localStorage.removeItem("token");
-                window.location.href = "/login";
+    async (error) => {
+        const originalRequest = error.config as (InternalAxiosRequestConfig & { _retried?: boolean }) | undefined;
+        const isAuthRoute = originalRequest?.url?.includes("/auth/");
+
+        if (error.response?.status === 401 && originalRequest && !originalRequest._retried && !isAuthRoute) {
+            originalRequest._retried = true;
+            try {
+                const newToken = await refreshAccessToken();
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                return client(originalRequest);
+            } catch {
+                accessToken = null;
+                if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+                    window.location.href = "/login";
+                }
+                return Promise.reject(error);
             }
         }
+
         return Promise.reject(error);
     }
 );
