@@ -7,6 +7,7 @@ interface AuthResponse {
         id: string;
         email: string;
         createdAt: string;
+        emailVerified: boolean;
     };
 }
 
@@ -33,4 +34,24 @@ export async function refreshSession() {
 
 export async function logoutUser() {
     await client.post("/auth/logout");
+}
+
+export async function requestPasswordReset(email: string) {
+    const res = await client.post<{ message: string }>("/password-reset/request", { email });
+    return res.data;
+}
+
+export async function confirmPasswordReset(token: string, password: string) {
+    const res = await client.post<{ message: string }>("/password-reset/confirm", { token, password });
+    return res.data;
+}
+
+export async function verifyEmail(token: string) {
+    const res = await client.post<{ message: string }>("/email-verification/verify", { token });
+    return res.data;
+}
+
+export async function resendVerificationEmail() {
+    const res = await client.post<{ message: string }>("/email-verification/resend");
+    return res.data;
 }

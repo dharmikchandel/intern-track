@@ -3,6 +3,19 @@ import { hashPassword, comparePassword } from "../../utils/password.js";
 import { signAccessToken } from "../../utils/jwt.js";
 import { generateRefreshToken, hashRefreshToken, REFRESH_TOKEN_TTL_MS } from "../../utils/refreshToken.js";
 import { AppError } from "../../utils/AppError.js";
+import { sendVerificationEmail } from "../email-verification/email-verification.service.js";
+
+const USER_SELECT = { id: true, email: true, createdAt: true, emailVerifiedAt: true } as const;
+
+// The frontend only needs to know verified-or-not, not the timestamp.
+function toPublicUser(user: { id: string; email: string; createdAt: Date; emailVerifiedAt: Date | null }) {
+  return {
+    id: user.id,
+    email: user.email,
+    createdAt: user.createdAt,
+    emailVerified: !!user.emailVerifiedAt,
+  };
+}
 
 async function issueSession(userId: string) {
   const accessToken = signAccessToken({ userId });
@@ -27,12 +40,18 @@ export async function registerUser(email: string, password: string) {
 
   const user = await prisma.user.create({
     data: { email, passwordHash },
-    select: { id: true, email: true, createdAt: true },
+    select: USER_SELECT,
   });
 
   const { accessToken, refreshToken } = await issueSession(user.id);
 
-  return { user, accessToken, refreshToken };
+  // Best-effort: a broken mail provider shouldn't fail registration itself —
+  // the user can always hit /email-verification/resend afterwards.
+  sendVerificationEmail(user.id, user.email).catch((err) => {
+    console.error("⚠️ Failed to send verification email on register:", (err as Error).message);
+  });
+
+  return { user: toPublicUser(user), accessToken, refreshToken };
 }
 
 export async function loginUser(email: string, password: string) {
@@ -45,7 +64,7 @@ export async function loginUser(email: string, password: string) {
   const { accessToken, refreshToken } = await issueSession(user.id);
 
   return {
-    user: { id: user.id, email: user.email, createdAt: user.createdAt },
+    user: toPublicUser(user),
     accessToken,
     refreshToken,
   };
@@ -76,7 +95,7 @@ export async function refreshSession(rawToken: string) {
 
   const user = await prisma.user.findUnique({
     where: { id: stored.userId },
-    select: { id: true, email: true, createdAt: true },
+    select: USER_SELECT,
   });
   if (!user) throw new AppError("Invalid refresh token", 401, "INVALID_REFRESH_TOKEN");
 
@@ -87,7 +106,7 @@ export async function refreshSession(rawToken: string) {
 
   const { accessToken, refreshToken } = await issueSession(user.id);
 
-  return { user, accessToken, refreshToken };
+  return { user: toPublicUser(user), accessToken, refreshToken };
 }
 
 export async function logoutSession(rawToken: string) {

@@ -6,6 +6,7 @@ import { refreshSession, logoutUser } from "../../api/auth";
 interface User {
     id: string;
     email: string;
+    emailVerified: boolean;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {

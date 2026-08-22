@@ -4,6 +4,7 @@ import { LayoutDashboard, FileText, PlusCircle, LogOut, Menu, X } from "lucide-r
 import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
 import { Footer } from "./Footer";
+import { EmailVerificationBanner } from "./EmailVerificationBanner";
 import { DotGrid } from "../ui/DotGrid";
 
 export function MainLayout() {
@@ -167,6 +168,7 @@ export function MainLayout() {
                     <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
                         <div className="max-w-6xl mx-auto min-h-full flex flex-col">
                             <div className="flex-1">
+                                {user && !user.emailVerified && <EmailVerificationBanner />}
                                 <Outlet />
                             </div>
                             <Footer className="mt-8" />

@@ -20,6 +20,7 @@ export function LoginPage() {
     const [serverError, setServerError] = useState<string | null>(null);
 
     const from = location.state?.from?.pathname || "/dashboard";
+    const justReset = Boolean(location.state?.passwordReset);
 
     const {
         register,
@@ -66,6 +67,12 @@ export function LoginPage() {
                 <NeoCard>
                     <h2 className="text-2xl font-black mb-6 uppercase">Login</h2>
 
+                    {justReset && !serverError && (
+                        <div className="bg-green-100 border-2 border-black p-3 mb-4 font-bold text-slate-800">
+                            Password updated. Log in with your new password.
+                        </div>
+                    )}
+
                     {serverError && (
                         <div className="bg-neo-destructive text-white font-bold p-3 mb-4 border-2 border-black shadow-[4px_4px_0px_0px_#000]">
                             {serverError}
@@ -80,13 +87,20 @@ export function LoginPage() {
                             error={errors.email?.message}
                             {...register("email")}
                         />
-                        <NeoInput
-                            label="Password"
-                            type="password"
-                            placeholder="••••••••"
-                            error={errors.password?.message}
-                            {...register("password")}
-                        />
+                        <div>
+                            <NeoInput
+                                label="Password"
+                                type="password"
+                                placeholder="••••••••"
+                                error={errors.password?.message}
+                                {...register("password")}
+                            />
+                            <div className="text-right mt-1">
+                                <Link to="/forgot-password" className="text-xs font-bold underline hover:text-neo-primary">
+                                    Forgot password?
+                                </Link>
+                            </div>
+                        </div>
 
                         <NeoButton
                             type="submit"

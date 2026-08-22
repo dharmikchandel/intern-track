@@ -4,7 +4,7 @@
 
 ## 🌐 Try it yourself here
 
-> **https://intern-track-alpha.vercel.app**
+> **https://trackr.dharmikchandel.tech**
 
 ![License](https://img.shields.io/badge/license-MIT-black?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
