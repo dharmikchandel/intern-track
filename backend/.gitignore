@@ -6,4 +6,3 @@ node_modules
 /dist/*
 
 /generated/prisma
-/prisma/migrations
