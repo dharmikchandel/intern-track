@@ -1,5 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { redis } from "../../config/redis.js";
+import { logger } from "../../config/logger.js";
 
 const TTL_SECONDS = 60 * 5; // 5 minutes
 
@@ -19,7 +20,7 @@ async function safeCacheGet(key: string): Promise<Record<string, number> | null>
     const cached = await redis.get(key);
     return cached ? JSON.parse(cached) : null;
   } catch (err) {
-    console.error("⚠️ Redis GET failed, falling back to DB:", (err as Error).message);
+    logger.warn({ err, key }, "Redis GET failed, falling back to DB");
     return null;
   }
 }
@@ -28,7 +29,7 @@ async function safeCacheSet(key: string, value: unknown): Promise<void> {
   try {
     await redis.set(key, JSON.stringify(value), "EX", TTL_SECONDS);
   } catch (err) {
-    console.error("⚠️ Redis SET failed, response was still served:", (err as Error).message);
+    logger.warn({ err, key }, "Redis SET failed, response was still served");
   }
 }
 
@@ -112,6 +113,6 @@ export async function invalidateAnalyticsCache(userId: string): Promise<void> {
     pipeline.del(funnelKey(userId));
     await pipeline.exec();
   } catch (err) {
-    console.error("⚠️ Redis cache invalidation failed:", (err as Error).message);
+    logger.warn({ err, userId }, "Redis cache invalidation failed");
   }
 }

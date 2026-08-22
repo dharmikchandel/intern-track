@@ -3,6 +3,7 @@ import { hashPassword, comparePassword } from "../../utils/password.js";
 import { signAccessToken } from "../../utils/jwt.js";
 import { generateRefreshToken, hashRefreshToken, REFRESH_TOKEN_TTL_MS } from "../../utils/refreshToken.js";
 import { AppError } from "../../utils/AppError.js";
+import { logger } from "../../config/logger.js";
 import { sendVerificationEmail } from "../email-verification/email-verification.service.js";
 
 const USER_SELECT = { id: true, email: true, createdAt: true, emailVerifiedAt: true } as const;
@@ -48,7 +49,7 @@ export async function registerUser(email: string, password: string) {
   // Best-effort: a broken mail provider shouldn't fail registration itself —
   // the user can always hit /email-verification/resend afterwards.
   sendVerificationEmail(user.id, user.email).catch((err) => {
-    console.error("⚠️ Failed to send verification email on register:", (err as Error).message);
+    logger.error({ err, userId: user.id }, "Failed to send verification email on register");
   });
 
   return { user: toPublicUser(user), accessToken, refreshToken };
@@ -86,6 +87,7 @@ export async function refreshSession(rawToken: string) {
       where: { userId: stored.userId, revokedAt: null },
       data: { revokedAt: new Date() },
     });
+    logger.warn({ userId: stored.userId }, "Refresh token reuse detected, all sessions revoked");
     throw new AppError("Refresh token reuse detected", 401, "REFRESH_TOKEN_REUSE");
   }
 

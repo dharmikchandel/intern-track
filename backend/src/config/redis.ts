@@ -1,5 +1,6 @@
 import { Redis } from "ioredis";
 import { env } from "./env.js";
+import { logger } from "./logger.js";
 
 // Configuration with best practices
 const redisConfig = {
@@ -19,35 +20,35 @@ export const redis = new Redis(env.REDIS_URL, redisConfig);
 
 // Event handlers
 redis.on("connect", () => {
-  console.log("✅ Redis: Connecting...");
+  logger.info("Redis connecting");
 });
 
 redis.on("ready", () => {
-  console.log("✅ Redis: Connected and ready");
+  logger.info("Redis connected and ready");
 });
 
 redis.on("error", (err) => {
-  console.error("❌ Redis error:", err.message);
+  logger.error({ err }, "Redis error");
 });
 
 redis.on("close", () => {
-  console.log("🔌 Redis: Connection closed");
+  logger.warn("Redis connection closed");
 });
 
 redis.on("reconnecting", (delay: number) => {
-  console.log(`🔄 Redis: Reconnecting in ${delay}ms`);
+  logger.warn({ delayMs: delay }, "Redis reconnecting");
 });
 
 redis.on("end", () => {
-  console.log("👋 Redis: Connection ended");
+  logger.warn("Redis connection ended");
 });
 
 export async function disconnectRedis(): Promise<void> {
   try {
     await redis.quit();
-    console.log("✅ Redis: Disconnected gracefully");
+    logger.info("Redis disconnected gracefully");
   } catch (error) {
-    console.error("❌ Redis: Error during disconnect", error);
+    logger.error({ err: error }, "Redis error during disconnect");
     redis.disconnect();
   }
 }
@@ -58,7 +59,7 @@ export async function checkRedisHealth(): Promise<boolean> {
     const result = await redis.ping();
     return result === "PONG";
   } catch (error) {
-    console.error("❌ Redis health check failed:", error);
+    logger.error({ err: error }, "Redis health check failed");
     return false;
   }
 }
