@@ -30,3 +30,14 @@ export const parseUrlRateLimiter = rateLimit({
   keyGenerator: (req) => (req as AuthRequest).userId ?? ipKeyGenerator(req.ip ?? ""),
   message: { error: "Too many link lookups, please try again later.", code: "RATE_LIMITED" },
 });
+
+// The public recap page is reachable without logging in, so it is limited per
+// IP. Generous enough for a link going round a group chat, tight enough that
+// the endpoint can't be hammered or used to probe for slugs.
+export const publicRecapRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please slow down.", code: "RATE_LIMITED" },
+});

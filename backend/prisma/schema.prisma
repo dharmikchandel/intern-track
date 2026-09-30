@@ -33,6 +33,7 @@ model User {
   lastDigestSentAt        DateTime?
   applications            Application[]
   activities              ApplicationActivity[]
+  recapShares             RecapShare[]
   refreshTokens           RefreshToken[]
   passwordResetTokens     PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
@@ -130,4 +131,25 @@ model ApplicationActivity {
   // Cross-application questions per user (recap, milestones): "when was the
   // first STATUS_CHANGED to INTERVIEW?"
   @@index([userId, type, createdAt])
+}
+
+// A public, read-only recap link. The aggregate numbers are computed ONCE when
+// the share is created and stored here as `stats`; the public endpoint only
+// ever reads this row. That makes the page cheap to serve and means it is
+// structurally unable to expose any per-application data: nothing but
+// aggregates exists on the row. Revoking sets revokedAt and the slug stops
+// resolving. `slug` is 128 bits of randomness, not derived from any id.
+model RecapShare {
+  id          String    @id @default(uuid())
+  userId      String
+  slug        String    @unique
+  periodStart DateTime
+  periodEnd   DateTime
+  stats       Json
+  createdAt   DateTime  @default(now())
+  revokedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
 }

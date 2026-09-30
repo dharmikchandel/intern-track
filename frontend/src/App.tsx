@@ -14,6 +14,8 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { UnsubscribePage } from "./pages/UnsubscribePage";
+import { PublicRecapPage } from "./pages/PublicRecapPage";
+import { RecapPage } from "./pages/RecapPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
 import { CreateApplicationPage } from "./pages/CreateApplicationPage";
@@ -35,6 +37,7 @@ function App() {
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/unsubscribe" element={<UnsubscribePage />} />
+            <Route path="/r/:slug" element={<PublicRecapPage />} />
 
             {/* Protected Routes */}
             <Route element={<RequireAuth />}>
@@ -43,6 +46,7 @@ function App() {
                 <Route path="/applications" element={<ApplicationsPage />} />
                 <Route path="/applications/new" element={<CreateApplicationPage />} />
                 <Route path="/applications/:id" element={<ApplicationDetailPage />} />
+                <Route path="/recap" element={<RecapPage />} />
               </Route>
             </Route>
 

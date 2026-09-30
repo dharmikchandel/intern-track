@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { LayoutDashboard, FileText, PlusCircle, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, FileText, PlusCircle, Sparkles, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
 import { Footer } from "./Footer";
@@ -20,6 +20,7 @@ export function MainLayout() {
         { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
         { href: "/applications", label: "Applications", icon: FileText },
         { href: "/applications/new", label: "New App", icon: PlusCircle },
+        { href: "/recap", label: "Recap", icon: Sparkles },
     ];
 
     return (
