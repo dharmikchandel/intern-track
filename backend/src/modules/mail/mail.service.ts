@@ -8,12 +8,13 @@ interface SendEmailInput {
   to: string;
   subject: string;
   html: string;
+  headers?: Record<string, string>;
 }
 
 // Falls back to logging the email instead of sending when RESEND_API_KEY
 // isn't set, so password-reset/email-verification stay testable locally
 // (link included) without needing a Resend account set up first.
-export async function sendEmail({ to, subject, html }: SendEmailInput) {
+export async function sendEmail({ to, subject, html, headers }: SendEmailInput) {
   if (!resend) {
     logger.warn({ to, subject, html }, "RESEND_API_KEY not set, logging email instead of sending");
     return;
@@ -24,6 +25,7 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
     to,
     subject,
     html,
+    ...(headers && { headers }),
   });
 
   if (error) {

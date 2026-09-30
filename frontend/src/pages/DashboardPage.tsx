@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoButton } from "../components/ui/NeoButton";
 import { getStatusCounts, getFunnel } from "../api/analytics";
+import { FollowUpCard } from "../features/digest/FollowUpCard";
 import { Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp } from "lucide-react";
 
 export function DashboardPage() {
@@ -50,6 +51,8 @@ export function DashboardPage() {
                     </NeoButton>
                 </Link>
             </div>
+
+            <FollowUpCard />
 
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                 {stats.map((stat) => {

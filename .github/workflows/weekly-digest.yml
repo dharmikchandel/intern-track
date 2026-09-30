@@ -1,0 +1,40 @@
+name: weekly follow-up digest
+
+# Triggers the backend's digest endpoint. The backend decides who gets an email
+# (verified, opted in, overdue follow-ups, not mailed in the last ~6 days), and
+# a second run in the same week is a no-op, so retries and manual runs are safe.
+#
+# Setup (repo Settings > Secrets and variables > Actions):
+#   secret   CRON_SECRET  same value as CRON_SECRET on the backend
+#   variable API_URL      backend origin, e.g. https://intern-track-server.onrender.com
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays, 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run-digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: call digest endpoint
+        env:
+          API_URL: ${{ vars.API_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          # A sleeping free-tier instance can take ~a minute to wake, so the
+          # request retries. The endpoint caps each run, so keep calling
+          # while it reports more users waiting.
+          for attempt in $(seq 1 10); do
+            code=$(curl -sS -o resp.json -w '%{http_code}' \
+              --retry 5 --retry-delay 15 --retry-all-errors --max-time 120 \
+              -X POST "$API_URL/api/v1/internal/digests/run" \
+              -H "x-cron-secret: $CRON_SECRET")
+            cat resp.json; echo
+            [ "$code" = "200" ] || { echo "unexpected status $code"; exit 1; }
+            [ "$(jq -r .hasMore resp.json)" = "true" ] || exit 0
+          done
+          echo "still more users after 10 runs"
+          exit 1

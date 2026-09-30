@@ -13,6 +13,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
+import { UnsubscribePage } from "./pages/UnsubscribePage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
 import { CreateApplicationPage } from "./pages/CreateApplicationPage";
@@ -33,6 +34,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/unsubscribe" element={<UnsubscribePage />} />
 
             {/* Protected Routes */}
             <Route element={<RequireAuth />}>
