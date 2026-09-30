@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { NeoButton } from "../ui/NeoButton";
+import { NeoLinkButton } from "../ui/NeoLinkButton";
 import { DotGrid } from "../ui/DotGrid";
 import { Footer } from "./Footer";
 
@@ -21,16 +20,12 @@ export function LandingLayout({ children }: LandingLayoutProps) {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <Link to="/login">
-                        <NeoButton variant="secondary" className="hidden md:inline-flex">
-                            Login
-                        </NeoButton>
-                    </Link>
-                    <Link to="/register">
-                        <NeoButton variant="primary">
-                            Get Started
-                        </NeoButton>
-                    </Link>
+                    <NeoLinkButton to="/login" variant="secondary" className="hidden md:inline-flex">
+                        Login
+                    </NeoLinkButton>
+                    <NeoLinkButton to="/register" variant="primary">
+                        Get Started
+                    </NeoLinkButton>
                 </div>
             </header>
 

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
+import { NeoSelect } from "../components/ui/NeoSelect";
+import { NeoTextarea } from "../components/ui/NeoTextarea";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
@@ -116,18 +118,11 @@ export function CreateApplicationPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor="application-status" className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
-                            <select
-                                id="application-status"
-                                className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
-                                {...register("status")}
-                            >
-                                {STATUS_ORDER.map((s) => (
-                                    <option key={s} value={s}>{STATUS_LABELS[s]}</option>
-                                ))}
-                            </select>
-                        </div>
+                        <NeoSelect label="Status" error={errors.status?.message} {...register("status")}>
+                            {STATUS_ORDER.map((s) => (
+                                <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                            ))}
+                        </NeoSelect>
 
                         <NeoInput
                             label="Applied Date"
@@ -151,15 +146,12 @@ export function CreateApplicationPage() {
                         {...register("applicationLink")}
                     />
 
-                    <div>
-                        <label htmlFor="application-notes" className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
-                        <textarea
-                            id="application-notes"
-                            className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium min-h-[100px]"
+                    <NeoTextarea
+                        label="Notes"
                             placeholder="Job description, referral info, etc."
-                            {...register("notes")}
-                        />
-                    </div>
+                        error={errors.notes?.message}
+                        {...register("notes")}
+                    />
 
                     {mutation.isError && (
                         <NeoAlert>{getErrorMessage(mutation.error, "Couldn't save this application. Please try again.")}</NeoAlert>

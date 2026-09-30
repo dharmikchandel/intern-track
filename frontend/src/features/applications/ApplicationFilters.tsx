@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { NeoInput } from "../../components/ui/NeoInput";
 import type { ApplicationSort } from "../../api/applications";
+import { NeoSelect } from "../../components/ui/NeoSelect";
 import { STATUS_LABELS, STATUS_ORDER } from "./statusMeta";
 
 const SORT_OPTIONS: { value: ApplicationSort; label: string }[] = [
@@ -11,8 +12,8 @@ const SORT_OPTIONS: { value: ApplicationSort; label: string }[] = [
     { value: "status", label: "Status" },
 ];
 
-const selectClass =
-    "border-2 border-black p-2 font-bold bg-white focus:outline-none focus:ring-4 focus:ring-neo-primary/50";
+// Toolbar size: the NeoSelect default is the tall form-field size.
+const selectClass = "w-auto p-2 font-bold";
 
 interface ApplicationFiltersProps {
     search: string;
@@ -64,7 +65,7 @@ export function ApplicationFilters({
 
             {listControls && (
                 <>
-                    <select
+                    <NeoSelect
                         aria-label="Filter by status"
                         className={selectClass}
                         value={listControls.status}
@@ -76,10 +77,10 @@ export function ApplicationFilters({
                                 {STATUS_LABELS[s]}
                             </option>
                         ))}
-                    </select>
+                    </NeoSelect>
 
                     <div className="flex gap-2">
-                        <select
+                        <NeoSelect
                             aria-label="Sort by"
                             className={selectClass}
                             value={listControls.sort}
@@ -90,8 +91,8 @@ export function ApplicationFilters({
                                     Sort: {o.label}
                                 </option>
                             ))}
-                        </select>
-                        <select
+                        </NeoSelect>
+                        <NeoSelect
                             aria-label="Sort direction"
                             className={selectClass}
                             value={listControls.order}
@@ -99,7 +100,7 @@ export function ApplicationFilters({
                         >
                             <option value="desc">Desc</option>
                             <option value="asc">Asc</option>
-                        </select>
+                        </NeoSelect>
                     </div>
                 </>
             )}

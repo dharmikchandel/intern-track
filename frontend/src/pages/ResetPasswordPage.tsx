@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
+import { NeoAlert } from "../components/ui/NeoAlert";
 import { DotGrid } from "../components/ui/DotGrid";
 import { type ResetPasswordFormData, resetPasswordSchema } from "../lib/schemas";
 import { confirmPasswordReset } from "../api/auth";
@@ -55,26 +56,26 @@ export function ResetPasswordPage() {
                     <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                         TRACKr.
                     </h1>
-                    <p className="font-bold text-gray-600">Choose a new password</p>
+                    <p className="font-bold text-slate-600">Choose a new password</p>
                 </div>
 
                 <NeoCard>
                     <h2 className="text-2xl font-black mb-6 uppercase">Reset Password</h2>
 
                     {!token ? (
-                        <div className="bg-neo-destructive text-white font-bold p-3 border-2 border-black shadow-[4px_4px_0px_0px_#000]">
+                        <NeoAlert>
                             This link is missing its reset token. Request a new one from the{" "}
                             <Link to="/forgot-password" className="underline">
                                 forgot password page
                             </Link>
                             .
-                        </div>
+                        </NeoAlert>
                     ) : (
                         <>
                             {serverError && (
-                                <div className="bg-neo-destructive text-white font-bold p-3 mb-4 border-2 border-black shadow-[4px_4px_0px_0px_#000]">
+                                <NeoAlert className="mb-4">
                                     {serverError}
-                                </div>
+                                </NeoAlert>
                             )}
 
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

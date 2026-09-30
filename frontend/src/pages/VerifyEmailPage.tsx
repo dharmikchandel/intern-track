@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { NeoCard } from "../components/ui/NeoCard";
-import { NeoButton } from "../components/ui/NeoButton";
+import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { DotGrid } from "../components/ui/DotGrid";
 import { verifyEmail } from "../api/auth";
 import { getErrorMessage } from "../lib/utils";
@@ -57,12 +57,10 @@ export function VerifyEmailPage() {
 
                     {status === "success" && (
                         <>
-                            <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-green-600" />
+                            <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-emerald-600" />
                             <h2 className="text-xl font-black uppercase mb-2">Email Verified</h2>
-                            <p className="font-bold text-gray-600 mb-6">Your email is confirmed. You're all set.</p>
-                            <Link to="/dashboard">
-                                <NeoButton className="w-full">Go to Dashboard</NeoButton>
-                            </Link>
+                            <p className="font-bold text-slate-600 mb-6">Your email is confirmed. You're all set.</p>
+                            <NeoLinkButton to="/dashboard" className="w-full">Go to Dashboard</NeoLinkButton>
                         </>
                     )}
 
@@ -70,12 +68,10 @@ export function VerifyEmailPage() {
                         <>
                             <XCircle className="w-12 h-12 mx-auto mb-4 text-neo-destructive" />
                             <h2 className="text-xl font-black uppercase mb-2">Verification Failed</h2>
-                            <p className="font-bold text-gray-600 mb-6">
+                            <p className="font-bold text-slate-600 mb-6">
                                 {error ?? "This verification link is missing its token."}
                             </p>
-                            <Link to="/dashboard">
-                                <NeoButton variant="secondary" className="w-full">Go to Dashboard</NeoButton>
-                            </Link>
+                            <NeoLinkButton to="/dashboard" variant="secondary" className="w-full">Go to Dashboard</NeoLinkButton>
                         </>
                     )}
                 </NeoCard>

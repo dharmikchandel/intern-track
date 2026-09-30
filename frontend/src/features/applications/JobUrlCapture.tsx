@@ -67,7 +67,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
                         }
                     }}
                 />
-                <NeoButton type="button" onClick={run} disabled={capture.isPending || url.trim() === ""} className="shrink-0">
+                <NeoButton type="button" variant="secondary" onClick={run} disabled={capture.isPending || url.trim() === ""} className="shrink-0">
                     {capture.isPending ? "Reading..." : "Autofill"}
                 </NeoButton>
             </div>
@@ -83,7 +83,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
                     role="status"
                     className={cn(
                         "mt-3 border-2 border-black p-3 text-sm font-medium",
-                        summary.job.confidence === "high" ? "bg-green-100" : "bg-yellow-50"
+                        summary.job.confidence === "high" ? "bg-emerald-100" : "bg-yellow-100"
                     )}
                 >
                     <p className="font-bold">{HEADLINE[summary.job.confidence]}</p>

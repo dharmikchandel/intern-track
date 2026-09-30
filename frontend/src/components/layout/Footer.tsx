@@ -17,7 +17,7 @@ export function Footer({ className }: FooterProps) {
                 </div>
 
                 <div className="flex items-center gap-6 text-sm font-bold text-slate-500 mt-2">
-                    <span className="text-slate-400">© {new Date().getFullYear()} TRACKr.</span>
+                    <span className="text-slate-500">© {new Date().getFullYear()} TRACKr.</span>
                 </div>
             </div>
         </footer>

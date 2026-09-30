@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+
 import { NeoCard } from "../components/ui/NeoCard";
-import { NeoButton } from "../components/ui/NeoButton";
+import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { getStatusCounts, getFunnel } from "../api/analytics";
 import { FollowUpCard } from "../features/digest/FollowUpCard";
 import { MomentumCard } from "../features/milestones/MomentumCard";
@@ -49,17 +49,15 @@ export function DashboardPage() {
         <div>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h1 className="text-4xl font-black uppercase tracking-tighter flex items-center gap-3">
+                    <h1 className="text-4xl font-black uppercase tracking-tighter">
                         Dashboard
                     </h1>
                     <p className="text-slate-600 font-bold">Your progress at a glance</p>
                 </div>
-                <Link to="/applications/new">
-                    <NeoButton className="flex items-center gap-2 bg-neo-primary text-black hover:bg-neo-primary/90">
-                        <Plus className="w-5 h-5" />
-                        Track New Job
-                    </NeoButton>
-                </Link>
+                <NeoLinkButton to="/applications/new" className="flex items-center gap-2">
+                    <Plus className="w-5 h-5" />
+                    New Application
+                </NeoLinkButton>
             </div>
 
             <FollowUpCard />
@@ -93,7 +91,7 @@ export function DashboardPage() {
                             </div>
                             <div className="h-5 w-full bg-slate-100 rounded-full overflow-hidden border-2 border-black">
                                 <div
-                                    className="h-full bg-indigo-500 transition-all duration-1000 border-r-2 border-black"
+                                    className="h-full bg-neo-secondary transition-all duration-1000 border-r-2 border-black"
                                     style={{ width: `${Math.min(100, funnelData.interviewRate)}%` }}
                                 />
                             </div>

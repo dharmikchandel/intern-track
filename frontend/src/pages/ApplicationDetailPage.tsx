@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoInput } from "../components/ui/NeoInput";
+import { NeoSelect } from "../components/ui/NeoSelect";
+import { NeoTextarea } from "../components/ui/NeoTextarea";
 import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
@@ -88,7 +90,7 @@ export function ApplicationDetailPage() {
     };
 
     if (isLoading) return <div className="p-10 text-center font-bold">Loading...</div>;
-    if (isError || !application) return <div className="p-10 text-center font-bold text-red-500">Application not found.</div>;
+    if (isError || !application) return <div className="p-10 text-center font-bold text-neo-destructive">Application not found.</div>;
 
     return (
         <div className="max-w-3xl mx-auto">
@@ -100,7 +102,7 @@ export function ApplicationDetailPage() {
                 <div className="flex flex-col md:flex-row justify-between items-start mb-6 border-b-2 border-black pb-4 gap-4">
                     <div className="flex-1 min-w-0 pr-4">
                         <h1 className="text-3xl md:text-4xl font-black break-words leading-tight">{application.companyName}</h1>
-                        <p className="text-lg md:text-xl font-bold text-gray-600 truncate">{application.role}</p>
+                        <p className="text-lg md:text-xl font-bold text-slate-600 truncate">{application.role}</p>
                     </div>
                     {!isEditing && (
                         <div className="flex gap-2 shrink-0">
@@ -126,18 +128,11 @@ export function ApplicationDetailPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="application-status" className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
-                                <select
-                                    id="application-status"
-                                    className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
-                                    {...register("status")}
-                                >
-                                    {STATUS_ORDER.map((s) => (
-                                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
-                                    ))}
-                                </select>
-                            </div>
+                            <NeoSelect label="Status" error={errors.status?.message} {...register("status")}>
+                                {STATUS_ORDER.map((s) => (
+                                    <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                                ))}
+                            </NeoSelect>
 
                             <NeoInput
                                 label="Applied Date"
@@ -160,14 +155,11 @@ export function ApplicationDetailPage() {
                             {...register("applicationLink")}
                         />
 
-                        <div>
-                            <label htmlFor="application-notes" className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
-                            <textarea
-                                id="application-notes"
-                                className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium min-h-[100px]"
-                                {...register("notes")}
-                            />
-                        </div>
+                        <NeoTextarea
+                            label="Notes"
+                            error={errors.notes?.message}
+                            {...register("notes")}
+                        />
 
                         {updateMutation.isError && (
                             <NeoAlert>{getErrorMessage(updateMutation.error, "Couldn't save your changes. Please try again.")}</NeoAlert>
@@ -193,13 +185,13 @@ export function ApplicationDetailPage() {
                     <div className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <span className="block text-sm font-bold text-gray-500 uppercase">Status</span>
+                                <span className="block text-sm font-bold text-slate-500 uppercase">Status</span>
                                 <span className={`inline-block mt-1 px-3 py-1 border-2 border-black font-black ${STATUS_COLORS[application.status]}`}>
                                     {STATUS_LABELS[application.status]}
                                 </span>
                             </div>
                             <div>
-                                <span className="block text-sm font-bold text-gray-500 uppercase">Applied Date</span>
+                                <span className="block text-sm font-bold text-slate-500 uppercase">Applied Date</span>
                                 <div className="flex items-center gap-2 mt-1 font-bold">
                                     <Calendar className="w-5 h-5" />
                                     {format(new Date(application.appliedDate), "PPP")}
@@ -209,7 +201,7 @@ export function ApplicationDetailPage() {
 
                         {application.followUpDate && (
                             <div>
-                                <span className="block text-sm font-bold text-gray-500 uppercase">Follow-up Date</span>
+                                <span className="block text-sm font-bold text-slate-500 uppercase">Follow-up Date</span>
                                 <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-destructive" : ""}`}>
                                     <Calendar className="w-5 h-5" />
                                     {format(new Date(application.followUpDate), "PPP")}
@@ -220,7 +212,7 @@ export function ApplicationDetailPage() {
 
                         {application.applicationLink && (
                             <div>
-                                <span className="block text-sm font-bold text-gray-500 uppercase">Link</span>
+                                <span className="block text-sm font-bold text-slate-500 uppercase">Link</span>
                                 <a
                                     href={application.applicationLink}
                                     target="_blank"
@@ -234,8 +226,8 @@ export function ApplicationDetailPage() {
 
                         {application.notes && (
                             <div>
-                                <span className="block text-sm font-bold text-gray-500 uppercase mb-2">Notes</span>
-                                <div className="bg-yellow-50 p-4 border-2 border-black font-medium whitespace-pre-wrap">
+                                <span className="block text-sm font-bold text-slate-500 uppercase mb-2">Notes</span>
+                                <div className="bg-yellow-100 p-4 border-2 border-black font-medium whitespace-pre-wrap">
                                     {application.notes}
                                 </div>
                             </div>

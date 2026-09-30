@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { NeoButton } from "../ui/NeoButton";
+
+import { NeoLinkButton } from "../ui/NeoLinkButton";
 import { motion } from "framer-motion";
 
 export function CTASection() {
@@ -21,11 +21,9 @@ export function CTASection() {
                     <p className="text-xl md:text-2xl font-bold mb-10 max-w-2xl mx-auto opacity-90">
                         Join other students who are organizing their job hunt and landing offers.
                     </p>
-                    <Link to="/register">
-                        <NeoButton className="text-xl px-10 py-5 h-auto bg-white text-black hover:bg-slate-100 border-2 border-black">
-                            Start Tracking Now
-                        </NeoButton>
-                    </Link>
+                    <NeoLinkButton to="/register" className="text-xl px-10 py-5 h-auto bg-white text-black hover:bg-slate-100 border-2 border-black">
+                        Start Tracking Now
+                    </NeoLinkButton>
                     <p className="mt-6 text-sm font-bold opacity-75">No credit card required. Free for students.</p>
                 </motion.div>
             </div>

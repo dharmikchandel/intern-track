@@ -104,7 +104,7 @@ export function MomentumCard() {
                     </ul>
                 </div>
             </div>
-            <p className="text-xs font-bold text-slate-400 mt-4">Streaks use the applied dates you enter, so they are a motivation aid, not a record.</p>
+            <p className="text-xs font-bold text-slate-500 mt-4">Streaks use the applied dates you enter, so they are a motivation aid, not a record.</p>
         </NeoCard>
     );
 }

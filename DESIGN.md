@@ -157,7 +157,8 @@ A restrained neutral base of black ink, white paper and pale-slate desk, carryin
 ### Semantic
 - **Stop Red** (#EF4444): destructive buttons, error text and borders, overdue follow-up indicators, the Rejected column header. White text sits on it.
 - **Status pairs** (single source: `frontend/src/features/applications/statusMeta.ts`; the dashboard tiles, board headers, list chips and detail page all read it, and no screen may define its own): Applied (#DBEAFE on #1E40AF), Online Assessment (#FEF9C3 on #854D0E), Interview (#F3E8FF on #6B21A8), Offer (#86EFAC on black), Rejected (Stop Red on white). These tint kanban column headers, dashboard stat tiles and status chips. Labels always come from `STATUS_LABELS`, never the raw enum.
-- **Achieved Mint** (#D1FAE5): completed milestone tiles. Unachieved tiles are white with a dashed slate border.
+- **Achieved Mint** (#D1FAE5): completed milestone tiles and every success notice or "ready" state. Unachieved tiles are white with a dashed slate border.
+- **Notice vocabulary:** success is Achieved Mint, warning or attention (overdue follow-ups, low-confidence autofill, duplicate rows, the verify-email banner, notes) is Highlight Yellow, and failure is Stop Red with white text (`NeoAlert`). Do not use other pale tints (red-50, rose, amber, green-100) for these meanings.
 
 ### Named Rules
 **The Color-Is-Meaning Rule.** A saturated fill always means something: an action, a status, or danger. Never use accent color as decoration on an app screen.
@@ -219,7 +220,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 
 ### Buttons
 - **Shape:** 8px corners, 2px black border, 12px x 24px padding, bold system sans.
-- **Primary:** Signal Blue fill, black text, hard rest shadow.
+- **Primary:** Signal Blue fill, black text, hard rest shadow. Use `NeoButton` for actions and `NeoLinkButton` for navigation (it renders the same look on a router link); never put a `<button>` inside a `<Link>`.
 - **Secondary:** Ultraviolet fill, black text.
 - **Destructive:** Stop Red fill, white text.
 - **Focus:** keyboard focus draws a 2px Ink (#000) outline with a 2px offset, set once in `index.css` for every link, button, select, checkbox and radio. Inputs keep their blue ring (see Inputs).
@@ -239,6 +240,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Internal Padding:** 24px (cards), 12px (kanban cards and milestone tiles), 8px inside kanban columns.
 
 ### Inputs / Fields
+- **Primitives:** `NeoInput`, `NeoSelect` and `NeoTextarea` share one grammar and one focus ring. Every labelled field goes through them; never hand-write the class string. `NeoSelect` renders a bare select when it has no label (toolbars, cards); override size with `className` (for example `w-auto p-2 font-bold`).
 - **Style:** Paper fill, 2px black border, square corners, 12px x 16px padding, medium weight, grey placeholder. Labels sit above in uppercase tracked bold.
 - **Focus:** no outline; a 4px ring in Signal Blue at 50% opacity.
 - **Error:** border and message turn Stop Red, ring turns red at 50%; message is bold 14px below the field.
@@ -248,7 +250,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - Sidebar items are 12px-radius, 2px-bordered rows. **Inactive:** Text Muted on transparent with a transparent border. **Hover:** black border and a slate-50 fill. **Active:** Signal Blue fill, black text, black border, rest shadow, and a heavier 2.5px icon stroke. The collapsed sidebar centers icons and exposes labels as tooltips. The header pairs a bold wordmark ("TRACKr." with a BETA pill) with a circular Signal Blue avatar carrying the user's initial. Below `md` a hamburger opens a 256px drawer over a dimmed, blurred backdrop.
 
 ### Tables
-- Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Highlight Yellow on hover.
+- The company name is the row's link to the detail page (there is no Actions column). Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Highlight Yellow on hover.
 
 ### Modal and Drawer
 - The modal is a paper panel (2px black border, `shadow-neo-modal`, square corners) centered over a black 50% backdrop with a slight blur; the mobile menu is the same paper panel pinned left at 256px. Both are real dialogs: `role="dialog"` and `aria-modal`, named by their title (the drawer is "Main menu"), closed by Escape, the close button (labelled "Close dialog" / "Close menu") or a backdrop click. Focus moves in on open, Tab stays inside, and focus returns to the opener on close. The shared behaviour lives in `frontend/src/lib/useDialog.ts`; any new overlay must use it.
@@ -287,9 +289,9 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 
 ### Known drift (not system)
 These are inconsistencies found in the code. Treat them as bugs to resolve, not patterns to copy.
+- Recap share card tiles: interview rate uses the Interview status purple and offer rate Offer green; the other tiles are Highlight Yellow or paper. Keep new tiles to that rule.
 - Some code still breaks the radius rule in Shapes: `rounded-md` overrides on small buttons and the notice banner, and the recap share card (`rounded-xl`, 4px border).
-- Shadows are still inlined as arbitrary values in places (`shadow-[2px_2px_0px_rgba(0,0,0,1)]`, `shadow-[4px_4px_0px_0px_#000]`) instead of `shadow-neo-sm` / `shadow-neo`. They match the tokens visually; swap them when touched.
-- Milestone, success and warning tints (`emerald-100`, `green-100`, `yellow-50`, `red-50`, etc.) are still used as raw Tailwind palette classes. Status colors are now consolidated (see Semantic), but these other tints have no shared definition.
+- Shadows are still inlined as arbitrary values in places (`shadow-[2px_2px_0px_rgba(0,0,0,1)]`) instead of `shadow-neo-sm`. They match the tokens visually; swap them when touched.
 - White text on Stop Red (#EF4444) is about 3.8:1, below WCAG AA for normal-size text; it is acceptable only at bold or large sizes.
 - The landing hero uses a rocket emoji in its eyebrow; the app UI uses Lucide icons only.
 - `font-sans` is the only font token; there is no configured webfont, so rendering varies by OS.

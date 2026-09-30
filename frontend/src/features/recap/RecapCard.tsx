@@ -24,20 +24,20 @@ export function RecapCard({ stats, periodStart, periodEnd }: RecapCardProps) {
             </div>
 
             <div className="grid grid-cols-2 border-b-4 border-black">
-                <Block className="bg-purple-200 border-r-4" value={`${stats.interviewRate}%`} label="interview rate" detail={`${plural(stats.reachedInterview, "application")} reached an interview`} />
+                <Block className="bg-purple-100 border-r-4" value={`${stats.interviewRate}%`} label="interview rate" detail={`${plural(stats.reachedInterview, "application")} reached an interview`} />
                 <Block className="bg-green-300" value={`${stats.offerRate}%`} label="offer rate" detail={plural(stats.offers, "offer")} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3">
-                <Block className="bg-yellow-200 sm:border-r-4 border-b-4 sm:border-b-0" value={String(stats.longestStreakDays)} label="day streak" detail="longest run of days applying" small />
+                <Block className="bg-yellow-100 sm:border-r-4 border-b-4 sm:border-b-0" value={String(stats.longestStreakDays)} label="day streak" detail="longest run of days applying" small />
                 <Block
-                    className="bg-sky-200 sm:border-r-4 border-b-4 sm:border-b-0"
+                    className="bg-white sm:border-r-4 border-b-4 sm:border-b-0"
                     value={stats.busiestWeek ? String(stats.busiestWeek.applications) : "0"}
                     label="in one week"
                     detail={stats.busiestWeek ? `busiest week: ${formatDay(stats.busiestWeek.weekStart, false)}` : "no applications yet"}
                     small
                 />
-                <Block className="bg-rose-200" value={String(stats.activeDays)} label={stats.activeDays === 1 ? "active day" : "active days"} detail="days with an application" small />
+                <Block className="bg-white" value={String(stats.activeDays)} label={stats.activeDays === 1 ? "active day" : "active days"} detail="days with an application" small />
             </div>
 
             <div className="px-5 py-3 border-t-4 border-black bg-white text-sm font-black flex justify-between">

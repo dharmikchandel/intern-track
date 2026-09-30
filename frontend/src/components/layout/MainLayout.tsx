@@ -23,7 +23,7 @@ export function MainLayout() {
     const navItems = [
         { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
         { href: "/applications", label: "Applications", icon: FileText },
-        { href: "/applications/new", label: "New App", icon: PlusCircle },
+        { href: "/applications/new", label: "New Application", icon: PlusCircle },
         { href: "/recap", label: "Recap", icon: Sparkles },
     ];
 

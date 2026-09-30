@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { NeoButton } from "../ui/NeoButton";
+
+import { NeoLinkButton } from "../ui/NeoLinkButton";
 
 export function HeroSection() {
     return (
@@ -44,16 +44,12 @@ export function HeroSection() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <Link to="/register">
-                            <NeoButton className="text-lg px-8 py-4 h-auto">
-                                Start Tracking Free
-                            </NeoButton>
-                        </Link>
-                        <Link to="/login">
-                            <NeoButton variant="secondary" className="text-lg px-8 py-4 h-auto">
-                                Sign In
-                            </NeoButton>
-                        </Link>
+                        <NeoLinkButton to="/register" className="text-lg px-8 py-4 h-auto">
+                            Start Tracking Free
+                        </NeoLinkButton>
+                        <NeoLinkButton to="/login" variant="secondary" className="text-lg px-8 py-4 h-auto">
+                            Sign In
+                        </NeoLinkButton>
                     </div>
                 </motion.div>
             </div>

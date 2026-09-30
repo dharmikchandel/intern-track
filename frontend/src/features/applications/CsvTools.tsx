@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Download, FileUp, Upload } from "lucide-react";
 import { NeoButton } from "../../components/ui/NeoButton";
+import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoModal } from "../../components/ui/NeoModal";
+import { NeoSelect } from "../../components/ui/NeoSelect";
 import {
     exportApplicationsCsv,
     importApplicationsCsv,
@@ -29,7 +31,7 @@ const FIELD_LABELS: Record<string, string> = {
     followUpDate: "Follow-up Date",
 };
 
-const selectClass = "border-2 border-black p-2 font-bold bg-white focus:outline-none focus:ring-4 focus:ring-neo-primary/50";
+const selectClass = "w-auto p-2 font-bold";
 
 // Exports exactly what the list is showing: the same search / follow-up (and
 // status, in list view) filters. The label says so when any are active, so
@@ -42,8 +44,8 @@ export function ExportCsvButton({ filters, filtered }: { filters: { q?: string; 
 
     return (
         <div className="flex flex-col items-start">
-            <NeoButton variant="secondary" className="flex items-center gap-2" disabled={exportCsv.isPending} onClick={() => exportCsv.mutate()}>
-                <Download className="w-5 h-5" />
+            <NeoButton variant="secondary" className="flex items-center gap-2 px-4 py-2 text-sm" disabled={exportCsv.isPending} onClick={() => exportCsv.mutate()}>
+                <Download className="w-4 h-4" />
                 {exportCsv.isPending ? "Exporting..." : filtered ? "Export filtered CSV" : "Export CSV"}
             </NeoButton>
             {exportCsv.isError && (
@@ -59,8 +61,8 @@ export function ImportCsvButton() {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <NeoButton variant="secondary" className="flex items-center gap-2" onClick={() => setOpen(true)}>
-                <Upload className="w-5 h-5" />
+            <NeoButton variant="secondary" className="flex items-center gap-2 px-4 py-2 text-sm" onClick={() => setOpen(true)}>
+                <Upload className="w-4 h-4" />
                 Import CSV
             </NeoButton>
             {/* Mounted only while open so every visit starts from a clean state. */}
@@ -168,27 +170,27 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
                     {file && (
                         <label className="flex flex-wrap items-center gap-2 font-bold text-sm">
                             Dates written like
-                            <select className={selectClass} value={dateFormat} onChange={(e) => changeDateFormat(e.target.value as CsvDateFormat)}>
+                            <NeoSelect className={selectClass} value={dateFormat} onChange={(e) => changeDateFormat(e.target.value as CsvDateFormat)}>
                                 <option value="iso">2026-09-14 (YYYY-MM-DD)</option>
                                 <option value="mdy">09/14/2026 (MM/DD/YYYY)</option>
                                 <option value="dmy">14/09/2026 (DD/MM/YYYY)</option>
-                            </select>
+                            </NeoSelect>
                         </label>
                     )}
 
                     {error && (
-                        <div role="alert" className="bg-neo-destructive text-white p-3 font-bold border-2 border-black">
+                        <NeoAlert>
                             {error}
-                        </div>
+                        </NeoAlert>
                     )}
                     {preview.isPending && <p className="font-bold animate-pulse">Checking your file...</p>}
 
                     {summary && !preview.isPending && <PreviewBody summary={summary} />}
 
                     {commit.isError && (
-                        <div role="alert" className="bg-neo-destructive text-white p-3 font-bold border-2 border-black">
+                        <NeoAlert>
                             {getErrorMessage(commit.error, "The import failed. Nothing was saved.")}
-                        </div>
+                        </NeoAlert>
                     )}
 
                     {summary && !preview.isPending && (
@@ -218,8 +220,8 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
         <div className="space-y-4">
             <div className="grid grid-cols-3 gap-3 text-center">
                 <Stat value={summary.importable} label="Ready to import" tone="bg-emerald-100" />
-                <Stat value={summary.duplicates} label="Duplicates (skipped)" tone="bg-amber-100" />
-                <Stat value={summary.invalid} label="With errors (skipped)" tone="bg-rose-100" />
+                <Stat value={summary.duplicates} label="Duplicates (skipped)" tone="bg-yellow-100" />
+                <Stat value={summary.invalid} label="With errors (skipped)" tone="bg-neo-destructive text-white" />
             </div>
 
             <p className="text-sm font-bold text-slate-700">
@@ -263,7 +265,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
             {summary.errors.length > 0 && (
                 <div>
                     <p className="font-black text-sm uppercase mb-1">Rows with errors (they will be skipped)</p>
-                    <ul className="max-h-40 overflow-y-auto border-2 border-black p-2 text-sm space-y-1 bg-rose-50">
+                    <ul className="max-h-40 overflow-y-auto border-2 border-black p-2 text-sm space-y-1 bg-white">
                         {summary.errors.map((e) => (
                             <li key={e.row}>
                                 <b>Row {e.row}:</b> {e.message}
@@ -279,7 +281,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
             {summary.duplicateRows.length > 0 && (
                 <details className="text-sm">
                     <summary className="font-black uppercase cursor-pointer">Duplicates that will be skipped ({summary.duplicates})</summary>
-                    <ul className="mt-1 max-h-32 overflow-y-auto border-2 border-black p-2 space-y-1 bg-amber-50">
+                    <ul className="mt-1 max-h-32 overflow-y-auto border-2 border-black p-2 space-y-1 bg-white">
                         {summary.duplicateRows.map((d) => (
                             <li key={d.row}>
                                 Row {d.row}: {d.companyName}, {d.role} ({d.appliedDate})

@@ -4,6 +4,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { LayoutGrid, List, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
+import { NeoLinkButton } from "../components/ui/NeoLinkButton";
+import { NeoAlert } from "../components/ui/NeoAlert";
 
 import {
     NeoTable,
@@ -97,7 +99,7 @@ export function ApplicationsPage() {
                     <h1 className="text-4xl font-black uppercase tracking-tighter">
                         Applications
                     </h1>
-                    <p className="text-gray-600 font-bold">Manage your job hunt</p>
+                    <p className="text-slate-600 font-bold">Manage your job hunt</p>
                 </div>
                 <div className="flex flex-wrap items-start gap-4">
                     <ImportCsvButton />
@@ -129,12 +131,10 @@ export function ApplicationsPage() {
                             </button>
                         ))}
                     </div>
-                    <Link to="/applications/new">
-                        <NeoButton className="flex items-center gap-2">
-                            <Plus className="w-5 h-5" />
-                            Add Application
-                        </NeoButton>
-                    </Link>
+                    <NeoLinkButton to="/applications/new" className="flex items-center gap-2">
+                        <Plus className="w-5 h-5" />
+                        New Application
+                    </NeoLinkButton>
                 </div>
             </div>
 
@@ -164,18 +164,16 @@ export function ApplicationsPage() {
             ) : isLoading ? (
                 <div className="text-center font-bold p-10 animate-pulse">Loading Applications...</div>
             ) : isError ? (
-                <div className="bg-neo-destructive text-white p-4 font-bold border-2 border-black">
+                <NeoAlert className="p-4">
                     Error loading applications.
-                </div>
+                </NeoAlert>
             ) : data?.items.length === 0 ? (
                 <div className="text-center p-10 border-2 border-dashed border-black bg-white">
                     <p className="font-bold text-lg mb-4">
-                        {hasFilters ? "No applications match these filters." : "No applications found."}
+                        {hasFilters ? "No applications match these filters." : "No applications yet."}
                     </p>
                     {!hasFilters && (
-                        <Link to="/applications/new">
-                            <NeoButton variant="secondary">Track your first job</NeoButton>
-                        </Link>
+                        <NeoLinkButton to="/applications/new" variant="secondary">Add your first application</NeoLinkButton>
                     )}
                 </div>
             ) : (
@@ -187,13 +185,16 @@ export function ApplicationsPage() {
                                 <NeoTableHead>Role</NeoTableHead>
                                 <NeoTableHead>Status</NeoTableHead>
                                 <NeoTableHead>Applied Date</NeoTableHead>
-                                <NeoTableHead>Actions</NeoTableHead>
                             </tr>
                         </NeoTableHeader>
                         <NeoTableBody>
                             {data?.items.map((app) => (
                                 <NeoTableRow key={app.id}>
-                                    <NeoTableCell className="font-bold">{app.companyName}</NeoTableCell>
+                                    <NeoTableCell>
+                                        <Link to={`/applications/${app.id}`} className="font-black hover:underline">
+                                            {app.companyName}
+                                        </Link>
+                                    </NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
                                         <span className={`px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status]}`}>
@@ -201,13 +202,6 @@ export function ApplicationsPage() {
                                         </span>
                                     </NeoTableCell>
                                     <NeoTableCell>{format(new Date(app.appliedDate), "MMM d, yyyy")}</NeoTableCell>
-                                    <NeoTableCell>
-                                        <Link to={`/applications/${app.id}`}>
-                                            <NeoButton variant="secondary" className="px-3 py-1 text-sm h-auto rounded-md">
-                                                View
-                                            </NeoButton>
-                                        </Link>
-                                    </NeoTableCell>
                                 </NeoTableRow>
                             ))}
                         </NeoTableBody>

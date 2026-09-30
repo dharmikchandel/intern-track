@@ -18,6 +18,7 @@ import {
 import { AlertCircle, GripVertical, Undo2 } from "lucide-react";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoButton } from "../../components/ui/NeoButton";
+import { NeoSelect } from "../../components/ui/NeoSelect";
 import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
 import { moveCardInBoard } from "./board";
@@ -107,9 +108,9 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     }
     if (isError || !data) {
         return (
-            <div className="bg-neo-destructive text-white p-4 font-bold border-2 border-black">
+            <NeoAlert className="p-4">
                 Error loading the board.
-            </div>
+            </NeoAlert>
         );
     }
 
@@ -289,18 +290,18 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
             {onMove && (
                 // Tap/keyboard alternative to dragging, so moving a card never
                 // depends on a precise gesture (mobile) or a pointer (a11y).
-                <select
+                <NeoSelect
                     aria-label={`Move ${app.companyName} to`}
                     value={app.status}
                     onChange={(e) => onMove(e.target.value as ApplicationStatus)}
-                    className="mt-2 w-full border-2 border-black bg-white text-xs font-bold p-1"
+                    className="mt-2 p-1 text-xs font-bold"
                 >
                     {STATUS_ORDER.map((s) => (
                         <option key={s} value={s}>
                             {s === app.status ? STATUS_LABELS[s] : `Move to ${STATUS_LABELS[s]}`}
                         </option>
                     ))}
-                </select>
+                </NeoSelect>
             )}
         </div>
     );

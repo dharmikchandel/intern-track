@@ -37,7 +37,7 @@ export function FollowUpCard() {
     if (overdue === undefined) return null;
 
     return (
-        <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 ${overdue > 0 ? "bg-red-50" : "bg-white"}`}>
+        <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 ${overdue > 0 ? "bg-yellow-100" : "bg-white"}`}>
             <div className="flex items-center gap-4">
                 <BellRing className={`w-8 h-8 ${overdue > 0 ? "text-neo-destructive" : "text-slate-500"}`} />
                 <div>

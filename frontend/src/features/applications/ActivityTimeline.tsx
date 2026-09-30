@@ -45,14 +45,14 @@ export function ActivityTimeline({ applicationId }: { applicationId: string }) {
             ) : isError ? (
                 <p className="font-bold text-neo-destructive">Couldn't load activity.</p>
             ) : !data || data.length === 0 ? (
-                <p className="font-bold text-gray-600">No activity yet.</p>
+                <p className="font-bold text-slate-600">No activity yet.</p>
             ) : (
                 <ol className="relative ml-2 border-l-2 border-black">
                     {data.map((item) => (
                         <li key={item.id} className="ml-5 pb-4 last:pb-0 relative">
                             <span className="absolute -left-[27px] top-1.5 w-3 h-3 bg-neo-primary border-2 border-black" aria-hidden />
                             <p className="font-bold leading-snug">{describeActivity(item)}</p>
-                            <time className="text-xs font-bold text-gray-500" dateTime={item.createdAt}>
+                            <time className="text-xs font-bold text-slate-500" dateTime={item.createdAt}>
                                 {format(new Date(item.createdAt), "MMM d, yyyy 'at' h:mm a")}
                             </time>
                         </li>
