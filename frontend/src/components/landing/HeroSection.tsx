@@ -28,7 +28,7 @@ export function HeroSection() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <span className="inline-block py-1 px-3 rounded-full bg-neo-secondary/10 border-2 border-black text-sm font-black mb-6 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                        🚀 APPLICATION TRACKING REIMAGINED
+                        JOB APPLICATION TRACKER
                     </span>
                     <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-none text-slate-900">
                         Master Your <br />
@@ -40,7 +40,7 @@ export function HeroSection() {
                         </span>
                     </h1>
                     <p className="text-xl md:text-2xl text-slate-600 font-bold max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Track applications, organize interviews, and land your dream job with the most powerful student-focused platform.
+                        Know where every application stands, who to follow up with, and how your search is going.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

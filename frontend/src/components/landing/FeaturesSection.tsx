@@ -1,42 +1,42 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, ListFilter, ClipboardEdit, Bell, PieChart, Shield } from "lucide-react";
+import { Bell, FileSpreadsheet, Flame, LayoutGrid, Link2, Share2 } from "lucide-react";
 
 const features = [
     {
-        icon: LayoutDashboard,
-        title: "Centralized Dashboard",
-        description: "See all your job applications in one place. No more messy spreadsheets.",
+        icon: Bell,
+        title: "Follow-up Nudges",
+        description: "Set a follow-up date and get a weekly email digest, plus a badge on anything that is due.",
         color: "bg-neo-primary"
     },
     {
-        icon: ListFilter,
-        title: "Filter & Sort",
-        description: "Slice your applications by status, or sort by date applied — find what you need fast.",
+        icon: LayoutGrid,
+        title: "Board or List",
+        description: "Drag applications between Applied, Online Assessment, Interview, Offer and Rejected, or search, filter and sort the list.",
         color: "bg-neo-secondary"
     },
     {
-        icon: ClipboardEdit,
-        title: "Full CRUD Control",
-        description: "Add, edit, and delete applications any time. Your data, fully in your hands.",
+        icon: Link2,
+        title: "Paste a Job Link",
+        description: "Drop in a posting URL and we fill in what we can read: company, role and link. You review before saving.",
         color: "bg-neo-tertiary"
     },
     {
-        icon: Bell,
-        title: "Status Updates",
-        description: "Track the status of every application: Applied, Interviewing, Offer, or Rejected.",
+        icon: Flame,
+        title: "Streaks & Milestones",
+        description: "Day streaks and milestones celebrate your momentum. A missed day is never treated as a failure.",
         color: "bg-neo-accent"
     },
     {
-        icon: PieChart,
-        title: "Analytics & Insights",
-        description: "Understand your success rate and identify areas for improvement.",
-        color: "bg-neo-destructive"
+        icon: Share2,
+        title: "Shareable Recap",
+        description: "Share a public card of your totals. It shows numbers only, never company names, roles or notes.",
+        color: "bg-neo-primary"
     },
     {
-        icon: Shield,
-        title: "Secure & Private",
-        description: "Your data is yours. We don't share your applications with anyone.",
-        color: "bg-slate-300"
+        icon: FileSpreadsheet,
+        title: "Bring Your Spreadsheet",
+        description: "Import a CSV with a preview first, and export your applications whenever you want.",
+        color: "bg-neo-secondary"
     }
 ];
 
@@ -48,9 +48,9 @@ export function FeaturesSection() {
                     <span className="inline-block py-1 px-3 rounded-full bg-neo-tertiary text-white border-2 border-black text-sm font-black mb-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                         FEATURES
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-black mb-6">Everything You Need To Win</h2>
+                    <h2 className="text-4xl md:text-5xl font-black mb-6">Know What To Do Next</h2>
                     <p className="text-xl text-slate-600 font-bold max-w-2xl mx-auto">
-                        Stop juggling tabs and losing track. We provide the toolkit to manage your entire job search lifecycle.
+                        A spreadsheet only stores your applications. TRACKr also tells you who to follow up with and keeps you going.
                     </p>
                 </div>
 

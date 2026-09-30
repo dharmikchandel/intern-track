@@ -3,18 +3,18 @@ import { motion } from "framer-motion";
 const useCases = [
     {
         title: "For Students",
-        description: "Keep track of hundreds of internships and new grad roles without losing your mind.",
+        description: "Keep every internship and new-grad application in one place, and never miss a follow-up.",
         tags: ["Internships", "New Grad", "Co-ops"]
     },
     {
         title: "For Career Switchers",
-        description: "Manage applications across different industries and tailor your resume for each.",
+        description: "Applying across different industries? One board keeps each application and its status straight.",
         tags: ["Bootcamp Grads", "Pivoting", "Upskilling"]
     },
     {
         title: "For Experienced Pros",
-        description: "Target specific high-level roles and track networking conversations.",
-        tags: ["Senior Roles", "Networking", "Referrals"]
+        description: "A focused search needs fewer, better-tracked applications. Keep notes, referral details and follow-up dates on each.",
+        tags: ["Senior Roles", "Targeted Search", "Referrals"]
     }
 ];
 

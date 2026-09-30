@@ -30,7 +30,7 @@ export function HowItWorksSection() {
                             </div>
                             <h3 className="text-2xl font-black mb-2">Create Account</h3>
                             <p className="text-slate-600 font-bold max-w-xs">
-                                Sign up for free and set up your profile in seconds.
+                                Sign up with your email. There is no profile to fill out.
                             </p>
                         </motion.div>
 
@@ -47,7 +47,7 @@ export function HowItWorksSection() {
                             </div>
                             <h3 className="text-2xl font-black mb-2">Add Applications</h3>
                             <p className="text-slate-600 font-bold max-w-xs">
-                                Log jobs you apply for, including URLs and descriptions.
+                                Fill in a short form, paste a job link, or import your spreadsheet.
                             </p>
                         </motion.div>
 
@@ -62,9 +62,9 @@ export function HowItWorksSection() {
                                 <span className="absolute -top-3 -right-3 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold border-2 border-white">3</span>
                                 <CheckCircle className="w-10 h-10" strokeWidth={2} />
                             </div>
-                            <h3 className="text-2xl font-black mb-2">Track & Win</h3>
+                            <h3 className="text-2xl font-black mb-2">Track Progress</h3>
                             <p className="text-slate-600 font-bold max-w-xs">
-                                Move applications through stages until you get the offer.
+                                Move applications through each stage and get a nudge when a follow-up is due.
                             </p>
                         </motion.div>
                     </div>

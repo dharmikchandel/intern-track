@@ -58,7 +58,7 @@ export function RegisterPage() {
                     <h1 className="text-4xl font-black tracking-tighter text-neo-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                         TRACKr.
                     </h1>
-                    <p className="font-bold text-slate-600">Join the revolution</p>
+                    <p className="font-bold text-slate-600">Start tracking your job hunt</p>
                 </div>
 
                 <NeoCard>

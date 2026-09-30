@@ -301,5 +301,4 @@ These are inconsistencies found in the code. Treat them as bugs to resolve, not 
 - Some code still breaks the radius rule in Shapes: `rounded-md` overrides on small buttons and the notice banner, and the recap share card (`rounded-xl`, 4px border).
 - Shadows are still inlined as arbitrary values in places (`shadow-[2px_2px_0px_rgba(0,0,0,1)]`) instead of `shadow-neo-sm`. They match the tokens visually; swap them when touched.
 - White text on Stop Red (#EF4444) is about 3.8:1, below WCAG AA for normal-size text; it is acceptable only at bold or large sizes.
-- The landing hero uses a rocket emoji in its eyebrow; the app UI uses Lucide icons only.
 - `font-sans` is the only font token; there is no configured webfont, so rendering varies by OS.
