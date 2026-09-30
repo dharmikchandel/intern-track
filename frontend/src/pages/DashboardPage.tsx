@@ -5,7 +5,17 @@ import { NeoButton } from "../components/ui/NeoButton";
 import { getStatusCounts, getFunnel } from "../api/analytics";
 import { FollowUpCard } from "../features/digest/FollowUpCard";
 import { MomentumCard } from "../features/milestones/MomentumCard";
-import { Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp } from "lucide-react";
+import { Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp, type LucideIcon } from "lucide-react";
+import { STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
+import type { ApplicationStatus } from "../api/applications";
+
+const STATUS_ICONS: Record<ApplicationStatus, LucideIcon> = {
+    APPLIED: Briefcase,
+    OA: FileCheck,
+    INTERVIEW: TrendingUp,
+    OFFER: Award,
+    REJECTED: XCircle,
+};
 
 export function DashboardPage() {
     const { data: statusCounts, isLoading: isLoadingStatus } = useQuery({
@@ -28,13 +38,12 @@ export function DashboardPage() {
     const counts = statusCounts || { APPLIED: 0, OA: 0, INTERVIEW: 0, OFFER: 0, REJECTED: 0 };
     const funnelData = funnel || { totalApplied: 0, interviewCount: 0, offerCount: 0, interviewRate: 0, offerRate: 0 };
 
-    const stats = [
-        { label: "Applied", value: counts.APPLIED, icon: Briefcase, color: "bg-sky-100 text-sky-900" },
-        { label: "Online Assessment", value: counts.OA, icon: FileCheck, color: "bg-amber-100 text-amber-900" },
-        { label: "Interview", value: counts.INTERVIEW, icon: TrendingUp, color: "bg-indigo-100 text-indigo-900" },
-        { label: "Offer", value: counts.OFFER, icon: Award, color: "bg-emerald-100 text-emerald-900" },
-        { label: "Rejected", value: counts.REJECTED, icon: XCircle, color: "bg-rose-100 text-rose-900" },
-    ];
+    const stats = STATUS_ORDER.map((status) => ({
+        label: STATUS_LABELS[status],
+        value: counts[status],
+        icon: STATUS_ICONS[status],
+        color: STATUS_COLORS[status],
+    }));
 
     return (
         <div>

@@ -10,6 +10,7 @@ import { createApplication, type ParsedJob } from "../api/applications";
 import { JobUrlCapture } from "../features/applications/JobUrlCapture";
 import { ArrowLeft } from "lucide-react";
 import { localDay } from "../features/recap/format";
+import { STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -119,11 +120,9 @@ export function CreateApplicationPage() {
                                 className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
                                 {...register("status")}
                             >
-                                <option value="APPLIED">Applied</option>
-                                <option value="OA">Online Assessment</option>
-                                <option value="INTERVIEW">Interview</option>
-                                <option value="OFFER">Offer</option>
-                                <option value="REJECTED">Rejected</option>
+                                {STATUS_ORDER.map((s) => (
+                                    <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                                ))}
                             </select>
                         </div>
 

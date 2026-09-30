@@ -8,7 +8,7 @@ import { NeoInput } from "../components/ui/NeoInput";
 import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
 import { ActivityTimeline } from "../features/applications/ActivityTimeline";
-import { isFollowUpDue } from "../features/applications/statusMeta";
+import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -83,14 +83,6 @@ export function ApplicationDetailPage() {
     if (isLoading) return <div className="p-10 text-center font-bold">Loading...</div>;
     if (isError || !application) return <div className="p-10 text-center font-bold text-red-500">Application not found.</div>;
 
-    const statusColors: Record<string, string> = {
-        APPLIED: "bg-blue-100 text-blue-800",
-        OA: "bg-yellow-100 text-yellow-800",
-        INTERVIEW: "bg-purple-100 text-purple-800",
-        OFFER: "bg-neo-primary text-black",
-        REJECTED: "bg-neo-destructive text-white",
-    };
-
     return (
         <div className="max-w-3xl mx-auto">
             <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
@@ -133,11 +125,9 @@ export function ApplicationDetailPage() {
                                     className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
                                     {...register("status")}
                                 >
-                                    <option value="APPLIED">Applied</option>
-                                    <option value="OA">Online Assessment</option>
-                                    <option value="INTERVIEW">Interview</option>
-                                    <option value="OFFER">Offer</option>
-                                    <option value="REJECTED">Rejected</option>
+                                    {STATUS_ORDER.map((s) => (
+                                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -182,8 +172,8 @@ export function ApplicationDetailPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <span className="block text-sm font-bold text-gray-500 uppercase">Status</span>
-                                <span className={`inline-block mt-1 px-3 py-1 border-2 border-black font-black ${statusColors[application.status]}`}>
-                                    {application.status}
+                                <span className={`inline-block mt-1 px-3 py-1 border-2 border-black font-black ${STATUS_COLORS[application.status]}`}>
+                                    {STATUS_LABELS[application.status]}
                                 </span>
                             </div>
                             <div>

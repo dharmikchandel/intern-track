@@ -16,7 +16,7 @@ import {
 import { listApplications, type ApplicationSort } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
 import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
-import { STATUS_COLORS } from "../features/applications/statusMeta";
+import { STATUS_COLORS, STATUS_LABELS } from "../features/applications/statusMeta";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
 import { cn } from "../lib/utils";
 
@@ -196,8 +196,8 @@ export function ApplicationsPage() {
                                     <NeoTableCell className="font-bold">{app.companyName}</NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
-                                        <span className={`px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status] || "bg-gray-100"}`}>
-                                            {app.status}
+                                        <span className={`px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status]}`}>
+                                            {STATUS_LABELS[app.status]}
                                         </span>
                                     </NeoTableCell>
                                     <NeoTableCell>{format(new Date(app.appliedDate), "MMM d, yyyy")}</NeoTableCell>
