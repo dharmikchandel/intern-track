@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireCronSecret } from "../../middlewares/cronAuth.middleware.js";
 import { requireAuth } from "../../middlewares/auth.middleware.js";
 import { getPrefs, runDigest, unsubscribe, updatePrefs } from "./digest.controller.js";
 
@@ -11,4 +12,4 @@ digestRouter.patch("/preferences", requireAuth, updatePrefs);
 
 // Mounted at /internal/digests: called by the external scheduler only.
 export const internalDigestRouter = Router();
-internalDigestRouter.post("/run", runDigest);
+internalDigestRouter.post("/run", requireCronSecret, runDigest);

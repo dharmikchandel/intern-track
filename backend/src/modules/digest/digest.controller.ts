@@ -1,7 +1,5 @@
-import crypto from "node:crypto";
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../../middlewares/auth.middleware.js";
-import { env } from "../../config/env.js";
 import { preferencesSchema, unsubscribeSchema } from "./digest.schema.js";
 import { getPreferences, runWeeklyDigest, setPreferences, unsubscribeWithToken } from "./digest.service.js";
 
@@ -23,20 +21,7 @@ export async function updatePrefs(req: AuthRequest, res: Response) {
   return res.status(200).json(await setPreferences(req.userId!, parsed.data.emailDigestEnabled));
 }
 
-// Hash both sides first so timingSafeEqual always gets equal-length buffers
-// and the comparison time doesn't leak how much of the secret matched.
-function secretMatches(given: string | undefined, expected: string) {
-  const digest = (v: string) => crypto.createHash("sha256").update(v).digest();
-  return crypto.timingSafeEqual(digest(given ?? ""), digest(expected));
-}
-
-export async function runDigest(req: Request, res: Response) {
-  // Not configured = the endpoint doesn't exist, rather than "exists but locked".
-  if (!env.CRON_SECRET) return res.status(404).json({ error: "Not found" });
-
-  if (!secretMatches(req.header("x-cron-secret"), env.CRON_SECRET)) {
-    return res.status(401).json({ error: "Invalid cron secret" });
-  }
-
+// The shared-secret check lives in requireCronSecret (see digest.routes.ts).
+export async function runDigest(_req: Request, res: Response) {
   return res.status(200).json(await runWeeklyDigest());
 }

@@ -1,0 +1,36 @@
+name: database keepalive
+
+# Free-tier Supabase pauses a project after about a week with no activity (and
+# Redis Cloud's free plan can reclaim an idle database). Once a day, the backend
+# runs one trivial query against each. The job goes red, and GitHub emails the
+# repo owner, if either check fails or the backend can't be reached.
+#
+# Keeping the backend itself awake is a separate job: see infra/cloudflare-keepalive.
+#
+# Setup: same as the weekly digest (Settings > Secrets and variables > Actions):
+#   secret   CRON_SECRET  same value as CRON_SECRET on the backend
+#   variable API_URL      backend origin, e.g. https://intern-track-server.onrender.com
+
+on:
+  schedule:
+    - cron: "30 3 * * *" # daily, 03:30 UTC (09:00 IST)
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: call keepalive endpoint
+        env:
+          API_URL: ${{ vars.API_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          # A sleeping free-tier instance can take about a minute to wake, so retry.
+          code=$(curl -sS -o resp.json -w '%{http_code}' \
+            --retry 5 --retry-delay 15 --retry-all-errors --max-time 120 \
+            -X POST "$API_URL/api/v1/internal/keepalive" \
+            -H "x-cron-secret: $CRON_SECRET")
+          cat resp.json; echo
+          [ "$code" = "200" ] || { echo "unexpected status $code"; exit 1; }

@@ -1,0 +1,16 @@
+name = "trackr-keepalive"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# Cron-only worker: nothing listens for HTTP, so don't publish a workers.dev URL.
+workers_dev = false
+
+[triggers]
+# Every 10 minutes, all day. The 08:00-midnight IST window is applied in code
+# (see worker.js) so it is exact and unit-tested instead of hidden in UTC cron maths.
+crons = ["*/10 * * * *"]
+
+[vars]
+API_URL = "https://intern-track-server.onrender.com"
+WINDOW_START_HOUR_IST = "8"
+WINDOW_END_HOUR_IST = "24"
