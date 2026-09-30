@@ -4,11 +4,15 @@ import {
   createApplicationSchema,
   updateApplicationSchema,
   listApplicationsQuerySchema,
+  boardQuerySchema,
+  activityQuerySchema,
 } from "./application.schema.js";
 import {
   createApplication,
   deleteApplication,
   getApplicationById,
+  getBoard,
+  listActivity,
   listApplications,
   updateApplication,
 } from "./application.service.js";
@@ -49,14 +53,22 @@ export async function list(req: AuthRequest, res: Response) {
   const parsed = listApplicationsQuerySchema.safeParse(req.query);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
 
-  const page = parsed.data.page ?? 1;
-  const limit = parsed.data.limit ?? 10;
-
-  const result = await listApplications(req.userId!, {
-    ...parsed.data,
-    page,
-    limit,
-  });
-
+  const result = await listApplications(req.userId!, parsed.data);
   return res.status(200).json(result);
+}
+
+export async function board(req: AuthRequest, res: Response) {
+  const parsed = boardQuerySchema.safeParse(req.query);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+
+  const result = await getBoard(req.userId!, parsed.data);
+  return res.status(200).json(result);
+}
+
+export async function activity(req: AuthRequest & Request<Params>, res: Response) {
+  const parsed = activityQuerySchema.safeParse(req.query);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+
+  const items = await listActivity(req.userId!, req.params.id, parsed.data.limit);
+  return res.status(200).json({ items });
 }

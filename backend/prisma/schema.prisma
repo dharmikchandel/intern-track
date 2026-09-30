@@ -26,7 +26,13 @@ model User {
   email                   String                   @unique
   passwordHash            String
   emailVerifiedAt         DateTime?
+  // Weekly follow-up digest. Opt-out (default on) with a one-click unsubscribe
+  // link in every email; lastDigestSentAt is the idempotency guard that keeps
+  // a retried or double-fired scheduler from sending twice.
+  emailDigestEnabled      Boolean                  @default(true)
+  lastDigestSentAt        DateTime?
   applications            Application[]
+  activities              ApplicationActivity[]
   refreshTokens           RefreshToken[]
   passwordResetTokens     PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
@@ -73,22 +79,55 @@ model EmailVerificationToken {
   @@index([userId])
 }
 
+enum ActivityType {
+  APPLICATION_CREATED
+  STATUS_CHANGED
+  NOTES_CHANGED
+  FOLLOW_UP_CHANGED
+  FOLLOW_UP_REMINDER_SENT // written by the follow-up digest job
+}
+
 model Application {
-  id              String             @id @default(uuid())
+  id              String            @id @default(uuid())
   userId          String
   companyName     String
   role            String
-  status          ApplicationStatus  @default(APPLIED)
+  status          ApplicationStatus @default(APPLIED)
   appliedDate     DateTime
   applicationLink String?
   notes           String?
   followUpDate    DateTime?
 
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  user       User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activities ApplicationActivity[]
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
 
-  @@index([userId])
-  @@index([status])
-  @@index([appliedDate])
+  // Every read is scoped to one user, so both indexes lead with userId.
+  // The second serves status-filtered lists, board columns and the
+  // analytics GROUP BY (index-only scan).
+  @@index([userId, appliedDate(sort: Desc)])
+  @@index([userId, status, appliedDate(sort: Desc)])
+}
+
+// User-facing activity feed for an application (not a compliance audit log).
+// Rows are written in the same transaction as the change they describe.
+// `metadata` holds structured details (e.g. { from, to }) so the UI can build
+// the sentence; free-text like notes content is deliberately never copied here.
+model ApplicationActivity {
+  id            String       @id @default(uuid())
+  applicationId String
+  userId        String
+  type          ActivityType
+  metadata      Json?
+  createdAt     DateTime     @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Detail-page feed, newest first.
+  @@index([applicationId, createdAt(sort: Desc)])
+  // Cross-application questions per user (recap, milestones): "when was the
+  // first STATUS_CHANGED to INTERVIEW?"
+  @@index([userId, type, createdAt])
 }

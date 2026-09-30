@@ -1,12 +1,14 @@
 import { client } from "./client";
 import { type CreateApplicationFormData } from "../lib/schemas";
 
+export type ApplicationStatus = "APPLIED" | "OA" | "INTERVIEW" | "OFFER" | "REJECTED";
+
 export interface Application {
     id: string;
     userId: string;
     companyName: string;
     role: string;
-    status: "APPLIED" | "OA" | "INTERVIEW" | "OFFER" | "REJECTED";
+    status: ApplicationStatus;
     appliedDate: string;
     applicationLink?: string;
     notes?: string;
@@ -19,8 +21,37 @@ interface ListApplicationsParams {
     page?: number;
     limit?: number;
     status?: string;
-    sort?: "appliedDate" | "createdAt";
+    q?: string;
+    needsFollowUp?: boolean;
+    sort?: ApplicationSort;
     order?: "asc" | "desc";
+}
+
+export type ApplicationSort =
+    | "appliedDate"
+    | "createdAt"
+    | "updatedAt"
+    | "companyName"
+    | "role"
+    | "status";
+
+export interface BoardColumn {
+    status: ApplicationStatus;
+    // True count for the column under the current filters; items is only the
+    // first `perColumn` cards of it.
+    total: number;
+    items: Application[];
+}
+
+export interface BoardResponse {
+    perColumn: number;
+    columns: BoardColumn[];
+}
+
+interface BoardParams {
+    q?: string;
+    needsFollowUp?: boolean;
+    perColumn?: number;
 }
 
 interface ListApplicationsResponse {
@@ -35,6 +66,11 @@ interface ListApplicationsResponse {
 
 export async function listApplications(params?: ListApplicationsParams) {
     const res = await client.get<ListApplicationsResponse>("/applications", { params });
+    return res.data;
+}
+
+export async function getBoard(params?: BoardParams) {
+    const res = await client.get<BoardResponse>("/applications/board", { params });
     return res.data;
 }
 
@@ -59,7 +95,13 @@ export async function createApplication(data: CreateApplicationFormData) {
     return res.data;
 }
 
-export async function updateApplication(id: string, data: Partial<CreateApplicationFormData>) {
+// followUpDate is nullable on update: null clears it, while omitting the key
+// (what stripBlanks does to "") leaves it untouched.
+export type UpdateApplicationPayload = Omit<Partial<CreateApplicationFormData>, "followUpDate"> & {
+    followUpDate?: string | null;
+};
+
+export async function updateApplication(id: string, data: UpdateApplicationPayload) {
     const res = await client.patch<Application>(`/applications/${id}`, stripBlanks(data));
     return res.data;
 }
@@ -67,4 +109,23 @@ export async function updateApplication(id: string, data: Partial<CreateApplicat
 export async function deleteApplication(id: string) {
     const res = await client.delete<{ success: true; message: string }>(`/applications/${id}`);
     return res.data;
+}
+
+export type ActivityType =
+    | "APPLICATION_CREATED"
+    | "STATUS_CHANGED"
+    | "NOTES_CHANGED"
+    | "FOLLOW_UP_CHANGED"
+    | "FOLLOW_UP_REMINDER_SENT";
+
+export interface ActivityItem {
+    id: string;
+    type: ActivityType;
+    metadata: { from?: string | null; to?: string | null; status?: string } | null;
+    createdAt: string;
+}
+
+export async function getApplicationActivity(id: string) {
+    const res = await client.get<{ items: ActivityItem[] }>(`/applications/${id}/activity`);
+    return res.data.items;
 }
