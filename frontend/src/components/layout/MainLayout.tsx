@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard, FileText, PlusCircle, Sparkles, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
+import { useDialog } from "../../lib/useDialog";
 import { Footer } from "./Footer";
 import { EmailVerificationBanner } from "./EmailVerificationBanner";
 import { DotGrid } from "../ui/DotGrid";
@@ -12,6 +13,9 @@ export function MainLayout() {
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const drawerRef = useRef<HTMLDivElement>(null);
+    useDialog(drawerRef, isMobileMenuOpen, () => setIsMobileMenuOpen(false));
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -30,18 +34,24 @@ export function MainLayout() {
                 <div className="flex items-center gap-4">
                     {/* Mobile Hamburger */}
                     <button
+                        type="button"
                         onClick={toggleMobileMenu}
+                        aria-label="Open menu"
+                        aria-expanded={isMobileMenuOpen}
                         className="md:hidden p-2 hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
                     >
-                        <Menu className="w-6 h-6" />
+                        <Menu className="w-6 h-6" aria-hidden />
                     </button>
 
                     {/* Desktop Collapse Toggle */}
                     <button
+                        type="button"
                         onClick={toggleSidebar}
+                        aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+                        aria-expanded={isSidebarOpen}
                         className="hidden md:flex p-2 hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
                     >
-                        <Menu className="w-6 h-6" />
+                        <Menu className="w-6 h-6" aria-hidden />
                     </button>
 
                     <h1 className="text-xl md:text-2xl font-black tracking-tighter text-black flex items-center gap-2">
@@ -115,13 +125,18 @@ export function MainLayout() {
                 {isMobileMenuOpen && (
                     <div className="fixed inset-0 bg-black/50 z-50 md:hidden backdrop-blur-sm" onClick={toggleMobileMenu}>
                         <div
-                            className="bg-white w-64 h-full border-r-2 border-black shadow-neo-modal p-4 flex flex-col"
+                            ref={drawerRef}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Main menu"
+                            tabIndex={-1}
+                            className="bg-white w-64 h-full border-r-2 border-black shadow-neo-modal p-4 flex flex-col focus:outline-none"
                             onClick={e => e.stopPropagation()}
                         >
                             <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">
                                 <h2 className="text-2xl font-black text-black">Menu</h2>
-                                <button onClick={toggleMobileMenu} className="p-2 text-black hover:bg-neo-destructive hover:text-white border-2 border-transparent hover:border-black rounded-neo transition-all">
-                                    <X className="w-6 h-6" />
+                                <button type="button" onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 text-black hover:bg-neo-destructive hover:text-white border-2 border-transparent hover:border-black rounded-neo transition-all">
+                                    <X className="w-6 h-6" aria-hidden />
                                 </button>
                             </div>
 

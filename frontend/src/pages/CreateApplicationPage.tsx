@@ -117,8 +117,9 @@ export function CreateApplicationPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
+                            <label htmlFor="application-status" className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
                             <select
+                                id="application-status"
                                 className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
                                 {...register("status")}
                             >
@@ -151,8 +152,9 @@ export function CreateApplicationPage() {
                     />
 
                     <div>
-                        <label className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
+                        <label htmlFor="application-notes" className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
                         <textarea
+                            id="application-notes"
                             className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium min-h-[100px]"
                             placeholder="Job description, referral info, etc."
                             {...register("notes")}

@@ -105,7 +105,7 @@ export function ApplicationDetailPage() {
                     {!isEditing && (
                         <div className="flex gap-2 shrink-0">
                             <NeoButton variant="secondary" onClick={() => setIsEditing(true)}>Edit</NeoButton>
-                            <NeoButton variant="destructive" onClick={() => setShowDeleteModal(true)}><Trash2 className="w-4 h-4" /></NeoButton>
+                            <NeoButton variant="destructive" onClick={() => setShowDeleteModal(true)} aria-label="Delete application"><Trash2 className="w-4 h-4" aria-hidden /></NeoButton>
                         </div>
                     )}
                 </div>
@@ -127,8 +127,9 @@ export function ApplicationDetailPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
+                                <label htmlFor="application-status" className="block font-bold mb-1 text-sm uppercase tracking-wide">Status</label>
                                 <select
+                                    id="application-status"
                                     className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium"
                                     {...register("status")}
                                 >
@@ -160,8 +161,9 @@ export function ApplicationDetailPage() {
                         />
 
                         <div>
-                            <label className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
+                            <label htmlFor="application-notes" className="block font-bold mb-1 text-sm uppercase tracking-wide">Notes</label>
                             <textarea
+                                id="application-notes"
                                 className="w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 font-medium min-h-[100px]"
                                 {...register("notes")}
                             />

@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T22:39:36+00:00",
+  "title": "Design System: TRACKr",
+  "extensions": {
+    "colorMeta": {
+      "signal-blue": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#3B82F6",
+        "oklch": "oklch(62.3% 0.188 260)",
+        "tonalRamp": [
+          "oklch(15.0% 0.085 260)",
+          "oklch(26.4% 0.108 260)",
+          "oklch(37.9% 0.132 260)",
+          "oklch(49.3% 0.156 260)",
+          "oklch(60.7% 0.179 260)",
+          "oklch(72.1% 0.173 260)",
+          "oklch(83.6% 0.150 260)",
+          "oklch(95.0% 0.126 260)"
+        ]
+      },
+      "ultraviolet": {
+        "role": "secondary",
+        "displayName": "Ultraviolet",
+        "canonical": "#8E51FF",
+        "oklch": "oklch(60.1% 0.242 294)",
+        "tonalRamp": [
+          "oklch(15.0% 0.109 294)",
+          "oklch(26.4% 0.140 294)",
+          "oklch(37.9% 0.170 294)",
+          "oklch(49.3% 0.201 294)",
+          "oklch(60.7% 0.231 294)",
+          "oklch(72.1% 0.223 294)",
+          "oklch(83.6% 0.193 294)",
+          "oklch(95.0% 0.162 294)"
+        ]
+      },
+      "hazard-orange": {
+        "role": "tertiary",
+        "displayName": "Hazard Orange",
+        "canonical": "#F97316",
+        "oklch": "oklch(70.5% 0.187 48)",
+        "tonalRamp": [
+          "oklch(15.0% 0.084 48)",
+          "oklch(26.4% 0.107 48)",
+          "oklch(37.9% 0.131 48)",
+          "oklch(49.3% 0.154 48)",
+          "oklch(60.7% 0.178 48)",
+          "oklch(72.1% 0.172 48)",
+          "oklch(83.6% 0.149 48)",
+          "oklch(95.0% 0.125 48)"
+        ]
+      },
+      "indigo-accent": {
+        "role": "tertiary",
+        "displayName": "Indigo Accent",
+        "canonical": "#6366F1",
+        "oklch": "oklch(58.5% 0.204 277)",
+        "tonalRamp": [
+          "oklch(15.0% 0.092 277)",
+          "oklch(26.4% 0.117 277)",
+          "oklch(37.9% 0.143 277)",
+          "oklch(49.3% 0.169 277)",
+          "oklch(60.7% 0.194 277)",
+          "oklch(72.1% 0.188 277)",
+          "oklch(83.6% 0.162 277)",
+          "oklch(95.0% 0.137 277)"
+        ]
+      },
+      "stop-red": {
+        "role": "semantic",
+        "displayName": "Stop Red",
+        "canonical": "#EF4444",
+        "oklch": "oklch(63.7% 0.208 25)",
+        "tonalRamp": [
+          "oklch(15.0% 0.094 25)",
+          "oklch(26.4% 0.120 25)",
+          "oklch(37.9% 0.146 25)",
+          "oklch(49.3% 0.172 25)",
+          "oklch(60.7% 0.198 25)",
+          "oklch(72.1% 0.192 25)",
+          "oklch(83.6% 0.165 25)",
+          "oklch(95.0% 0.139 25)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#000000",
+        "oklch": "oklch(0.0% 0.000 0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.4% 0.000 0)",
+          "oklch(37.9% 0.000 0)",
+          "oklch(49.3% 0.000 0)",
+          "oklch(60.7% 0.000 0)",
+          "oklch(72.1% 0.000 0)",
+          "oklch(83.6% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#FFFFFF",
+        "oklch": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 90)",
+          "oklch(26.4% 0.000 90)",
+          "oklch(37.9% 0.000 90)",
+          "oklch(49.3% 0.000 90)",
+          "oklch(60.7% 0.000 90)",
+          "oklch(72.1% 0.000 90)",
+          "oklch(83.6% 0.000 90)",
+          "oklch(95.0% 0.000 90)"
+        ]
+      },
+      "desk": {
+        "role": "neutral",
+        "displayName": "Desk",
+        "canonical": "#F1F5F9",
+        "oklch": "oklch(96.8% 0.007 248)",
+        "tonalRamp": [
+          "oklch(15.0% 0.007 248)",
+          "oklch(26.4% 0.007 248)",
+          "oklch(37.9% 0.007 248)",
+          "oklch(49.3% 0.007 248)",
+          "oklch(60.7% 0.007 248)",
+          "oklch(72.1% 0.007 248)",
+          "oklch(83.6% 0.007 248)",
+          "oklch(95.0% 0.007 248)"
+        ]
+      },
+      "dot-grid": {
+        "role": "neutral",
+        "displayName": "Dot Grid",
+        "canonical": "#94A3B8",
+        "oklch": "oklch(71.1% 0.035 257)",
+        "tonalRamp": [
+          "oklch(15.0% 0.016 257)",
+          "oklch(26.4% 0.020 257)",
+          "oklch(37.9% 0.025 257)",
+          "oklch(49.3% 0.029 257)",
+          "oklch(60.7% 0.033 257)",
+          "oklch(72.1% 0.032 257)",
+          "oklch(83.6% 0.028 257)",
+          "oklch(95.0% 0.024 257)"
+        ]
+      },
+      "text-body": {
+        "role": "neutral",
+        "displayName": "Text Body",
+        "canonical": "#1E293B",
+        "oklch": "oklch(27.9% 0.037 260)",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 260)",
+          "oklch(26.4% 0.021 260)",
+          "oklch(37.9% 0.026 260)",
+          "oklch(49.3% 0.030 260)",
+          "oklch(60.7% 0.035 260)",
+          "oklch(72.1% 0.034 260)",
+          "oklch(83.6% 0.029 260)",
+          "oklch(95.0% 0.025 260)"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Text Secondary",
+        "canonical": "#475569",
+        "oklch": "oklch(44.6% 0.037 257)",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 257)",
+          "oklch(26.4% 0.022 257)",
+          "oklch(37.9% 0.026 257)",
+          "oklch(49.3% 0.031 257)",
+          "oklch(60.7% 0.036 257)",
+          "oklch(72.1% 0.035 257)",
+          "oklch(83.6% 0.030 257)",
+          "oklch(95.0% 0.025 257)"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "#64748B",
+        "oklch": "oklch(55.4% 0.041 257)",
+        "tonalRamp": [
+          "oklch(15.0% 0.018 257)",
+          "oklch(26.4% 0.023 257)",
+          "oklch(37.9% 0.029 257)",
+          "oklch(49.3% 0.034 257)",
+          "oklch(60.7% 0.039 257)",
+          "oklch(72.1% 0.038 257)",
+          "oklch(83.6% 0.032 257)",
+          "oklch(95.0% 0.027 257)"
+        ]
+      },
+      "highlight-yellow": {
+        "role": "neutral",
+        "displayName": "Highlight Yellow",
+        "canonical": "#FEF9C3",
+        "oklch": "oklch(97.3% 0.069 103)",
+        "tonalRamp": [
+          "oklch(15.0% 0.031 103)",
+          "oklch(26.4% 0.040 103)",
+          "oklch(37.9% 0.049 103)",
+          "oklch(49.3% 0.057 103)",
+          "oklch(60.7% 0.066 103)",
+          "oklch(72.1% 0.064 103)",
+          "oklch(83.6% 0.055 103)",
+          "oklch(95.0% 0.046 103)"
+        ]
+      },
+      "status-applied-bg": {
+        "role": "semantic",
+        "displayName": "Applied Tint",
+        "canonical": "#DBEAFE",
+        "oklch": "oklch(93.2% 0.032 256)",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 256)",
+          "oklch(26.4% 0.018 256)",
+          "oklch(37.9% 0.022 256)",
+          "oklch(49.3% 0.026 256)",
+          "oklch(60.7% 0.030 256)",
+          "oklch(72.1% 0.029 256)",
+          "oklch(83.6% 0.025 256)",
+          "oklch(95.0% 0.021 256)"
+        ]
+      },
+      "status-applied-text": {
+        "role": "semantic",
+        "displayName": "Applied Ink",
+        "canonical": "#1E40AF",
+        "oklch": "oklch(42.4% 0.181 266)",
+        "tonalRamp": [
+          "oklch(15.0% 0.081 266)",
+          "oklch(26.4% 0.104 266)",
+          "oklch(37.9% 0.127 266)",
+          "oklch(49.3% 0.150 266)",
+          "oklch(60.7% 0.172 266)",
+          "oklch(72.1% 0.167 266)",
+          "oklch(83.6% 0.144 266)",
+          "oklch(95.0% 0.121 266)"
+        ]
+      },
+      "status-oa-text": {
+        "role": "semantic",
+        "displayName": "Assessment Ink",
+        "canonical": "#854D0E",
+        "oklch": "oklch(47.6% 0.103 62)",
+        "tonalRamp": [
+          "oklch(15.0% 0.047 62)",
+          "oklch(26.4% 0.060 62)",
+          "oklch(37.9% 0.073 62)",
+          "oklch(49.3% 0.085 62)",
+          "oklch(60.7% 0.098 62)",
+          "oklch(72.1% 0.095 62)",
+          "oklch(83.6% 0.082 62)",
+          "oklch(95.0% 0.069 62)"
+        ]
+      },
+      "status-interview-bg": {
+        "role": "semantic",
+        "displayName": "Interview Tint",
+        "canonical": "#F3E8FF",
+        "oklch": "oklch(94.6% 0.033 307)",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 307)",
+          "oklch(26.4% 0.019 307)",
+          "oklch(37.9% 0.023 307)",
+          "oklch(49.3% 0.027 307)",
+          "oklch(60.7% 0.031 307)",
+          "oklch(72.1% 0.030 307)",
+          "oklch(83.6% 0.026 307)",
+          "oklch(95.0% 0.022 307)"
+        ]
+      },
+      "status-interview-text": {
+        "role": "semantic",
+        "displayName": "Interview Ink",
+        "canonical": "#6B21A8",
+        "oklch": "oklch(43.8% 0.198 304)",
+        "tonalRamp": [
+          "oklch(15.0% 0.089 304)",
+          "oklch(26.4% 0.114 304)",
+          "oklch(37.9% 0.139 304)",
+          "oklch(49.3% 0.164 304)",
+          "oklch(60.7% 0.189 304)",
+          "oklch(72.1% 0.183 304)",
+          "oklch(83.6% 0.158 304)",
+          "oklch(95.0% 0.133 304)"
+        ]
+      },
+      "status-offer-bg": {
+        "role": "semantic",
+        "displayName": "Offer Green",
+        "canonical": "#86EFAC",
+        "oklch": "oklch(87.1% 0.136 154)",
+        "tonalRamp": [
+          "oklch(15.0% 0.061 154)",
+          "oklch(26.4% 0.078 154)",
+          "oklch(37.9% 0.096 154)",
+          "oklch(49.3% 0.113 154)",
+          "oklch(60.7% 0.130 154)",
+          "oklch(72.1% 0.126 154)",
+          "oklch(83.6% 0.108 154)",
+          "oklch(95.0% 0.091 154)"
+        ]
+      },
+      "achieved-mint": {
+        "role": "semantic",
+        "displayName": "Achieved Mint",
+        "canonical": "#D1FAE5",
+        "oklch": "oklch(95.0% 0.051 163)",
+        "tonalRamp": [
+          "oklch(15.0% 0.023 163)",
+          "oklch(26.4% 0.029 163)",
+          "oklch(37.9% 0.036 163)",
+          "oklch(49.3% 0.042 163)",
+          "oklch(60.7% 0.048 163)",
+          "oklch(72.1% 0.047 163)",
+          "oklch(83.6% 0.040 163)",
+          "oklch(95.0% 0.034 163)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing section titles and page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and modal headings; often uppercase."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Application content and form values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase tracked form labels, table headers and column headers."
+      }
+    },
+    "shadows": [
+      {
+        "name": "neo",
+        "value": "4px 4px 0 0 #000",
+        "purpose": "Rest edge for cards, buttons, tables and toasts."
+      },
+      {
+        "name": "neo-hover",
+        "value": "6px 6px 0 0 #000",
+        "purpose": "Lifted state on hover, paired with translate(-2px,-2px)."
+      },
+      {
+        "name": "neo-active",
+        "value": "2px 2px 0 0 #000",
+        "purpose": "Pressed state on active."
+      },
+      {
+        "name": "neo-sm",
+        "value": "2px 2px 0 0 #000",
+        "purpose": "Small pieces: avatar, eyebrow pills, icon tiles. Tokenized as shadow-neo-sm; some code still uses arbitrary values."
+      },
+      {
+        "name": "neo-modal",
+        "value": "8px 8px 0 0 #000",
+        "purpose": "Overlays: modal and mobile drawer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "interaction-default",
+        "value": "150ms ease (Tailwind transition-all)",
+        "purpose": "Hover lift and press on buttons, cards, nav items."
+      },
+      {
+        "name": "sidebar-toggle",
+        "value": "300ms ease-in-out",
+        "purpose": "Sidebar width between 96px and 256px."
+      },
+      {
+        "name": "hero-entrance",
+        "value": "800ms ease-out, opacity 0 to 1, translateY 20px to 0",
+        "purpose": "Landing hero content (framer-motion)."
+      },
+      {
+        "name": "loading",
+        "value": "animate-pulse / animate-spin",
+        "purpose": "Board and button loading states."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action. Lifts on hover, presses flat on click.",
+      "html": "<button class=\"ds-btn-primary\">Start Tracking Free</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#3B82F6;color:#000;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-primary:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-primary:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(59,130,246,.5)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Second-voice action such as Sign In.",
+      "html": "<button class=\"ds-btn-secondary\">Sign In</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#8E51FF;color:#000;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-secondary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-secondary:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-secondary:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(142,81,255,.5)}"
+    },
+    {
+      "name": "Destructive Button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Delete and other irreversible actions. White text on Stop Red.",
+      "html": "<button class=\"ds-btn-destructive\">Delete</button>",
+      "css": ".ds-btn-destructive{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#EF4444;color:#fff;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-destructive:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-destructive:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-destructive:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(239,68,68,.5)}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The default paper surface: white, black outline, hard shadow.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Momentum</h3><p class=\"ds-card-body\">Apply today to keep it going.</p></div>",
+      "css": ".ds-card{background:#fff;border:2px solid #000;border-radius:8px;box-shadow:4px 4px 0 0 #000;padding:24px;max-width:280px}.ds-card-title{margin:0 0 8px;font-size:20px;font-weight:900;text-transform:uppercase}.ds-card-body{margin:0;font-size:14px;font-weight:700;color:#475569}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Square paper field with a stamped uppercase label and a blue focus ring.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\" for=\"ds-in\">Company</label><input id=\"ds-in\" class=\"ds-input\" placeholder=\"Acme Corp\" /></div>",
+      "css": ".ds-field{width:260px}.ds-label{display:block;margin-bottom:4px;font-size:14px;font-weight:700;letter-spacing:.025em;text-transform:uppercase}.ds-input{box-sizing:border-box;width:100%;padding:12px 16px;background:#fff;border:2px solid #000;font-weight:500;font-size:16px;transition:box-shadow .15s}.ds-input::placeholder{color:#9CA3AF}.ds-input:focus{outline:none;box-shadow:0 0 0 4px rgba(59,130,246,.5)}"
+    },
+    {
+      "name": "Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Sidebar row. Inactive is muted; active fills Signal Blue with a hard shadow.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item ds-nav-active\">Dashboard</a><a class=\"ds-nav-item\">Applications</a></nav>",
+      "css": ".ds-nav{display:flex;flex-direction:column;gap:12px;width:220px}.ds-nav-item{display:flex;align-items:center;padding:12px;font-weight:700;border:2px solid transparent;border-radius:12px;color:#64748B;cursor:pointer;transition:all .15s}.ds-nav-item:hover{border-color:#000;background:#F8FAFC;color:#000}.ds-nav-active,.ds-nav-active:hover{background:#3B82F6;color:#000;border-color:#000;box-shadow:4px 4px 0 0 #000}"
+    },
+    {
+      "name": "Status Chips",
+      "kind": "chip",
+      "refersTo": "status-applied-bg",
+      "description": "Application status pills: tinted fill, dark matching text, black outline.",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-c-applied\">Applied</span><span class=\"ds-chip ds-c-oa\">Online Assessment</span><span class=\"ds-chip ds-c-int\">Interview</span><span class=\"ds-chip ds-c-offer\">Offer</span><span class=\"ds-chip ds-c-rej\">Rejected</span></div>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px}.ds-chip{padding:4px 8px;border:2px solid #000;border-radius:2px;font-size:12px;font-weight:700}.ds-c-applied{background:#DBEAFE;color:#1E40AF}.ds-c-oa{background:#FEF9C3;color:#854D0E}.ds-c-int{background:#F3E8FF;color:#6B21A8}.ds-c-offer{background:#86EFAC;color:#000}.ds-c-rej{background:#EF4444;color:#fff}"
+    },
+    {
+      "name": "Kanban Card",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Signature: a compact application card that sits in a status column.",
+      "html": "<div class=\"ds-kcard\"><a class=\"ds-k-co\">Stripe</a><p class=\"ds-k-role\">Software Engineering Intern</p><div class=\"ds-k-meta\"><span>Applied Sep 12</span><span class=\"ds-k-due\">Follow up due</span></div></div>",
+      "css": ".ds-kcard{width:240px;background:#fff;border:2px solid #000;border-radius:8px;padding:12px;box-shadow:4px 4px 0 0 #000}.ds-k-co{display:block;font-weight:900;line-height:1.2;cursor:pointer}.ds-k-co:hover{text-decoration:underline}.ds-k-role{margin:2px 0 0;font-size:14px;font-weight:500;color:#334155}.ds-k-meta{margin-top:8px;display:flex;gap:12px;font-size:12px;font-weight:700;color:#475569}.ds-k-due{color:#EF4444}"
+    },
+    {
+      "name": "Milestone Tiles",
+      "kind": "custom",
+      "refersTo": "milestone-tile-achieved",
+      "description": "Signature: achieved tiles are mint and solid-outlined; unachieved are white, dashed, with a progress bar.",
+      "html": "<div class=\"ds-tiles\"><div class=\"ds-tile ds-tile-done\"><b>First application</b><small>Sep 3</small></div><div class=\"ds-tile\"><b>10 applications</b><div class=\"ds-bar\"><i style=\"width:60%\"></i></div><small>6 of 10</small></div></div>",
+      "css": ".ds-tiles{display:flex;gap:12px}.ds-tile{position:relative;width:150px;padding:12px;border:2px dashed #94A3B8;background:#fff;color:#64748B}.ds-tile b{display:block;font-size:14px;font-weight:900;line-height:1.2}.ds-tile small{display:block;margin-top:2px;font-size:12px;font-weight:700}.ds-tile-done{border:2px solid #000;background:#D1FAE5;color:#000}.ds-bar{height:8px;margin-top:6px;background:#F1F5F9;border:1px solid #000;overflow:hidden}.ds-bar i{display:block;height:100%;background:#3B82F6}"
+    },
+    {
+      "name": "Notice Banner",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Highlight Yellow attention strip with underlined inline actions.",
+      "html": "<div class=\"ds-banner\"><span>Verify your email to get reminders.</span><a class=\"ds-banner-link\">Resend</a></div>",
+      "css": ".ds-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#FEF9C3;border:2px solid #000;border-radius:6px;box-shadow:4px 4px 0 0 #000;padding:16px;font-weight:700;color:#1E293B;width:360px}.ds-banner-link{font-size:14px;text-decoration:underline;cursor:pointer}.ds-banner-link:hover{color:#3B82F6}"
+    },
+    {
+      "name": "Error Alert",
+      "kind": "custom",
+      "refersTo": "button-destructive",
+      "description": "A failed action, announced to screen readers. Sits beside the control that failed.",
+      "html": "<div class=\"ds-alert\" role=\"alert\">Couldn't save your changes. Please try again.</div>",
+      "css": ".ds-alert{max-width:340px;padding:12px;background:#EF4444;color:#fff;font-weight:700;border:2px solid #000;box-shadow:4px 4px 0 0 #000}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Loud Spreadsheet Killer",
+    "overview": "TRACKr exists because a 50-column Excel sheet is miserable to live in during a job hunt. The interface answers that by being the opposite of a spreadsheet: heavy black outlines, hard offset shadows, saturated flat color, and a dotted desk behind everything. Every card, button and column looks like a physical object with an edge, so the work surface feels handled rather than filled in. It is a tool used daily, so the loudness sits in the chrome and the edges, never in the reading: type is plain system sans, content sits on white paper, and color is reserved for meaning.\n\nThe voice is confident, high-contrast and encouraging. Copy and visuals both push momentum, not guilt: a missed day is never shown as a loss, empty states invite a next action, and milestones get a rotated \"New\" stamp instead of confetti. The system is bold because the user's ambition is bold, but it stays orderly enough to scan a board of forty applications.",
+    "keyCharacteristics": [
+      "2px pure-black outline on nearly everything that is a surface or is interactive.",
+      "Hard, blur-free offset shadows that act as the object's edge, not as ambient depth.",
+      "Flat, saturated color fills; color always carries meaning (status, action, danger).",
+      "White paper cards on a pale slate desk with a dot-grid texture.",
+      "Heavy weights (800 to 900) for headings and labels; system sans only.",
+      "Interaction is physical: elements lift toward you on hover and press into the page on click."
+    ],
+    "rules": [
+      {
+        "name": "The Color-Is-Meaning Rule",
+        "body": "A saturated fill always means something: an action, a status, or danger. Never use accent color as decoration on an app screen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Black-Text-On-Color Rule",
+        "body": "Text on Signal Blue, Ultraviolet and Offer green is black. White text is reserved for Stop Red, black fills (table header, BETA pill) and the small landing eyebrow pills in Hazard Orange or Indigo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat-Fill Rule",
+        "body": "No gradients, no tints-as-glow. The only gradient in the product is a transparent fade-out of the hero's dot grid.",
+        "section": "colors"
+      },
+      {
+        "name": "The Heavy-Headings Rule",
+        "body": "All headings are at least weight 800; the dominant weight is 900. Never use light or regular weight for a heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stamp-Label Rule",
+        "body": "Labels, table headers and column headers are uppercase and tracked, like stamped text on a physical form.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hard-Edge Rule",
+        "body": "A shadow is either a solid black offset with zero blur, or it is absent. Never introduce a blurred shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Press Rule",
+        "body": "Interactive means pressable. Anything interactive with a resting shadow must lift on hover and sink on active. Cards keep their resting shadow as their physical edge, but a card only moves if it is itself a link or button.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do outline every surface and interactive control in 2px solid black (#000).",
+      "Do use the hard-edge offset shadows (4px rest, 6px lifted, 2px pressed) and pair them with the lift/press motion.",
+      "Do keep text on Signal Blue, Ultraviolet and Offer green black; use white only on Stop Red, black fills, and the landing eyebrow pills.",
+      "Do use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.",
+      "Do build page structure from paper cards on the Desk background with the dot grid behind them.",
+      "Do keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.",
+      "Do use dashed 2px borders to mean \"empty\", \"unachieved\" or \"drop target\".",
+      "Do rely on the global 2px Ink focus outline for links and buttons; never suppress it with `outline-none` unless the control supplies its own visible ring.",
+      "Do give every icon-only control an `aria-label` and every form control a `<label htmlFor>`; build overlays on `useDialog`."
+    ],
+    "donts": [
+      "Don't make it look like a generic Material/SaaS dashboard: no soft shadows, pastel gradients, `rounded-2xl` cards or blue-gray chrome.",
+      "Don't make it look like Excel: no dense gridlines, tiny cells, or office-style toolbars.",
+      "Don't use glassmorphism: no frosted panels, glows, or translucent layered cards. The only blur in the system is the dimmed modal and drawer backdrop.",
+      "Don't add blurred or spread shadows, gradients, or any color fill that doesn't carry meaning.",
+      "Don't set body text in a light or regular weight, or swap in a decorative display face.",
+      "Don't make a non-interactive card lift on hover, or leave an interactive raised element without its hover-lift and press-in."
+    ]
+  }
+}
