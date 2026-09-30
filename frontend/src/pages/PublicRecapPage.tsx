@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
+import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { DotGrid } from "../components/ui/DotGrid";
 import { getPublicRecap } from "../api/recap";
 import { RecapCard } from "../features/recap/RecapCard";
@@ -20,7 +21,7 @@ export function PublicRecapPage() {
             <DotGrid />
             <div className="relative z-10 w-full max-w-xl py-8">
                 {isLoading ? (
-                    <p className="text-center font-black animate-pulse">Loading recap...</p>
+                    <NeoSkeleton label="Loading recap" className="h-96" />
                 ) : isError || !data ? (
                     <div className="bg-white border-4 border-black rounded-xl shadow-neo p-8 text-center">
                         <h1 className="text-2xl font-black mb-2">This recap isn't available</h1>

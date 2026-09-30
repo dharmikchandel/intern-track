@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BellRing } from "lucide-react";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoCard } from "../../components/ui/NeoCard";
+import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { listApplications } from "../../api/applications";
 import { getDigestPreferences, setDigestPreferences } from "../../api/digest";
 import { getErrorMessage } from "../../lib/utils";
@@ -38,9 +39,7 @@ export function FollowUpCard() {
     if (isError) return null;
     if (overdue === undefined) {
         return (
-            <NeoCard className="mb-8 h-24 animate-pulse" role="status" aria-busy="true">
-                <span className="sr-only">Checking follow-ups</span>
-            </NeoCard>
+            <NeoSkeleton label="Checking follow-ups" className="mb-8 h-24" />
         );
     }
 

@@ -58,7 +58,7 @@ export function FeaturesSection() {
                     {features.map((feature, index) => (
                         <motion.div
                             key={index}
-                            className={`p-8 rounded-neo border-2 border-black shadow-neo hover:shadow-neo-hover hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all bg-white`}
+                            className="p-8 rounded-neo border-2 border-black shadow-neo bg-white"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

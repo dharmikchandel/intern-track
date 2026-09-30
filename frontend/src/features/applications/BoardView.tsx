@@ -20,6 +20,7 @@ import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoLinkButton } from "../../components/ui/NeoLinkButton";
 import { NeoSelect } from "../../components/ui/NeoSelect";
+import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
 import { moveCardInBoard } from "./board";
@@ -105,7 +106,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     }
 
     if (isLoading) {
-        return <div className="text-center font-bold p-10 animate-pulse">Loading Board...</div>;
+        return <NeoSkeleton label="Loading board" className="h-80" />;
     }
     if (isError || !data) {
         return (

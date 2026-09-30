@@ -106,7 +106,7 @@ export function ResetPasswordPage() {
                     )}
 
                     <div className="mt-6 text-center text-sm font-bold">
-                        <Link to="/login" className="underline hover:text-neo-primary">
+                        <Link to="/login" className="underline hover:bg-neo-primary hover:text-black">
                             Back to login
                         </Link>
                     </div>

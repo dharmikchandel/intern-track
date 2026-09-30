@@ -5,6 +5,7 @@ import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
+import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../lib/utils";
 import { createRecapShare, getRecapPreview, listRecapShares, revokeRecapShare } from "../api/recap";
 import { RecapCard } from "../features/recap/RecapCard";
@@ -98,7 +99,7 @@ export function RecapPage() {
 
                 <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
                     {preview.isLoading && validRange ? (
-                        <p className="font-black animate-pulse">Building your recap...</p>
+                        <NeoSkeleton label="Building your recap" className="h-96" />
                     ) : preview.isError ? (
                         <p className="font-bold text-neo-destructive">Couldn't build the recap.</p>
                     ) : preview.data && validRange ? (
@@ -137,6 +138,7 @@ export function RecapPage() {
                                 <li key={s.id} className="border-2 border-black p-3 bg-slate-50">
                                     <p className="font-black text-sm">{formatPeriod(s.periodStart.slice(0, 10), s.periodEnd.slice(0, 10))}</p>
                                     <p className="text-xs font-mono break-all my-1">{shareUrl(s.slug)}</p>
+                                    <span role="status" className="sr-only">{copied === s.slug ? "Link copied" : ""}</span>
                                     <div className="flex gap-2 mt-2">
                                         <NeoButton variant="secondary" className="px-3 py-2 text-sm flex items-center gap-1" onClick={() => copy(s.slug)}>
                                             {copied === s.slug ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}

@@ -6,6 +6,7 @@ import { LayoutGrid, List, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
+import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 
 import {
     NeoTable,
@@ -158,11 +159,11 @@ export function ApplicationsPage() {
             />
 
             {view === "board" ? (
-                <Suspense fallback={<div className="text-center font-bold p-10 animate-pulse">Loading Board...</div>}>
+                <Suspense fallback={<NeoSkeleton label="Loading board" className="h-80" />}>
                     <BoardView q={debouncedSearch} needsFollowUp={needsFollowUp} />
                 </Suspense>
             ) : isLoading ? (
-                <div className="text-center font-bold p-10 animate-pulse">Loading Applications...</div>
+                <NeoSkeleton label="Loading applications" className="h-80" />
             ) : isError ? (
                 <NeoAlert className="p-4">
                     Error loading applications.

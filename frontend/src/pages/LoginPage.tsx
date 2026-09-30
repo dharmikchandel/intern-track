@@ -69,7 +69,7 @@ export function LoginPage() {
                     <h2 className="text-2xl font-black mb-6 uppercase">Login</h2>
 
                     {justReset && !serverError && (
-                        <div className="bg-emerald-100 border-2 border-black p-3 mb-4 font-bold text-slate-800">
+                        <div role="status" className="bg-emerald-100 border-2 border-black p-3 mb-4 font-bold text-slate-800">
                             Password updated. Log in with your new password.
                         </div>
                     )}
@@ -97,7 +97,7 @@ export function LoginPage() {
                                 {...register("password")}
                             />
                             <div className="text-right mt-1">
-                                <Link to="/forgot-password" className="text-xs font-bold underline hover:text-neo-primary">
+                                <Link to="/forgot-password" className="text-xs font-bold underline hover:bg-neo-primary hover:text-black">
                                     Forgot password?
                                 </Link>
                             </div>
@@ -114,7 +114,7 @@ export function LoginPage() {
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Don't have an account?{" "}
-                        <Link to="/register" className="underline hover:text-neo-secondary">
+                        <Link to="/register" className="underline hover:bg-neo-secondary hover:text-black">
                             Register here
                         </Link>
                     </div>

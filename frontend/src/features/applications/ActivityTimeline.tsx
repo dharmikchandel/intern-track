@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { NeoCard } from "../../components/ui/NeoCard";
+import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { getApplicationActivity, type ActivityItem } from "../../api/applications";
 import { STATUS_LABELS } from "./statusMeta";
 
@@ -41,7 +42,7 @@ export function ActivityTimeline({ applicationId }: { applicationId: string }) {
         <NeoCard className="mb-6">
             <h2 className="text-xl font-black uppercase border-b-2 border-black pb-3 mb-4">Activity</h2>
             {isLoading ? (
-                <p className="font-bold animate-pulse">Loading activity...</p>
+                <NeoSkeleton label="Loading activity" className="h-24 shadow-none" />
             ) : isError ? (
                 <p className="font-bold text-neo-destructive">Couldn't load activity.</p>
             ) : !data || data.length === 0 ? (

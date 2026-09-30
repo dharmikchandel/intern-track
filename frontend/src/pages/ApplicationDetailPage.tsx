@@ -8,6 +8,7 @@ import { NeoButton } from "../components/ui/NeoButton";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoSelect } from "../components/ui/NeoSelect";
 import { NeoTextarea } from "../components/ui/NeoTextarea";
+import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
@@ -98,10 +99,9 @@ export function ApplicationDetailPage() {
 
     if (isLoading) {
         return (
-            <div className="max-w-3xl mx-auto" role="status" aria-busy="true">
-                <span className="sr-only">Loading application</span>
+            <div className="max-w-3xl mx-auto">
                 {backLink}
-                <div className="h-64 bg-white border-2 border-black rounded-lg shadow-neo animate-pulse" />
+                <NeoSkeleton label="Loading application" className="h-64" />
             </div>
         );
     }
@@ -245,7 +245,7 @@ export function ApplicationDetailPage() {
                                     href={application.applicationLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 font-bold text-neo-secondary hover:underline mt-1"
+                                    className="inline-flex items-center gap-2 font-bold underline hover:bg-neo-secondary mt-1"
                                 >
                                     {application.applicationLink} <ExternalLink className="w-4 h-4" />
                                 </a>

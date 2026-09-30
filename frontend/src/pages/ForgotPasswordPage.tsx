@@ -63,7 +63,7 @@ export function ForgotPasswordPage() {
                     )}
 
                     {mutation.isSuccess ? (
-                        <div className="bg-emerald-100 border-2 border-black p-4 font-bold text-slate-800">
+                        <div role="status" className="bg-emerald-100 border-2 border-black p-4 font-bold text-slate-800">
                             If that email is registered, a reset link is on its way. Check your inbox.
                         </div>
                     ) : (
@@ -90,7 +90,7 @@ export function ForgotPasswordPage() {
                     )}
 
                     <div className="mt-6 text-center text-sm font-bold">
-                        <Link to="/login" className="underline hover:text-neo-primary">
+                        <Link to="/login" className="underline hover:bg-neo-primary hover:text-black">
                             Back to login
                         </Link>
                     </div>

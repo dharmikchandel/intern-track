@@ -96,6 +96,8 @@ export function MainLayout() {
                                     key={item.href}
                                     to={item.href}
                                     title={!isSidebarOpen ? item.label : ""}
+                                    aria-label={!isSidebarOpen ? item.label : undefined}
+                                    aria-current={isActive ? "page" : undefined}
                                     className={cn(
                                         "flex items-center gap-3 px-3 py-3 font-bold rounded-neo transition-all border-2",
                                         isActive
@@ -104,7 +106,7 @@ export function MainLayout() {
                                         !isSidebarOpen && "justify-center px-0"
                                     )}
                                 >
-                                    <Icon className={cn("w-6 h-6", isActive && "stroke-[2.5px]")} />
+                                    <Icon className={cn("w-6 h-6", isActive && "stroke-[2.5px]")} aria-hidden />
                                     {isSidebarOpen && <span>{item.label}</span>}
                                 </Link>
                             );
@@ -115,12 +117,13 @@ export function MainLayout() {
                         <button
                             onClick={logout}
                             title={!isSidebarOpen ? "Logout" : ""}
+                            aria-label={!isSidebarOpen ? "Logout" : undefined}
                             className={cn(
-                                "flex items-center gap-3 px-3 py-3 w-full font-bold text-neo-destructive hover:bg-red-50 hover:border-neo-destructive border-2 border-transparent rounded-neo transition-all",
+                                "flex items-center gap-3 px-3 py-3 w-full font-bold text-neo-destructive hover:bg-neo-destructive hover:text-white hover:border-black border-2 border-transparent rounded-neo transition-all",
                                 !isSidebarOpen && "justify-center"
                             )}
                         >
-                            <LogOut className="w-6 h-6" />
+                            <LogOut className="w-6 h-6" aria-hidden />
                             {isSidebarOpen && <span>Logout</span>}
                         </button>
                     </div>
@@ -155,6 +158,7 @@ export function MainLayout() {
                                             key={item.href}
                                             to={item.href}
                                             onClick={toggleMobileMenu}
+                                            aria-current={isActive ? "page" : undefined}
                                             className={cn(
                                                 "flex items-center gap-4 px-4 py-3 font-bold rounded-neo transition-all border-2",
                                                 isActive
@@ -162,7 +166,7 @@ export function MainLayout() {
                                                     : "text-slate-500 border-transparent hover:border-black hover:bg-slate-50"
                                             )}
                                         >
-                                            <Icon className="w-6 h-6" />
+                                            <Icon className="w-6 h-6" aria-hidden />
                                             <span>{item.label}</span>
                                         </Link>
                                     );
@@ -174,9 +178,9 @@ export function MainLayout() {
                                     logout();
                                     toggleMobileMenu();
                                 }}
-                                className="flex items-center gap-4 px-4 py-3 font-bold text-neo-destructive border-2 border-transparent hover:border-neo-destructive rounded-neo hover:bg-red-50 mt-auto"
+                                className="flex items-center gap-4 px-4 py-3 font-bold text-neo-destructive border-2 border-transparent hover:border-black rounded-neo hover:bg-neo-destructive hover:text-white mt-auto"
                             >
-                                <LogOut className="w-6 h-6" />
+                                <LogOut className="w-6 h-6" aria-hidden />
                                 <span>Logout</span>
                             </button>
                         </div>

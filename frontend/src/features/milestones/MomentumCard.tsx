@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Award, Check, Flame } from "lucide-react";
 import { NeoCard } from "../../components/ui/NeoCard";
+import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { getMilestones, type Milestone, type MilestoneId } from "../../api/milestones";
 import { formatDay, localDay, plural } from "../recap/format";
 
@@ -75,9 +76,7 @@ export function MomentumCard() {
 
     if (isLoading) {
         return (
-            <NeoCard className="mb-8 h-56 animate-pulse" role="status" aria-busy="true">
-                <span className="sr-only">Loading your streak and milestones</span>
-            </NeoCard>
+            <NeoSkeleton label="Loading your streak and milestones" className="mb-8 h-56" />
         );
     }
     // A failure here shouldn't break the dashboard: the card just doesn't show.

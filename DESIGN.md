@@ -140,7 +140,7 @@ A restrained neutral base of black ink, white paper and pale-slate desk, carryin
 - **Signal Blue** (#3B82F6): the one action color. Primary buttons, the active navigation item, progress-bar fills, focus rings (at 50% opacity), links that need emphasis, and the "Job Hunt" headline word. Text on it is always black, never white.
 
 ### Secondary
-- **Ultraviolet** (#8E51FF): the secondary button, secondary link text (login/register links, detail-page links), the tinted eyebrow pill on the hero (at 10%), and the register headline. Used sparingly; it is the second voice, never the first.
+- **Ultraviolet** (#8E51FF): the secondary button, the tinted eyebrow pill on the hero (at 10%), and the register headline. Used sparingly; it is the second voice, never the first.
 
 ### Tertiary
 - **Hazard Orange** (#F97316): landing-page eyebrow pills and feature icon tiles only.
@@ -200,7 +200,7 @@ Depth is structural, not atmospheric. Every raised surface carries a hard, zero-
 
 ### Shadow Vocabulary
 - **Rest** (`box-shadow: 4px 4px 0 0 #000`): cards, buttons, tables, the floating undo toast, the active nav item.
-- **Hover / Lifted** (`6px 6px 0 0 #000` with a -2px x/y translate): buttons and landing feature cards on hover; also a dragged kanban card (with a 2-degree rotation).
+- **Hover / Lifted** (`6px 6px 0 0 #000` with a -2px x/y translate): buttons on hover (landing feature cards are static); also a dragged kanban card (with a 2-degree rotation).
 - **Pressed** (`2px 2px 0 0 #000`, no translate): buttons on `:active`.
 - **Small Edge** (`shadow-neo-sm`, `2px 2px 0 0 #000`): small pieces: avatar, eyebrow pills, icon tiles, tiny buttons.
 - **Overlay** (`shadow-neo-modal`, `8px 8px 0 0 #000`): the modal and the mobile drawer.
@@ -237,7 +237,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Cards / Containers
 - **Corner Style:** 8px (landing feature cards: 12px).
 - **Background:** Paper.
-- **Shadow Strategy:** Rest shadow; landing feature cards lift on hover.
+- **Shadow Strategy:** Rest shadow only. A card does not lift unless it is itself a link or button; landing feature cards are static.
 - **Border:** 2px black.
 - **Internal Padding:** 24px (cards), 12px (kanban cards and milestone tiles), 8px inside kanban columns.
 
@@ -264,9 +264,9 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - A paper card with a large 900-weight streak number beside a grid of milestone tiles. Achieved tiles are Achieved Mint with a solid black border and check icon; unachieved tiles are white with a dashed slate border, a hollow circle, and a 1px-bordered progress bar filled with Signal Blue.
 
 ### Loading, Error and Empty States
-- **Loading:** a pulsing paper block with the same border, radius and shadow as the thing that is loading (dashboard tiles, detail card, follow-up and momentum cards), with an `sr-only` status line. Never a bare "Loading..." line, and optional cards hold their space so the page does not jump.
+- **Loading:** `NeoSkeleton`, a pulsing paper block with the same border, radius and shadow as the thing that is loading (dashboard tiles, detail card, board, list, activity, recap, follow-up and momentum cards), with an `sr-only` status line. Never a bare "Loading..." line, and optional cards hold their space so the page does not jump.
 - **Error:** a `NeoAlert` with a "Try again" action where a retry makes sense. Never render zeros or blanks for data that failed to load. A missing record says "not found" (404 only); any other failure says it could not load.
-- **Empty:** a 2px dashed black box with a plain sentence and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
+- **Empty:** a 2px dashed black box with a plain sentence (the first-run dashboard replaces the zero tiles with "Track your first application") and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
 
 ### Banner and Empty States
 - **Notice banner:** Highlight Yellow, 2px black border, rest shadow, bold text, underlined inline actions.
@@ -282,6 +282,8 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Do** use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.
 - **Do** build page structure from paper cards on the Desk background with the dot grid behind them.
 - **Do** keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.
+- **Do** make text links black and underlined; on hover fill them with Signal Blue (black text) instead of recolouring the text, which drops contrast.
+- **Do** mark the current nav item with `aria-current="page"`, and announce async results (resend sent, link copied, success notices) in a `role="status"` region.
 - **Do** keep touch targets at least 44px (use padding, negative margin or `min-h-11`, not a bigger icon) and give every route a title via `RouteTitle`.
 - **Do** rely on the global 2px Ink focus outline for links and buttons; never suppress it with `outline-none` unless the control supplies its own visible ring.
 - **Do** give every icon-only control an `aria-label` and every form control a `<label htmlFor>`; build overlays on `useDialog`.
