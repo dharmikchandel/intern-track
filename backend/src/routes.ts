@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
+import milestonesRoutes from "./modules/milestones/milestones.routes.js";
 import analyticsRoutes from "./modules/analytics/analytics.routes.js";
 import applicationRoutes from "./modules/applications/application.routes.js";
 import passwordResetRoutes from "./modules/password-reset/password-reset.routes.js";
@@ -12,6 +13,7 @@ const router = Router();
 router.use("/auth", authRoutes);
 router.use("/applications", applicationRoutes);
 router.use("/analytics", analyticsRoutes);
+router.use("/milestones", milestonesRoutes);
 router.use("/password-reset", passwordResetRoutes);
 router.use("/email-verification", emailVerificationRoutes);
 router.use("/digest", digestRouter);

@@ -9,6 +9,7 @@ import { type CreateApplicationFormData, createApplicationSchema } from "../lib/
 import { createApplication, type ParsedJob } from "../api/applications";
 import { JobUrlCapture } from "../features/applications/JobUrlCapture";
 import { ArrowLeft } from "lucide-react";
+import { localDay } from "../features/recap/format";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -26,7 +27,10 @@ export function CreateApplicationPage() {
         resolver: zodResolver(createApplicationSchema),
         defaultValues: {
             status: "APPLIED",
-            appliedDate: new Date().toISOString().split('T')[0], // Today YYYY-MM-DD
+            // Today on the user's own calendar. (toISOString() is UTC, which is
+            // still "yesterday" for someone ahead of UTC in the early morning
+            // and would quietly break their applying streak.)
+            appliedDate: localDay(),
         }
     });
 
