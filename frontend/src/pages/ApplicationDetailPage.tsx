@@ -6,7 +6,9 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
-import { getApplication, updateApplication, deleteApplication } from "../api/applications";
+import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
+import { ActivityTimeline } from "../features/applications/ActivityTimeline";
+import { isFollowUpDue } from "../features/applications/statusMeta";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -50,7 +52,7 @@ export function ApplicationDetailPage() {
     }, [application, reset]);
 
     const updateMutation = useMutation({
-        mutationFn: (data: CreateApplicationFormData) => updateApplication(id!, data),
+        mutationFn: (data: UpdateApplicationPayload) => updateApplication(id!, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["application", id] });
             queryClient.invalidateQueries({ queryKey: ["applications"] });
@@ -69,10 +71,11 @@ export function ApplicationDetailPage() {
     });
 
     const onSubmit = (data: CreateApplicationFormData) => {
-        const payload: CreateApplicationFormData = {
+        const payload: UpdateApplicationPayload = {
             ...data,
             appliedDate: new Date(data.appliedDate).toISOString(),
-            followUpDate: data.followUpDate ? new Date(data.followUpDate).toISOString() : undefined,
+            // null (not undefined) so emptying the field actually clears it.
+            followUpDate: data.followUpDate ? new Date(data.followUpDate).toISOString() : null,
         };
         updateMutation.mutate(payload);
     };
@@ -147,6 +150,13 @@ export function ApplicationDetailPage() {
                         </div>
 
                         <NeoInput
+                            label="Follow-up Date (optional)"
+                            type="date"
+                            error={errors.followUpDate?.message}
+                            {...register("followUpDate")}
+                        />
+
+                        <NeoInput
                             label="Application Link"
                             error={errors.applicationLink?.message}
                             {...register("applicationLink")}
@@ -185,6 +195,17 @@ export function ApplicationDetailPage() {
                             </div>
                         </div>
 
+                        {application.followUpDate && (
+                            <div>
+                                <span className="block text-sm font-bold text-gray-500 uppercase">Follow-up Date</span>
+                                <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-destructive" : ""}`}>
+                                    <Calendar className="w-5 h-5" />
+                                    {format(new Date(application.followUpDate), "PPP")}
+                                    {isFollowUpDue(application) && <span className="text-xs uppercase border-2 border-neo-destructive px-1">Due</span>}
+                                </div>
+                            </div>
+                        )}
+
                         {application.applicationLink && (
                             <div>
                                 <span className="block text-sm font-bold text-gray-500 uppercase">Link</span>
@@ -210,6 +231,8 @@ export function ApplicationDetailPage() {
                     </div>
                 )}
             </NeoCard>
+
+            <ActivityTimeline applicationId={application.id} />
 
             <NeoModal
                 isOpen={showDeleteModal}

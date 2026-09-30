@@ -41,6 +41,8 @@ export function CreateApplicationPage() {
         const payload: CreateApplicationFormData = {
             ...data,
             appliedDate: new Date(data.appliedDate).toISOString(),
+            // Optional: a blank stays "" and is dropped before the request.
+            followUpDate: data.followUpDate ? new Date(data.followUpDate).toISOString() : "",
         };
         mutation.mutate(payload);
     };
@@ -94,6 +96,13 @@ export function CreateApplicationPage() {
                             {...register("appliedDate")}
                         />
                     </div>
+
+                    <NeoInput
+                        label="Follow-up Date (optional)"
+                        type="date"
+                        error={errors.followUpDate?.message}
+                        {...register("followUpDate")}
+                    />
 
                     <NeoInput
                         label="Application Link"
