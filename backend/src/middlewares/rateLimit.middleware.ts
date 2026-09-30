@@ -41,3 +41,15 @@ export const publicRecapRateLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: "Too many requests, please slow down.", code: "RATE_LIMITED" },
 });
+
+// Import parses up to 1 MB and writes up to 2,000 rows; export scans the user's
+// whole table. Both are one-off actions for a person, so a modest per-user
+// budget (a preview and a confirm are two calls) is plenty.
+export const bulkDataRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => (req as AuthRequest).userId ?? ipKeyGenerator(req.ip ?? ""),
+  message: { error: "Too many import/export requests, please try again later.", code: "RATE_LIMITED" },
+});

@@ -6,9 +6,11 @@ interface NeoModalProps {
     onClose: () => void;
     title?: string;
     children: ReactNode;
+    // Tailwind max-width class; the default suits short forms.
+    widthClass?: string;
 }
 
-export function NeoModal({ isOpen, onClose, title, children }: NeoModalProps) {
+export function NeoModal({ isOpen, onClose, title, children, widthClass = "max-w-lg" }: NeoModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -20,7 +22,7 @@ export function NeoModal({ isOpen, onClose, title, children }: NeoModalProps) {
             />
 
             {/* Content */}
-            <div className="relative w-full max-w-lg bg-white border-2 border-black shadow-neo-modal p-6 z-10">
+            <div className={`relative w-full ${widthClass} max-h-[90vh] overflow-y-auto bg-white border-2 border-black shadow-neo-modal p-6 z-10`}>
                 <div className="flex items-center justify-between mb-4">
                     {title && <h2 className="text-xl font-black uppercase">{title}</h2>}
                     <button

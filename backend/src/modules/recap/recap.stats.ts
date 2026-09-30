@@ -1,10 +1,14 @@
 import crypto from "node:crypto";
 import { AppError } from "../../utils/AppError.js";
+import { DAY_MS, dayToMs, longestStreak, toUtcDay } from "../../utils/days.js";
+
+// Kept exported from here so existing imports keep working; the day maths now
+// lives in utils/days.ts because milestones use it too.
+export { longestStreak, toUtcDay };
 
 // Pure logic for the recap: day/week maths, period validation, the slug, and
 // the whitelist that decides what a public page may ever show. No database here.
 
-const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_PERIOD_DAYS = 5 * 366;
 
 export interface RecapStats {
@@ -34,15 +38,6 @@ export interface Period {
   endDay: string;
 }
 
-// YYYY-MM-DD (UTC) for a Date.
-export function toUtcDay(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function dayToMs(day: string): number {
-  return Date.parse(`${day}T00:00:00.000Z`);
-}
-
 export function parsePeriod(startDay: string, endDay: string): Period {
   const start = dayToMs(startDay);
   const end = dayToMs(endDay);
@@ -54,21 +49,6 @@ export function parsePeriod(startDay: string, endDay: string): Period {
   if ((end - start) / DAY_MS > MAX_PERIOD_DAYS) throw bad("Choose a period of at most 5 years");
 
   return { start: new Date(start), end: new Date(end), endExclusive: new Date(end + DAY_MS), startDay, endDay };
-}
-
-// Longest run of consecutive calendar days in a list of YYYY-MM-DD strings
-// (duplicates and order don't matter).
-export function longestStreak(days: string[]): number {
-  const sorted = [...new Set(days)].map(dayToMs).sort((a, b) => a - b);
-  let best = 0;
-  let run = 0;
-  let previous = Number.NaN;
-  for (const ms of sorted) {
-    run = ms - previous === DAY_MS ? run + 1 : 1;
-    best = Math.max(best, run);
-    previous = ms;
-  }
-  return best;
 }
 
 // Monday (UTC) of the week containing the day, as YYYY-MM-DD.

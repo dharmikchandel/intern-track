@@ -15,6 +15,7 @@ import {
 } from "../components/ui/NeoTable";
 import { listApplications, type ApplicationSort } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
+import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
 import { STATUS_COLORS } from "../features/applications/statusMeta";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
 import { cn } from "../lib/utils";
@@ -86,7 +87,8 @@ export function ApplicationsPage() {
         };
     }
 
-    const hasFilters = Boolean(debouncedSearch || needsFollowUp || statusFilter);
+    // The board ignores the status dropdown, so it isn't a filter there.
+    const hasFilters = Boolean(debouncedSearch || needsFollowUp || (view === "list" && statusFilter));
 
     return (
         <div>
@@ -97,7 +99,17 @@ export function ApplicationsPage() {
                     </h1>
                     <p className="text-gray-600 font-bold">Manage your job hunt</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-start gap-4">
+                    <ImportCsvButton />
+                    {/* The board has no status filter, so only send it from the list view. */}
+                    <ExportCsvButton
+                        filtered={hasFilters}
+                        filters={{
+                            q: debouncedSearch || undefined,
+                            needsFollowUp: needsFollowUp || undefined,
+                            status: view === "list" ? statusFilter || undefined : undefined,
+                        }}
+                    />
                     <div role="group" aria-label="View" className="flex border-2 border-black rounded-lg overflow-hidden shadow-neo">
                         {([
                             ["list", List, "List"],

@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { client } from "./client";
 import { type CreateApplicationFormData } from "../lib/schemas";
 
@@ -121,7 +122,7 @@ export type ActivityType =
 export interface ActivityItem {
     id: string;
     type: ActivityType;
-    metadata: { from?: string | null; to?: string | null; status?: string } | null;
+    metadata: { from?: string | null; to?: string | null; status?: string; source?: string } | null;
     createdAt: string;
 }
 
@@ -145,4 +146,54 @@ export interface ParsedJob {
 export async function parseJobUrl(url: string) {
     const res = await client.post<ParsedJob>("/applications/parse-url", { url });
     return res.data;
+}
+
+// ---- CSV import / export ---------------------------------------------------
+
+export type CsvDateFormat = "iso" | "mdy" | "dmy";
+
+export interface CsvImportSummary {
+    dryRun: boolean;
+    // What each header in the file was understood as (field null = ignored).
+    columns: { header: string; field: string | null }[];
+    totalRows: number;
+    importable: number;
+    duplicates: number;
+    invalid: number;
+    imported: number;
+    // Capped lists: `invalid` / `duplicates` are the true totals.
+    errors: { row: number; message: string }[];
+    duplicateRows: { row: number; companyName: string; role: string; appliedDate: string }[];
+    sample: { companyName: string; role: string; status: ApplicationStatus; appliedDate: string }[];
+}
+
+// The file goes up as the raw request body (text/csv), not wrapped in JSON or
+// multipart. dryRun=true validates and reports without writing anything.
+export async function importApplicationsCsv(file: Blob, options: { dryRun: boolean; dateFormat: CsvDateFormat }) {
+    const res = await client.post<CsvImportSummary>("/applications/import", file, {
+        params: options,
+        headers: { "Content-Type": "text/csv" },
+    });
+    return res.data;
+}
+
+// The access token lives in memory (not a cookie), so a plain <a href> download
+// can't be authenticated: fetch the file through the API client and hand the
+// browser a blob instead.
+export async function exportApplicationsCsv(params?: { q?: string; status?: string; needsFollowUp?: boolean }) {
+    try {
+        const res = await client.get<Blob>("/applications/export", { params, responseType: "blob" });
+        return res.data;
+    } catch (err) {
+        // With responseType "blob" even the JSON error body arrives as a Blob;
+        // unwrap it so getErrorMessage() can read { error }.
+        if (isAxiosError(err) && err.response?.data instanceof Blob) {
+            try {
+                err.response.data = JSON.parse(await err.response.data.text());
+            } catch {
+                /* not JSON: keep the generic message */
+            }
+        }
+        throw err;
+    }
 }

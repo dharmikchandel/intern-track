@@ -15,7 +15,7 @@ function describeActivity(item: ActivityItem): string {
     const m = item.metadata;
     switch (item.type) {
         case "APPLICATION_CREATED":
-            return "Application added";
+            return m?.source === "import" ? "Imported from CSV" : "Application added";
         case "STATUS_CHANGED":
             return `Status changed from ${statusLabel(m?.from)} to ${statusLabel(m?.to)}`;
         case "NOTES_CHANGED":
