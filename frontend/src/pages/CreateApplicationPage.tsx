@@ -5,11 +5,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
+import { NeoAlert } from "../components/ui/NeoAlert";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { createApplication, type ParsedJob } from "../api/applications";
 import { JobUrlCapture } from "../features/applications/JobUrlCapture";
 import { ArrowLeft } from "lucide-react";
 import { localDay } from "../features/recap/format";
+import { getErrorMessage } from "../lib/utils";
 import { STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
@@ -156,6 +158,10 @@ export function CreateApplicationPage() {
                             {...register("notes")}
                         />
                     </div>
+
+                    {mutation.isError && (
+                        <NeoAlert>{getErrorMessage(mutation.error, "Couldn't save this application. Please try again.")}</NeoAlert>
+                    )}
 
                     <NeoButton
                         type="submit"

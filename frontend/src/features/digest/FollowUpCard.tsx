@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BellRing } from "lucide-react";
+import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoCard } from "../../components/ui/NeoCard";
 import { listApplications } from "../../api/applications";
 import { getDigestPreferences, setDigestPreferences } from "../../api/digest";
+import { getErrorMessage } from "../../lib/utils";
 
 // Overdue count comes from the existing list endpoint (limit 1, we only want
 // meta.total), so there is no dedicated endpoint to keep in sync with the
@@ -35,7 +37,7 @@ export function FollowUpCard() {
     if (overdue === undefined) return null;
 
     return (
-        <NeoCard className={`mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 ${overdue > 0 ? "bg-red-50" : "bg-white"}`}>
+        <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 ${overdue > 0 ? "bg-red-50" : "bg-white"}`}>
             <div className="flex items-center gap-4">
                 <BellRing className={`w-8 h-8 ${overdue > 0 ? "text-neo-destructive" : "text-slate-500"}`} />
                 <div>
@@ -60,6 +62,12 @@ export function FollowUpCard() {
                     />
                     Weekly email reminders
                 </label>
+            )}
+
+            {toggle.isError && (
+                <NeoAlert className="md:basis-full">
+                    {getErrorMessage(toggle.error, "Couldn't update your reminder setting. It is back to what it was.")}
+                </NeoAlert>
             )}
         </NeoCard>
     );

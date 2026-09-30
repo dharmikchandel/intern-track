@@ -6,10 +6,12 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
+import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
 import { ActivityTimeline } from "../features/applications/ActivityTimeline";
 import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
+import { getErrorMessage } from "../lib/utils";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
@@ -69,6 +71,11 @@ export function ApplicationDetailPage() {
             navigate("/applications");
         },
     });
+
+    const closeDeleteModal = () => {
+        deleteMutation.reset();
+        setShowDeleteModal(false);
+    };
 
     const onSubmit = (data: CreateApplicationFormData) => {
         const payload: UpdateApplicationPayload = {
@@ -160,11 +167,24 @@ export function ApplicationDetailPage() {
                             />
                         </div>
 
+                        {updateMutation.isError && (
+                            <NeoAlert>{getErrorMessage(updateMutation.error, "Couldn't save your changes. Please try again.")}</NeoAlert>
+                        )}
+
                         <div className="flex gap-4">
                             <NeoButton type="submit" disabled={updateMutation.isPending}>
                                 {updateMutation.isPending ? "Saving..." : "Save Changes"}
                             </NeoButton>
-                            <NeoButton type="button" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</NeoButton>
+                            <NeoButton
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                    updateMutation.reset();
+                                    setIsEditing(false);
+                                }}
+                            >
+                                Cancel
+                            </NeoButton>
                         </div>
                     </form>
                 ) : (
@@ -226,12 +246,15 @@ export function ApplicationDetailPage() {
 
             <NeoModal
                 isOpen={showDeleteModal}
-                onClose={() => setShowDeleteModal(false)}
+                onClose={closeDeleteModal}
                 title="Delete Application?"
             >
                 <p className="font-bold mb-6">Are you sure you want to delete this application? This action cannot be undone.</p>
+                {deleteMutation.isError && (
+                    <NeoAlert className="mb-6">{getErrorMessage(deleteMutation.error, "Couldn't delete this application. Please try again.")}</NeoAlert>
+                )}
                 <div className="flex justify-end gap-4">
-                    <NeoButton variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</NeoButton>
+                    <NeoButton variant="secondary" onClick={closeDeleteModal}>Cancel</NeoButton>
                     <NeoButton
                         variant="destructive"
                         onClick={() => deleteMutation.mutate()}

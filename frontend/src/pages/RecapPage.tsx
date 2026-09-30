@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, Copy, Link2, Trash2 } from "lucide-react";
+import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
@@ -116,6 +117,10 @@ export function RecapPage() {
                             </p>
                         )}
                         {create.isError && <p role="alert" className="mt-3 font-bold text-neo-destructive">{getErrorMessage(create.error, "Couldn't create the link.")}</p>}
+
+                        {revoke.isError && (
+                            <NeoAlert className="mt-6">{getErrorMessage(revoke.error, "Couldn't turn that link off. It is still active; please try again.")}</NeoAlert>
+                        )}
 
                         {shares.data && shares.data.length > 0 && (
                             <ul className="mt-6 space-y-3">

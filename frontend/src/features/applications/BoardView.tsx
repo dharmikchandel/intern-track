@@ -16,8 +16,9 @@ import {
     type DragStartEvent,
 } from "@dnd-kit/core";
 import { AlertCircle, GripVertical, Undo2 } from "lucide-react";
+import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoButton } from "../../components/ui/NeoButton";
-import { cn } from "../../lib/utils";
+import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
 import { moveCardInBoard } from "./board";
 import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "./statusMeta";
@@ -125,6 +126,13 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
 
     return (
         <>
+            {/* The card has already snapped back (see onError); this says why. It clears on the next move. */}
+            {moveMutation.isError && (
+                <NeoAlert className="mb-4">
+                    {getErrorMessage(moveMutation.error, "Couldn't move that application, so it is back where it was.")}
+                </NeoAlert>
+            )}
+
             <DndContext
                 sensors={sensors}
                 onDragStart={handleDragStart}
