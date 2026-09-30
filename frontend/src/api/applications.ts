@@ -129,3 +129,20 @@ export async function getApplicationActivity(id: string) {
     const res = await client.get<{ items: ActivityItem[] }>(`/applications/${id}/activity`);
     return res.data.items;
 }
+
+export type CaptureConfidence = "high" | "medium" | "low" | "none";
+
+export interface ParsedJob {
+    // Empty string = not found. Only non-empty fields are used to prefill.
+    companyName: string;
+    role: string;
+    applicationLink: string;
+    source: string;
+    confidence: CaptureConfidence;
+    warnings: string[];
+}
+
+export async function parseJobUrl(url: string) {
+    const res = await client.post<ParsedJob>("/applications/parse-url", { url });
+    return res.data;
+}

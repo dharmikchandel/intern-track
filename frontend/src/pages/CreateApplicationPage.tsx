@@ -6,8 +6,10 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
-import { createApplication } from "../api/applications";
+import { createApplication, type ParsedJob } from "../api/applications";
+import { JobUrlCapture } from "../features/applications/JobUrlCapture";
 import { ArrowLeft } from "lucide-react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 export function CreateApplicationPage() {
@@ -17,6 +19,8 @@ export function CreateApplicationPage() {
     const {
         register,
         handleSubmit,
+        getValues,
+        setValue,
         formState: { errors },
     } = useForm<CreateApplicationFormData>({
         resolver: zodResolver(createApplicationSchema),
@@ -25,6 +29,34 @@ export function CreateApplicationPage() {
             appliedDate: new Date().toISOString().split('T')[0], // Today YYYY-MM-DD
         }
     });
+
+    // What autofill last wrote into each field. A field may be overwritten by a
+    // later autofill only if it is empty or still holds that value, so nothing
+    // the user typed or edited is ever replaced.
+    const autofilled = useRef<Partial<Record<"companyName" | "role" | "applicationLink", string>>>({});
+
+    function applyParsed(job: ParsedJob) {
+        const filled: string[] = [];
+        const kept: string[] = [];
+        const fields = [
+            ["companyName", "company", job.companyName],
+            ["role", "role", job.role],
+            ["applicationLink", "link", job.applicationLink],
+        ] as const;
+
+        for (const [field, label, value] of fields) {
+            if (!value) continue;
+            const current = getValues(field) ?? "";
+            if (current === "" || current === autofilled.current[field]) {
+                setValue(field, value, { shouldDirty: true, shouldValidate: true });
+                autofilled.current[field] = value;
+                filled.push(label);
+            } else if (current !== value) {
+                kept.push(label);
+            }
+        }
+        return { filled, kept };
+    }
 
     const mutation = useMutation({
         mutationFn: createApplication,
@@ -57,6 +89,8 @@ export function CreateApplicationPage() {
                 <h1 className="text-3xl font-black mb-6 uppercase border-b-2 border-black pb-4">
                     New Application
                 </h1>
+
+                <JobUrlCapture onParsed={applyParsed} />
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
