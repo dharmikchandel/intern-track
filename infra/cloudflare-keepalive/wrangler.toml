@@ -14,3 +14,19 @@ crons = ["*/10 * * * *"]
 API_URL = "https://intern-track-server.onrender.com"
 WINDOW_START_HOUR_IST = "8"
 WINDOW_END_HOUR_IST = "24"
+
+# ...
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[observability.traces]
+enabled = false
+head_sampling_rate = 1
+persist = true
+
+[observability.issue_detection]
+enabled = false
+# ...
