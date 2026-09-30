@@ -7,6 +7,14 @@
         @apply bg-neo-bg text-slate-800 font-sans;
     }
 
+    /* One keyboard-focus rule for everything clickable: a 2px Ink outline.
+       :where() keeps specificity at a single pseudo-class, so components that
+       set their own ring (inputs use focus:outline-none + a blue ring) win. */
+    :where(a, button, select, summary, [role="button"], input[type="checkbox"], input[type="radio"]):focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+
     h1,
     h2,
     h3,

@@ -64,7 +64,7 @@ export function FeaturesSection() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
-                            <div className={`w-14 h-14 ${feature.color} border-2 border-black rounded-lg flex items-center justify-center mb-6 shadow-[2px_2px_0 0_#000]`}>
+                            <div className={`w-14 h-14 ${feature.color} border-2 border-black rounded-lg flex items-center justify-center mb-6 shadow-neo-sm`}>
                                 <feature.icon className="w-8 h-8 text-black" strokeWidth={2.5} />
                             </div>
                             <h3 className="text-2xl font-black mb-3">{feature.title}</h3>

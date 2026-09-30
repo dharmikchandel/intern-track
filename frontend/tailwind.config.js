@@ -20,6 +20,8 @@ export default {
                 'neo': '4px 4px 0px 0px #000000',
                 'neo-hover': '6px 6px 0px 0px #000000',
                 'neo-active': '2px 2px 0px 0px #000000',
+                'neo-sm': '2px 2px 0px 0px #000000', // small pieces: avatar, pills, icon tiles
+                'neo-modal': '8px 8px 0px 0px #000000', // overlays: modal, mobile drawer
             },
             borderRadius: {
                 'neo': '0.75rem', // 12px
