@@ -13,7 +13,7 @@ import { getErrorMessage } from "../../lib/utils";
 export function FollowUpCard() {
     const queryClient = useQueryClient();
 
-    const { data: overdue } = useQuery({
+    const { data: overdue, isError } = useQuery({
         queryKey: ["applications", "follow-up-count"],
         queryFn: () => listApplications({ needsFollowUp: true, limit: 1 }),
         select: (res) => res.meta.total,
@@ -34,7 +34,15 @@ export function FollowUpCard() {
         onSettled: () => queryClient.invalidateQueries({ queryKey: ["digest-preferences"] }),
     });
 
-    if (overdue === undefined) return null;
+    // The card is optional: drop it if the count can't load, but hold its space while it does.
+    if (isError) return null;
+    if (overdue === undefined) {
+        return (
+            <NeoCard className="mb-8 h-24 animate-pulse" role="status" aria-busy="true">
+                <span className="sr-only">Checking follow-ups</span>
+            </NeoCard>
+        );
+    }
 
     return (
         <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 ${overdue > 0 ? "bg-yellow-100" : "bg-white"}`}>
@@ -53,7 +61,7 @@ export function FollowUpCard() {
             </div>
 
             {prefs && (
-                <label className="flex items-center gap-2 font-bold text-sm cursor-pointer select-none">
+                <label className="flex items-center gap-2 font-bold text-sm cursor-pointer select-none min-h-11">
                     <input
                         type="checkbox"
                         className="w-5 h-5 accent-black"

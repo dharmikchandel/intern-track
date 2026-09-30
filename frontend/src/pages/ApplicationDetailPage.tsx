@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -25,7 +26,7 @@ export function ApplicationDetailPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const { data: application, isLoading, isError } = useQuery({
+    const { data: application, isLoading, isError, error, refetch } = useQuery({
         queryKey: ["application", id],
         queryFn: () => getApplication(id!),
         enabled: !!id,
@@ -89,14 +90,41 @@ export function ApplicationDetailPage() {
         updateMutation.mutate(payload);
     };
 
-    if (isLoading) return <div className="p-10 text-center font-bold">Loading...</div>;
-    if (isError || !application) return <div className="p-10 text-center font-bold text-neo-destructive">Application not found.</div>;
+    const backLink = (
+        <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
+            <ArrowLeft className="w-4 h-4" /> Back to List
+        </Link>
+    );
+
+    if (isLoading) {
+        return (
+            <div className="max-w-3xl mx-auto" role="status" aria-busy="true">
+                <span className="sr-only">Loading application</span>
+                {backLink}
+                <div className="h-64 bg-white border-2 border-black rounded-lg shadow-neo animate-pulse" />
+            </div>
+        );
+    }
+
+    if (isError || !application) {
+        const notFound = isAxiosError(error) && error.response?.status === 404;
+        return (
+            <div className="max-w-3xl mx-auto">
+                {backLink}
+                <NeoCard>
+                    <h1 className="text-3xl font-black uppercase mb-2">{notFound ? "Application not found" : "Couldn't load this application"}</h1>
+                    <p className="font-bold text-slate-600 mb-6">
+                        {notFound ? "It may have been deleted, or the link is wrong." : "Check your connection and try again."}
+                    </p>
+                    {!notFound && <NeoButton onClick={() => refetch()}>Try again</NeoButton>}
+                </NeoCard>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-3xl mx-auto">
-            <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
-                <ArrowLeft className="w-4 h-4" /> Back to List
-            </Link>
+            {backLink}
 
             <NeoCard className="mb-6">
                 <div className="flex flex-col md:flex-row justify-between items-start mb-6 border-b-2 border-black pb-4 gap-4">

@@ -66,13 +66,20 @@ function MilestoneTile({ milestone }: { milestone: Milestone }) {
 
 export function MomentumCard() {
     const today = localDay();
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         // Under ["analytics"] so the invalidation every application write
         // already does refreshes this too.
         queryKey: ["analytics", "milestones", today],
         queryFn: () => getMilestones(today),
     });
 
+    if (isLoading) {
+        return (
+            <NeoCard className="mb-8 h-56 animate-pulse" role="status" aria-busy="true">
+                <span className="sr-only">Loading your streak and milestones</span>
+            </NeoCard>
+        );
+    }
     // A failure here shouldn't break the dashboard: the card just doesn't show.
     if (!data) return null;
     const { streak, milestones } = data;

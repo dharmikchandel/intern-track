@@ -18,6 +18,7 @@ import {
 import { AlertCircle, GripVertical, Undo2 } from "lucide-react";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoButton } from "../../components/ui/NeoButton";
+import { NeoLinkButton } from "../../components/ui/NeoLinkButton";
 import { NeoSelect } from "../../components/ui/NeoSelect";
 import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
@@ -118,7 +119,10 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     if (total === 0) {
         return (
             <div className="text-center p-10 border-2 border-dashed border-black bg-white">
-                <p className="font-bold text-lg">{q || needsFollowUp ? "No applications match these filters." : "No applications yet."}</p>
+                <p className="font-bold text-lg mb-4">{q || needsFollowUp ? "No applications match these filters." : "No applications yet."}</p>
+                {!q && !needsFollowUp && (
+                    <NeoLinkButton to="/applications/new" variant="secondary">Add your first application</NeoLinkButton>
+                )}
             </div>
         );
     }
@@ -163,14 +167,14 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
             {undo && (
                 <div
                     role="status"
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-white border-2 border-black shadow-neo rounded-lg px-4 py-3 font-bold"
+                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[calc(100vw-2rem)] flex items-center gap-4 bg-white border-2 border-black shadow-neo rounded-lg px-4 py-3 font-bold"
                 >
                     <span>
                         {undo.company} moved to {STATUS_LABELS[undo.to]}
                     </span>
                     <NeoButton
                         variant="secondary"
-                        className="px-3 py-1 text-sm h-auto flex items-center gap-1"
+                        className="px-3 py-2 text-sm flex items-center gap-1"
                         onClick={() => {
                             moveMutation.mutate({ id: undo.id, status: undo.from });
                             setUndo(null);
@@ -178,7 +182,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                     >
                         <Undo2 className="w-4 h-4" /> Undo
                     </NeoButton>
-                    <button className="text-sm underline" onClick={() => setUndo(null)}>
+                    <button className="text-sm underline p-2 -m-2" onClick={() => setUndo(null)}>
                         Dismiss
                     </button>
                 </div>
@@ -205,7 +209,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
             ref={setNodeRef}
             aria-label={`${STATUS_LABELS[status]} column`}
             className={cn(
-                "min-w-[200px] flex-1 border-2 border-black rounded-lg bg-white/60 transition-colors",
+                "min-w-[200px] flex-1 border-2 border-black rounded-lg bg-white transition-colors",
                 isOver && "bg-neo-primary/20"
             )}
         >
@@ -214,6 +218,11 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
                 <span className="bg-white text-black border-2 border-black rounded-full px-2 text-xs">{total}</span>
             </header>
             <div className="p-2 flex flex-col gap-3 min-h-[80px]">
+                {cards.length === 0 && (
+                    <div className="flex-1 flex items-center justify-center border-2 border-dashed border-slate-400 rounded-lg p-3 text-center text-xs font-bold text-slate-500">
+                        Nothing here yet
+                    </div>
+                )}
                 {cards.map((app) => (
                     <DraggableCard key={app.id} app={app} onMove={onMove} />
                 ))}
@@ -221,7 +230,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
                     <div className="text-center text-xs font-bold text-slate-600">
                         Showing {cards.length} of {total}
                         {canShowMore ? (
-                            <button className="block mx-auto mt-1 underline" onClick={onShowMore}>
+                            <button className="block mx-auto px-3 py-2 underline" onClick={onShowMore}>
                                 Show more
                             </button>
                         ) : (
@@ -246,7 +255,7 @@ function DraggableCard({ app, onMove }: { app: Application; onMove: (card: Appli
                         {...listeners}
                         {...attributes}
                         aria-label={`Drag ${app.companyName} to another column`}
-                        className="touch-none cursor-grab active:cursor-grabbing p-1 -m-1"
+                        className="touch-none cursor-grab active:cursor-grabbing p-3.5 -m-3.5"
                     >
                         <GripVertical className="w-4 h-4" />
                     </button>
@@ -282,7 +291,8 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
                 <span>Applied {format(new Date(app.appliedDate), "MMM d")}</span>
                 {app.followUpDate && (
                     <span className={cn("inline-flex items-center gap-1", due && "text-neo-destructive")}>
-                        {due && <AlertCircle className="w-3 h-3" />}
+                        {due && <AlertCircle className="w-3 h-3" aria-hidden />}
+                        {due && <span className="sr-only">Overdue: </span>}
                         Follow up {format(new Date(app.followUpDate), "MMM d")}
                     </span>
                 )}
@@ -294,7 +304,7 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
                     aria-label={`Move ${app.companyName} to`}
                     value={app.status}
                     onChange={(e) => onMove(e.target.value as ApplicationStatus)}
-                    className="mt-2 p-1 text-xs font-bold"
+                    className="mt-2 p-1 text-xs font-bold min-h-11 md:min-h-0"
                 >
                     {STATUS_ORDER.map((s) => (
                         <option key={s} value={s}>

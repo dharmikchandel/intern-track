@@ -80,7 +80,7 @@ export function RecapPage() {
                                         setEnd(e);
                                     }}
                                     className={cn(
-                                        "px-3 py-2 border-2 border-black font-bold text-sm rounded-md",
+                                        "px-3 py-2.5 border-2 border-black font-bold text-sm rounded-md",
                                         active ? "bg-neo-primary" : "bg-white hover:bg-slate-100"
                                     )}
                                 >
@@ -138,13 +138,13 @@ export function RecapPage() {
                                     <p className="font-black text-sm">{formatPeriod(s.periodStart.slice(0, 10), s.periodEnd.slice(0, 10))}</p>
                                     <p className="text-xs font-mono break-all my-1">{shareUrl(s.slug)}</p>
                                     <div className="flex gap-2 mt-2">
-                                        <NeoButton variant="secondary" className="px-3 py-1 text-sm h-auto flex items-center gap-1" onClick={() => copy(s.slug)}>
+                                        <NeoButton variant="secondary" className="px-3 py-2 text-sm flex items-center gap-1" onClick={() => copy(s.slug)}>
                                             {copied === s.slug ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                                             {copied === s.slug ? "Copied" : "Copy link"}
                                         </NeoButton>
                                         <NeoButton
                                             variant="destructive"
-                                            className="px-3 py-1 text-sm h-auto flex items-center gap-1"
+                                            className="px-3 py-2 text-sm flex items-center gap-1"
                                             disabled={revoke.isPending}
                                             onClick={() => revoke.mutate(s.id)}
                                         >

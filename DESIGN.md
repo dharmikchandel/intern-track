@@ -208,6 +208,8 @@ Depth is structural, not atmospheric. Every raised surface carries a hard, zero-
 ### Named Rules
 **The Hard-Edge Rule.** A shadow is either a solid black offset with zero blur, or it is absent. Never introduce a blurred shadow.
 
+**The Reduced-Motion Rule.** With `prefers-reduced-motion`, nothing translates: hover/press lifts stop moving but the hard shadow still grows and shrinks, framer entrances keep only their opacity fade, and pulses go still. State changes must stay visible without movement.
+
 **The Press Rule.** Interactive means pressable. Anything interactive with a resting shadow must lift on hover and sink on active. Cards keep their resting shadow as their physical edge, but a card only moves if it is itself a link or button.
 
 ## Shapes
@@ -261,6 +263,11 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Momentum Card (signature)
 - A paper card with a large 900-weight streak number beside a grid of milestone tiles. Achieved tiles are Achieved Mint with a solid black border and check icon; unachieved tiles are white with a dashed slate border, a hollow circle, and a 1px-bordered progress bar filled with Signal Blue.
 
+### Loading, Error and Empty States
+- **Loading:** a pulsing paper block with the same border, radius and shadow as the thing that is loading (dashboard tiles, detail card, follow-up and momentum cards), with an `sr-only` status line. Never a bare "Loading..." line, and optional cards hold their space so the page does not jump.
+- **Error:** a `NeoAlert` with a "Try again" action where a retry makes sense. Never render zeros or blanks for data that failed to load. A missing record says "not found" (404 only); any other failure says it could not load.
+- **Empty:** a 2px dashed black box with a plain sentence and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
+
 ### Banner and Empty States
 - **Notice banner:** Highlight Yellow, 2px black border, rest shadow, bold text, underlined inline actions.
 - **Empty state:** Paper, 2px *dashed* black border, centered bold message, no shadow.
@@ -275,6 +282,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Do** use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.
 - **Do** build page structure from paper cards on the Desk background with the dot grid behind them.
 - **Do** keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.
+- **Do** keep touch targets at least 44px (use padding, negative margin or `min-h-11`, not a bigger icon) and give every route a title via `RouteTitle`.
 - **Do** rely on the global 2px Ink focus outline for links and buttons; never suppress it with `outline-none` unless the control supplies its own visible ring.
 - **Do** give every icon-only control an `aria-label` and every form control a `<label htmlFor>`; build overlays on `useDialog`.
 - **Do** use dashed 2px borders to mean "empty", "unachieved" or "drop target".

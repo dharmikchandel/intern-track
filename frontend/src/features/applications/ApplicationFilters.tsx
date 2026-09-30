@@ -53,7 +53,7 @@ export function ApplicationFilters({
                 />
             </div>
 
-            <label className="flex items-center gap-2 font-bold cursor-pointer select-none py-2">
+            <label className="flex items-center gap-2 font-bold cursor-pointer select-none min-h-11">
                 <input
                     type="checkbox"
                     className="w-5 h-5 accent-black"

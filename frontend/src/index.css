@@ -24,3 +24,18 @@
         @apply font-extrabold;
     }
 }
+
+/* Reduced motion, without losing feedback: hover/press lifts stop moving (the
+   hard shadow still grows and shrinks, so the state change stays visible) and
+   loading pulses go still. Framer animations are handled by <MotionConfig>. */
+@media (prefers-reduced-motion: reduce) {
+    *:hover,
+    *:active {
+        --tw-translate-x: 0px !important;
+        --tw-translate-y: 0px !important;
+    }
+
+    .animate-pulse {
+        animation: none;
+    }
+}

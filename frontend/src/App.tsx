@@ -1,9 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MotionConfig } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "./features/auth/AuthContext";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import { MainLayout } from "./components/layout/MainLayout";
+import { RouteTitle } from "./components/layout/RouteTitle";
 
 
 // Pages
@@ -20,41 +22,46 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
 import { CreateApplicationPage } from "./pages/CreateApplicationPage";
 import { ApplicationDetailPage } from "./pages/ApplicationDetailPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/verify-email" element={<VerifyEmailPage />} />
-            <Route path="/unsubscribe" element={<UnsubscribePage />} />
-            <Route path="/r/:slug" element={<PublicRecapPage />} />
+      {/* "user": honour prefers-reduced-motion by dropping transform/layout animation but keeping opacity fades. */}
+      <MotionConfig reducedMotion="user">
+        <AuthProvider>
+          <BrowserRouter>
+            <RouteTitle />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
+              <Route path="/unsubscribe" element={<UnsubscribePage />} />
+              <Route path="/r/:slug" element={<PublicRecapPage />} />
 
-            {/* Protected Routes */}
-            <Route element={<RequireAuth />}>
-              <Route element={<MainLayout />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/applications" element={<ApplicationsPage />} />
-                <Route path="/applications/new" element={<CreateApplicationPage />} />
-                <Route path="/applications/:id" element={<ApplicationDetailPage />} />
-                <Route path="/recap" element={<RecapPage />} />
+              {/* Protected Routes */}
+              <Route element={<RequireAuth />}>
+                <Route element={<MainLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/applications" element={<ApplicationsPage />} />
+                  <Route path="/applications/new" element={<CreateApplicationPage />} />
+                  <Route path="/applications/:id" element={<ApplicationDetailPage />} />
+                  <Route path="/recap" element={<RecapPage />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+              {/* Fallback */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </MotionConfig>
       <Analytics />
     </QueryClientProvider>
   );

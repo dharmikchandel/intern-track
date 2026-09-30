@@ -27,6 +27,11 @@ export function MainLayout() {
         { href: "/recap", label: "Recap", icon: Sparkles },
     ];
 
+    // The most specific match wins, so /applications/new lights up "New Application" only.
+    const activeHref = [...navItems]
+        .sort((a, b) => b.href.length - a.href.length)
+        .find((item) => location.pathname === item.href || location.pathname.startsWith(item.href + "/"))?.href;
+
     return (
         <div className="min-h-screen flex flex-col bg-neo-bg font-sans text-slate-900">
             {/* Top Navigation Bar (Mobile & Desktop) */}
@@ -54,13 +59,13 @@ export function MainLayout() {
                         <Menu className="w-6 h-6" aria-hidden />
                     </button>
 
-                    <h1 className="text-xl md:text-2xl font-black tracking-tighter text-black flex items-center gap-2">
+                    <div className="text-xl md:text-2xl font-black tracking-tighter text-black flex items-center gap-2">
                         <Link to="/">
                             TRACKr. 
                         </Link>
                         <span className="text-neo-primary text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
                         
-                    </h1>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -77,14 +82,14 @@ export function MainLayout() {
                 {/* Sidebar (Desktop) */}
                 <aside
                     className={cn(
-                        "hidden md:flex flex-col bg-white border-r-2 border-black transition-all duration-300 ease-in-out z-40",
+                        "hidden md:flex flex-col bg-white border-r-2 border-black transition-all duration-300 ease-in-out motion-reduce:transition-none z-40",
                         isSidebarOpen ? "w-64" : "w-24"
                     )}
                 >
                     <nav className="flex-1 py-6 px-4 space-y-3">
                         {navItems.map((item) => {
                             const Icon = item.icon;
-                            const isActive = location.pathname === item.href || (item.href !== "/dashboard" && location.pathname.startsWith(item.href));
+                            const isActive = item.href === activeHref;
 
                             return (
                                 <Link
@@ -143,7 +148,7 @@ export function MainLayout() {
                             <nav className="space-y-3 flex-1">
                                 {navItems.map((item) => {
                                     const Icon = item.icon;
-                                    const isActive = location.pathname === item.href || (item.href !== "/dashboard" && location.pathname.startsWith(item.href));
+                                    const isActive = item.href === activeHref;
 
                                     return (
                                         <Link
