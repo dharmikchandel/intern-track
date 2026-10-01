@@ -251,6 +251,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - Sidebar items are 12px-radius, 2px-bordered rows. **Inactive:** Text Muted on transparent with a transparent border. **Hover:** black border and a slate-50 fill. **Active:** Signal Blue fill, black text, black border, rest shadow, and a heavier 2.5px icon stroke. The collapsed sidebar centers icons and exposes labels as tooltips. The header pairs a bold wordmark ("TRACKr." with a BETA pill) with a circular Signal Blue avatar carrying the user's initial. Below `md` a hamburger opens a 256px drawer over a dimmed, blurred backdrop.
 
 ### Tables
+- **Sortable headers** (`SortableHead`): each of the four headers is a button. The active column shows an up or down arrow, the others a faint up/down mark, and the `th` carries `aria-sort`. Clicking the active column flips the direction; a new column starts newest-first for the date and A to Z for the rest. The focus outline on the black header is white. There are no separate sort selects. Padding tightens below `sm` so all four columns fit a phone.
 - The company name is the row's link to the detail page (there is no Actions column). White body inside a black-bordered, shadowed, 8px-rounded frame. A company with an overdue follow-up shows a red-deep "Follow-up due" line with an alert glyph under its name (the same cue as the board). The list shows 15 rows per page with a "Showing x-y of N" count; "Clear filters" sits under the filter bar whenever any filter is active. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Blue Tint on hover.
 
 ### Landing: Product First
@@ -294,6 +295,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Do** build page structure from white cards on the flat Paper ground, with nothing printed behind them.
 - **Do** keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.
 - **Do** show a date the user picked (applied, follow-up) with `formatCalendarDay` from `lib/dates.ts`: those are saved as midnight UTC and must not be formatted in the viewer's timezone. Real moments (created at, "2:30 pm") use plain `date-fns` and show in local time.
+- **Do** keep the list's whole view (search, status, follow-up, sort, page, board or list) in the URL, defaults omitted, replacing history rather than stacking it; the detail page's Back link returns to the list as you left it. The pure rules live in `features/applications/listParams.ts` and are unit-tested.
 - **Do** give every page exactly one `h1`: the page title. Auth-page wordmarks are not headings. Announce async swaps (verifying, imported, unsubscribed) with `aria-live` or `role="status"`.
 - **Do** make text links black and underlined; on hover fill them with Signal Blue (black text) instead of recolouring the text, which drops contrast.
 - **Do** mark the current nav item with `aria-current="page"`, and announce async results (resend sent, link copied, success notices) in a `role="status"` region.

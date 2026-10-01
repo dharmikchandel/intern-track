@@ -48,7 +48,7 @@ const NeoTableHead = forwardRef<
 >(({ className, ...props }, ref) => (
     <th
         ref={ref}
-        className={cn("p-4 font-bold tracking-wider", className)}
+        className={cn("p-2 sm:p-4 font-bold tracking-wide sm:tracking-wider", className)}
         {...props}
     />
 ));
@@ -58,7 +58,7 @@ const NeoTableCell = forwardRef<
     HTMLTableCellElement,
     HTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-    <td ref={ref} className={cn("p-4 font-medium", className)} {...props} />
+    <td ref={ref} className={cn("p-2 sm:p-4 font-medium text-sm sm:text-base", className)} {...props} />
 ));
 NeoTableCell.displayName = "NeoTableCell";
 

@@ -1,16 +1,7 @@
 import { Search } from "lucide-react";
 import { NeoInput } from "../../components/ui/NeoInput";
-import type { ApplicationSort } from "../../api/applications";
 import { NeoSelect } from "../../components/ui/NeoSelect";
 import { STATUS_LABELS, STATUS_ORDER } from "./statusMeta";
-
-const SORT_OPTIONS: { value: ApplicationSort; label: string }[] = [
-    { value: "appliedDate", label: "Applied date" },
-    { value: "updatedAt", label: "Recently updated" },
-    { value: "companyName", label: "Company" },
-    { value: "role", label: "Role" },
-    { value: "status", label: "Status" },
-];
 
 // Toolbar size: the NeoSelect default is the tall form-field size.
 const selectClass = "w-auto p-2 font-bold";
@@ -25,10 +16,6 @@ interface ApplicationFiltersProps {
     listControls?: {
         status: string;
         onStatusChange: (value: string) => void;
-        sort: ApplicationSort;
-        onSortChange: (value: ApplicationSort) => void;
-        order: "asc" | "desc";
-        onOrderChange: (value: "asc" | "desc") => void;
     };
 }
 
@@ -78,30 +65,6 @@ export function ApplicationFilters({
                             </option>
                         ))}
                     </NeoSelect>
-
-                    <div className="flex gap-2">
-                        <NeoSelect
-                            aria-label="Sort by"
-                            className={selectClass}
-                            value={listControls.sort}
-                            onChange={(e) => listControls.onSortChange(e.target.value as ApplicationSort)}
-                        >
-                            {SORT_OPTIONS.map((o) => (
-                                <option key={o.value} value={o.value}>
-                                    Sort: {o.label}
-                                </option>
-                            ))}
-                        </NeoSelect>
-                        <NeoSelect
-                            aria-label="Sort direction"
-                            className={selectClass}
-                            value={listControls.order}
-                            onChange={(e) => listControls.onOrderChange(e.target.value as "asc" | "desc")}
-                        >
-                            <option value="desc">Descending</option>
-                            <option value="asc">Ascending</option>
-                        </NeoSelect>
-                    </div>
                 </>
             )}
         </div>

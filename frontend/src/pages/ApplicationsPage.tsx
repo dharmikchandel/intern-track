@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { formatCalendarDay } from "../lib/dates";
@@ -14,22 +14,24 @@ import {
     NeoTableHeader,
     NeoTableBody,
     NeoTableRow,
-    NeoTableHead,
     NeoTableCell,
 } from "../components/ui/NeoTable";
-import { listApplications, type ApplicationSort } from "../api/applications";
+import { listApplications } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
 import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
 import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS } from "../features/applications/statusMeta";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
+import { SortableHead } from "../features/applications/SortableHead";
+import { defaultOrderFor, parseListParams, withListParams, type ListParams, type ListView, type SortColumn } from "../features/applications/listParams";
 import { cn } from "../lib/utils";
 
 // The board pulls in the drag-and-drop library; load it only for users who
 // actually open the board view.
 const BoardView = lazy(() => import("../features/applications/BoardView").then((m) => ({ default: m.BoardView })));
 
-type ViewMode = "list" | "board";
+type ViewMode = ListView;
 const VIEW_STORAGE_KEY = "applications:view";
+const PAGE_SIZE = 15;
 
 // localStorage can throw (private mode, blocked site data) - the toggle must
 // still work without persistence.
@@ -42,13 +44,36 @@ function readStoredView(): ViewMode {
 }
 
 export function ApplicationsPage() {
-    const [view, setView] = useState<ViewMode>(readStoredView);
-    const [page, setPage] = useState(1);
-    const [statusFilter, setStatusFilter] = useState<string>("");
-    const [search, setSearch] = useState("");
-    // The dashboard's "Review them" link arrives as /applications?followUp=1.
-    const [searchParams] = useSearchParams();
-    const [needsFollowUp, setNeedsFollowUp] = useState(searchParams.get("followUp") === "1");
+    // The URL is the source of truth for the whole list view (search, status,
+    // follow-up, sort, page, view), so Back, refresh and a shared link all
+    // return to the same list. Changes replace the history entry instead of
+    // stacking one per keystroke.
+    const [params, setParams] = useSearchParams();
+    const lp = useMemo(() => parseListParams(params), [params]);
+    const view: ViewMode = lp.view ?? readStoredView();
+    function update(patch: Partial<ListParams>) {
+        setParams((current) => withListParams(current, patch), { replace: true });
+    }
+
+    // The search box is typed into locally and written to the URL once typing
+    // pauses, so a request is not made per keystroke. `pushedQ` lets us tell our
+    // own URL write apart from an outside change (Back, "Clear filters").
+    const [search, setSearch] = useState(lp.q);
+    const debouncedSearch = useDebouncedValue(search.trim(), 300);
+    const pushedQ = useRef(lp.q);
+    useEffect(() => {
+        if (debouncedSearch !== pushedQ.current) {
+            pushedQ.current = debouncedSearch;
+            update({ q: debouncedSearch });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedSearch]);
+    useEffect(() => {
+        if (lp.q !== pushedQ.current) {
+            pushedQ.current = lp.q;
+            setSearch(lp.q);
+        }
+    }, [lp.q]);
 
     // "Added X." arrives in router state after creating an application. Keep it
     // locally and clear it from history so a refresh does not show it again.
@@ -60,24 +85,18 @@ export function ApplicationsPage() {
             navigate(location.pathname + location.search, { replace: true, state: null });
         }
     }, [location, navigate]);
-    const [sort, setSort] = useState<ApplicationSort>("appliedDate");
-    const [order, setOrder] = useState<"asc" | "desc">("desc");
-
-    // Only the debounced value hits the API, so typing doesn't fire a request
-    // per keystroke.
-    const debouncedSearch = useDebouncedValue(search.trim(), 300);
 
     const { data, isLoading, isError, refetch } = useQuery({
-        queryKey: ["applications", "list", { page, statusFilter, debouncedSearch, needsFollowUp, sort, order }],
+        queryKey: ["applications", "list", lp],
         queryFn: () =>
             listApplications({
-                page,
-                limit: 15,
-                status: statusFilter || undefined,
-                q: debouncedSearch || undefined,
-                needsFollowUp: needsFollowUp || undefined,
-                sort,
-                order,
+                page: lp.page,
+                limit: PAGE_SIZE,
+                status: lp.status || undefined,
+                q: lp.q || undefined,
+                needsFollowUp: lp.followUp || undefined,
+                sort: lp.sort,
+                order: lp.order,
             }),
         enabled: view === "list",
         // Keep showing the previous page while the next one loads instead of
@@ -85,32 +104,34 @@ export function ApplicationsPage() {
         placeholderData: keepPreviousData,
     });
 
+    // A link or a shrinking result set can leave the page past the end.
+    useEffect(() => {
+        if (data && data.meta.totalPages > 0 && lp.page > data.meta.totalPages) update({ page: data.meta.totalPages });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, lp.page]);
+
     function changeView(next: ViewMode) {
-        setView(next);
         try {
             localStorage.setItem(VIEW_STORAGE_KEY, next);
         } catch {
             /* preference just isn't remembered */
         }
+        update({ view: next });
     }
 
-    // Any filter change invalidates the current page number.
-    function withPageReset<T>(setter: (value: T) => void) {
-        return (value: T) => {
-            setter(value);
-            setPage(1);
-        };
+    function sortBy(column: SortColumn) {
+        if (column === lp.sort) update({ order: lp.order === "asc" ? "desc" : "asc" });
+        else update({ sort: column, order: defaultOrderFor(column) });
     }
 
     function clearFilters() {
         setSearch("");
-        setNeedsFollowUp(false);
-        setStatusFilter("");
-        setPage(1);
+        pushedQ.current = "";
+        update({ q: "", status: "", followUp: false });
     }
 
     // The board ignores the status dropdown, so it isn't a filter there.
-    const hasFilters = Boolean(debouncedSearch || needsFollowUp || (view === "list" && statusFilter));
+    const hasFilters = Boolean(lp.q || lp.followUp || (view === "list" && lp.status));
 
     return (
         <div>
@@ -127,9 +148,9 @@ export function ApplicationsPage() {
                     <ExportCsvButton
                         filtered={hasFilters}
                         filters={{
-                            q: debouncedSearch || undefined,
-                            needsFollowUp: needsFollowUp || undefined,
-                            status: view === "list" ? statusFilter || undefined : undefined,
+                            q: lp.q || undefined,
+                            needsFollowUp: lp.followUp || undefined,
+                            status: view === "list" ? lp.status || undefined : undefined,
                         }}
                     />
                     <div role="group" aria-label="View" className="flex border-2 border-black rounded-lg overflow-hidden shadow-neo">
@@ -163,19 +184,12 @@ export function ApplicationsPage() {
 
             <ApplicationFilters
                 search={search}
-                onSearchChange={withPageReset(setSearch)}
-                needsFollowUp={needsFollowUp}
-                onNeedsFollowUpChange={withPageReset(setNeedsFollowUp)}
+                onSearchChange={setSearch}
+                needsFollowUp={lp.followUp}
+                onNeedsFollowUpChange={(value) => update({ followUp: value })}
                 listControls={
                     view === "list"
-                        ? {
-                              status: statusFilter,
-                              onStatusChange: withPageReset(setStatusFilter),
-                              sort,
-                              onSortChange: withPageReset(setSort),
-                              order,
-                              onOrderChange: withPageReset(setOrder),
-                          }
+                        ? { status: lp.status, onStatusChange: (value) => update({ status: value as ListParams["status"] }) }
                         : undefined
                 }
             />
@@ -190,7 +204,7 @@ export function ApplicationsPage() {
 
             {view === "board" ? (
                 <Suspense fallback={<NeoSkeleton label="Loading board" className="h-80" />}>
-                    <BoardView q={debouncedSearch} needsFollowUp={needsFollowUp} />
+                    <BoardView q={lp.q} needsFollowUp={lp.followUp} />
                 </Suspense>
             ) : isLoading ? (
                 <NeoSkeleton label="Loading applications" className="h-80" />
@@ -214,17 +228,17 @@ export function ApplicationsPage() {
                     <NeoTable>
                         <NeoTableHeader>
                             <tr>
-                                <NeoTableHead>Company</NeoTableHead>
-                                <NeoTableHead>Role</NeoTableHead>
-                                <NeoTableHead>Status</NeoTableHead>
-                                <NeoTableHead>Applied Date</NeoTableHead>
+                                <SortableHead label="Company" column="companyName" sort={lp.sort} order={lp.order} onSort={sortBy} />
+                                <SortableHead label="Role" column="role" sort={lp.sort} order={lp.order} onSort={sortBy} />
+                                <SortableHead label="Status" column="status" sort={lp.sort} order={lp.order} onSort={sortBy} />
+                                <SortableHead label="Applied Date" column="appliedDate" sort={lp.sort} order={lp.order} onSort={sortBy} />
                             </tr>
                         </NeoTableHeader>
                         <NeoTableBody>
                             {data?.items.map((app) => (
                                 <NeoTableRow key={app.id}>
                                     <NeoTableCell>
-                                        <Link to={`/applications/${app.id}`} className="font-black hover:underline">
+                                        <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black hover:underline">
                                             {app.companyName}
                                         </Link>
                                         {isFollowUpDue(app) && (
@@ -235,7 +249,7 @@ export function ApplicationsPage() {
                                     </NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
-                                        <span className={`px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status]}`}>
+                                        <span className={`inline-block px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status]}`}>
                                             {STATUS_LABELS[app.status]}
                                         </span>
                                     </NeoTableCell>
@@ -249,19 +263,19 @@ export function ApplicationsPage() {
                     <div className="mt-6 flex justify-between items-center">
                         <NeoButton
                             variant="ghost"
-                            disabled={page === 1}
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={lp.page === 1}
+                            onClick={() => update({ page: lp.page - 1 })}
                         >
                             Previous
                         </NeoButton>
                         <span className="font-bold text-center">
-                            Showing {(page - 1) * 15 + 1}-{Math.min(page * 15, data?.meta.total ?? 0)} of {data?.meta.total ?? 0}
-                            <span className="block text-xs text-slate-600">Page {page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
+                            Showing {(lp.page - 1) * PAGE_SIZE + 1}-{Math.min(lp.page * PAGE_SIZE, data?.meta.total ?? 0)} of {data?.meta.total ?? 0}
+                            <span className="block text-xs text-slate-600">Page {lp.page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
                         </span>
                         <NeoButton
                             variant="ghost"
-                            disabled={!data || page >= data.meta.totalPages}
-                            onClick={() => setPage(p => p + 1)}
+                            disabled={!data || lp.page >= data.meta.totalPages}
+                            onClick={() => update({ page: lp.page + 1 })}
                         >
                             Next
                         </NeoButton>

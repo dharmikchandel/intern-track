@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatCalendarDay } from "../../lib/dates";
 import {
@@ -278,13 +278,14 @@ interface CardBodyProps {
 }
 
 function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
+    const location = useLocation();
     const due = isFollowUpDue(app);
 
     return (
         <div className={cn("bg-white border-2 border-black rounded-lg p-3 shadow-neo", floating && "rotate-2 shadow-neo-hover")}>
             <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                    <Link to={`/applications/${app.id}`} className="font-black leading-tight hover:underline block truncate">
+                    <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black leading-tight hover:underline block truncate">
                         {app.companyName}
                     </Link>
                     <p className="text-sm font-medium text-slate-700 truncate">{app.role}</p>

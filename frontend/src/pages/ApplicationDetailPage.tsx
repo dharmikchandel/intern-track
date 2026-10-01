@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,8 @@ import { formatCalendarDay } from "../lib/dates";
 export function ApplicationDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    // Back returns to the list as you left it (search, filters, sort, page).
+    const backTo = (useLocation().state as { backTo?: string } | null)?.backTo ?? "/applications";
     const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -78,7 +80,7 @@ export function ApplicationDetailPage() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             queryClient.invalidateQueries({ queryKey: ["analytics"] });
-            navigate("/applications");
+            navigate(backTo);
         },
     });
 
@@ -98,7 +100,7 @@ export function ApplicationDetailPage() {
     };
 
     const backLink = (
-        <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
+        <Link to={backTo} className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
             <ArrowLeft className="w-4 h-4" /> Back to Applications
         </Link>
     );
