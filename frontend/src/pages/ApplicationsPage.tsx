@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { formatCalendarDay, formatCalendarDayShort } from "../lib/dates";
 import { StatusChip } from "../components/ui/StatusChip";
@@ -78,6 +78,17 @@ export function ApplicationsPage() {
     }, [lp.q]);
 
     const location = useLocation();
+    const navigate = useNavigate();
+
+    // The whole row opens the application. The company name stays the real link (keyboard,
+    // screen readers, open in a new tab), so a click on it, or on any control, is left alone,
+    // and so is a drag that selected text.
+    function openRow(e: React.MouseEvent, id: string) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if ((e.target as HTMLElement).closest("a, button, input, select, textarea, label")) return;
+        if (window.getSelection()?.toString()) return;
+        navigate(`/applications/${id}`, { state: { backTo: `/applications${location.search}` } });
+    }
 
     const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ["applications", "list", lp],
@@ -210,7 +221,7 @@ export function ApplicationsPage() {
                             </NeoTableHeader>
                             <NeoTableBody>
                                 {data?.items.map((app) => (
-                                    <NeoTableRow key={app.id}>
+                                    <NeoTableRow key={app.id} className="cursor-pointer" onClick={(e) => openRow(e, app.id)}>
                                         <NeoTableCell>
                                             <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black ui-link-quiet">
                                                 {app.companyName}

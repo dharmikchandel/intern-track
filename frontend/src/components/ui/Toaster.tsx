@@ -1,15 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Check, Info, TriangleAlert, Undo2, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Award, Check, Info, TriangleAlert, Undo2, X } from "lucide-react";
 import { dismissToast, getToasts, showParkedToast, useToasts, type ToastItem, type ToastKind } from "../../lib/toast";
+import { cn } from "../../lib/utils";
 import { IconTile } from "./IconTile";
 import { neoButtonClass } from "./neoButtonStyles";
 
-const ICON = { success: Check, info: Info, error: TriangleAlert } as const;
+const ICON = { success: Check, info: Info, error: TriangleAlert, milestone: Award } as const;
 // The three signals again: green = it worked, blue = for your information, red = it failed.
-const TONE: Record<ToastKind, string> = { success: "bg-neo-green", info: "bg-neo-blue-tint", error: "bg-neo-destructive" };
+const TONE: Record<ToastKind, string> = { success: "bg-neo-green", info: "bg-neo-blue-tint", error: "bg-neo-destructive", milestone: "bg-white" };
+
+// A first, not a confirmation: the achieved-Mint card of a milestone tile, a spring in, and a
+// single burst of small squares in the blue and green signals (never red, which means
+// rejection here). Same corner, same rules as every other toast; the celebration is the
+// content and the motion, not a second place to look.
+const BURST = Array.from({ length: 10 }, (_, i) => {
+    const angle = (i / 10) * Math.PI * 2 + 0.3;
+    const reach = 64 + (i % 3) * 22;
+    return { x: Math.cos(angle) * reach, y: Math.sin(angle) * reach, turn: i % 2 ? 160 : -160, tone: ["bg-neo-primary", "bg-neo-green", "bg-neo-blue-mid", "bg-white"][i % 4] };
+});
+
+function Burst({ version }: { version: number }) {
+    return (
+        <span aria-hidden className="pointer-events-none absolute left-7 top-1/2">
+            {BURST.map((p, i) => (
+                <motion.span
+                    key={`${version}-${i}`}
+                    className={`absolute -ml-1 -mt-1 block h-2 w-2 border border-black ${p.tone}`}
+                    initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 0.6 }}
+                    animate={{ x: p.x, y: p.y, opacity: 0, rotate: p.turn, scale: 1.1 }}
+                    transition={{ duration: 0.85, ease: "easeOut" }}
+                />
+            ))}
+        </span>
+    );
+}
 
 // Text being typed into keeps its own Ctrl+Z.
 function isTextEntry(el: EventTarget | null) {
@@ -51,6 +78,7 @@ function ToastCard({ toast }: { toast: ToastItem }) {
     const [focused, setFocused] = useState(false);
     const navigate = useNavigate();
     const hidden = usePageHidden();
+    const reduceMotion = useReducedMotion();
     // The clock stops while it is being read (pointer or focus on it) or while the
     // tab is in the background, and carries on with whatever time was left.
     const frozen = hovered || focused || hidden;
@@ -73,15 +101,16 @@ function ToastCard({ toast }: { toast: ToastItem }) {
         };
     }, [frozen, id, version, duration]);
 
-    const Icon = ICON[toast.kind];
+    const Icon = toast.icon ?? ICON[toast.kind];
+    const celebrate = toast.kind === "milestone";
 
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 16, scale: celebrate ? 0.9 : 1 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, transition: { duration: 0.12 } }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            transition={celebrate ? { type: "spring", stiffness: 420, damping: 22 } : { duration: 0.18, ease: "easeOut" }}
             // A swipe to the right sends it away (touch); the X is the same thing for everyone else.
             drag="x"
             dragSnapToOrigin
@@ -96,12 +125,14 @@ function ToastCard({ toast }: { toast: ToastItem }) {
             onBlur={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false);
             }}
-            className="pointer-events-auto relative mt-3 overflow-hidden rounded-lg border-2 border-black bg-white shadow-neo"
+            className={cn("pointer-events-auto relative mt-3 rounded-lg border-2 border-black shadow-neo", celebrate ? "bg-neo-mint" : "overflow-hidden bg-white")}
         >
-            <div className="flex items-center gap-3 py-2 pl-3 pr-2">
+            {celebrate && !reduceMotion && <Burst version={version} />}
+            <div className={cn("flex items-center gap-3 pl-3 pr-2", celebrate ? "py-2.5" : "py-2")}>
                 <IconTile icon={Icon} tone={TONE[toast.kind]} className="h-8 w-8" />
                 <div className="min-w-0 flex-1">
-                    <p className="break-words text-sm font-bold text-black">{toast.message}</p>
+                    {toast.kicker && <p className="text-[11px] font-black uppercase tracking-wide text-black">{toast.kicker}</p>}
+                    <p className={cn("break-words text-black", celebrate ? "text-base font-black leading-tight" : "text-sm font-bold")}>{toast.message}</p>
                     {toast.description && <p className="mt-0.5 break-words text-xs font-medium text-slate-700">{toast.description}</p>}
                 </div>
                 {action && (

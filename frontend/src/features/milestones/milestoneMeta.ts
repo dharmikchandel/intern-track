@@ -15,6 +15,16 @@ export const MILESTONE_TITLES: Record<MilestoneId, string> = {
     streak_5: "5-day streak",
 };
 
+// Which milestones this write unlocked. `seen` is what was achieved the last time we looked
+// (null before the first look: that is a baseline, never a celebration) and `celebrated` is
+// what has already been toasted on this device. Milestones are derived from current data, so
+// deleting applications can un-achieve one and re-adding re-achieves it; celebrating each
+// once is what keeps that from repeating.
+export function newlyAchieved(seen: ReadonlySet<MilestoneId> | null, milestones: Milestone[], celebrated: ReadonlySet<MilestoneId>): MilestoneId[] {
+    if (!seen) return [];
+    return milestones.filter((m) => m.achieved && !seen.has(m.id) && !celebrated.has(m.id)).map((m) => m.id);
+}
+
 // Tone is deliberately about momentum, not guilt: a missed day is never shown
 // as a loss, only the best run and an invitation to start another.
 export function streakMessage(streak: { current: number; best: number; appliedToday: boolean }): string {

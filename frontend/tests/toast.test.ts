@@ -30,6 +30,7 @@ describe("toast store", () => {
         assert.equal(duration(notify.info("b")), 5000);
         assert.equal(duration(notify.info("c", { action: { label: "Undo", undo: true } })), 8000);
         assert.equal(duration(notify.error("d")), 0);
+        assert.equal(duration(notify.milestone("e", { action: { label: "See all", to: "/profile" } })), 7000);
     });
 
     it("reusing an id replaces in place, keeps its place and bumps the version", () => {

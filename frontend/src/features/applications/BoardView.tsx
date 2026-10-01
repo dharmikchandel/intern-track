@@ -30,6 +30,8 @@ const PAGE_STEP = 25;
 const MAX_PER_COLUMN = 100;
 // One toast for "the last move", replaced by the next one.
 const MOVE_TOAST = "board-move";
+// Moves into these are the ones that are costly to make by accident, so only they carry an undo.
+const TERMINAL: ApplicationStatus[] = ["OFFER", "REJECTED"];
 
 interface BoardViewProps {
     q: string;
@@ -88,10 +90,13 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
         // An empty value is the picker's placeholder, not a column.
         if (!to || card.status === to) return;
         moveMutation.mutate({ id: card.id, status: to });
-        // Every move says where the card went (it may have left the screen, on a phone) and can be undone.
+        // Every move says where the card went (it may have left the screen, on a phone); the
+        // costly ones can also be undone.
         notify.info(`${card.companyName} moved to ${STATUS_LABELS[to]}`, {
             id: MOVE_TOAST,
-            action: { label: "Undo", undo: true, onClick: () => moveMutation.mutate({ id: card.id, status: card.status }) },
+            action: TERMINAL.includes(to)
+                ? { label: "Undo", undo: true, onClick: () => moveMutation.mutate({ id: card.id, status: card.status }) }
+                : undefined,
         });
     }
 

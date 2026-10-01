@@ -4,6 +4,7 @@ import { LayoutDashboard, FileText, PlusCircle, Sparkles, LogOut, Menu, X } from
 import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
 import { useDialog } from "../../lib/useDialog";
+import { MilestoneWatcher } from "../../features/milestones/MilestoneWatcher";
 import { EmailVerificationBanner } from "./EmailVerificationBanner";
 
 export function MainLayout() {
@@ -39,6 +40,7 @@ export function MainLayout() {
 
     return (
         <div className="min-h-screen flex flex-col bg-neo-bg font-sans text-slate-900">
+            <MilestoneWatcher />
             {/* Top Navigation Bar (Mobile & Desktop) */}
             <header className="bg-white border-b-2 border-black h-16 flex items-center justify-between px-4 sticky top-0 z-50">
                 <div className="flex items-center gap-4">

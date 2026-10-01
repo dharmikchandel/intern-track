@@ -1,11 +1,13 @@
 import { useSyncExternalStore } from "react";
+import type { LucideIcon } from "lucide-react";
 
 // A tiny toast store with no dependencies. Anything can call `notify.*` (a
 // mutation callback, an event handler, outside React); <Toaster /> renders the
 // list. Messages are plain strings and are only ever rendered as text, so a
 // server message or a stored value can never inject markup.
 
-export type ToastKind = "success" | "info" | "error";
+// "milestone" is the one celebratory kind: a first, not a confirmation.
+export type ToastKind = "success" | "info" | "error" | "milestone";
 
 // What the button does: run `onClick`, or go to `to` (kept as data, not a closure over
 // a page that may be gone by the time it is pressed).
@@ -23,6 +25,9 @@ export interface ToastOptions {
     // burst of the same event (moving cards one after another) shows one toast.
     id?: string;
     description?: string;
+    // Milestone only: the small line above the title, and the icon in the tile.
+    kicker?: string;
+    icon?: LucideIcon;
     action?: ToastAction;
     // Milliseconds on screen. 0 keeps it until it is dismissed.
     duration?: number;
@@ -34,6 +39,8 @@ export interface ToastItem {
     kind: ToastKind;
     message: string;
     description?: string;
+    kicker?: string;
+    icon?: LucideIcon;
     action?: ToastAction;
     duration: number;
 }
@@ -47,7 +54,8 @@ const FLASH_KEY = "interntrack:flash-toast";
 // failure stays until dismissed because the next step is the reader's.
 function defaultDuration(kind: ToastKind, action?: ToastAction) {
     if (kind === "error") return 0;
-    if (action) return 8000;
+    if (action && kind !== "milestone") return 8000;
+    if (kind === "milestone") return 7000;
     return kind === "success" ? 4000 : 5000;
 }
 
@@ -83,6 +91,8 @@ function push(kind: ToastKind, message: string, options: ToastOptions = {}) {
         kind,
         message: clip(message, MAX_MESSAGE),
         description: options.description ? clip(options.description, MAX_DESCRIPTION) : undefined,
+        kicker: options.kicker ? clip(options.kicker, MAX_MESSAGE) : undefined,
+        icon: options.icon,
         action: options.action,
         duration: options.duration ?? defaultDuration(kind, options.action),
     };
@@ -97,6 +107,7 @@ export function dismissToast(id: string) {
     emit();
 }
 
+// A parked toast is an explanation across a reload, never a celebration.
 const KINDS: ToastKind[] = ["success", "info", "error"];
 
 // For the few moments the page is about to reload (account deleted, session
@@ -129,6 +140,7 @@ export const notify = {
     success: (message: string, options?: ToastOptions) => push("success", message, options),
     info: (message: string, options?: ToastOptions) => push("info", message, options),
     error: (message: string, options?: ToastOptions) => push("error", message, options),
+    milestone: (message: string, options?: ToastOptions) => push("milestone", message, options),
     dismiss: dismissToast,
     // Show this after the next full page load.
     afterReload: park,
