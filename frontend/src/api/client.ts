@@ -1,4 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
+import { notify } from "../lib/toast";
 
 // import.meta.env.PROD is set automatically by Vite (true for `vite build`,
 // false for `vite dev`) — no manual env var to keep in sync and no risk of
@@ -69,6 +70,8 @@ client.interceptors.response.use(
             } catch {
                 accessToken = null;
                 if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+                    // A full reload follows, so the explanation is parked for the next page.
+                    notify.afterReload("info", "Your session expired. Sign in again.");
                     window.location.href = "/login";
                 }
                 return Promise.reject(error);

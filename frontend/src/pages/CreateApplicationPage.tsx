@@ -14,6 +14,7 @@ import { JobUrlCapture } from "../features/applications/JobUrlCapture";
 import { ArrowLeft } from "lucide-react";
 import { localDay } from "../features/recap/format";
 import { getErrorMessage } from "../lib/utils";
+import { notify } from "../lib/toast";
 import { STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
@@ -69,11 +70,14 @@ export function CreateApplicationPage() {
 
     const mutation = useMutation({
         mutationFn: createApplication,
-        onSuccess: (_created, variables) => {
+        onSuccess: (created, variables) => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             // Also invalidate stats
             queryClient.invalidateQueries({ queryKey: ["analytics"] });
-            navigate("/applications", { state: { notice: `Added ${variables.companyName}.` } });
+            notify.success(`Added ${variables.companyName}.`, {
+                action: { label: "View", to: `/applications/${created.id}`, state: { backTo: "/applications" } },
+            });
+            navigate("/applications");
         },
     });
 

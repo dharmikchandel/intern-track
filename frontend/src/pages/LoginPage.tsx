@@ -7,7 +7,6 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
-import { NeoNotice } from "../components/ui/NeoNotice";
 import { type LoginFormData, loginSchema } from "../lib/schemas";
 import { loginUser } from "../api/auth";
 import { useAuth } from "../features/auth/useAuth";
@@ -21,7 +20,6 @@ export function LoginPage() {
     const [serverError, setServerError] = useState<string | null>(null);
 
     const from = location.state?.from?.pathname || "/dashboard";
-    const justReset = Boolean(location.state?.passwordReset);
 
     const {
         register,
@@ -66,10 +64,6 @@ export function LoginPage() {
 
                 <NeoCard>
                     <h1 className="text-2xl font-black mb-6 uppercase">Sign in</h1>
-
-                    {justReset && !serverError && (
-                        <NeoNotice className="mb-4">Password updated. Log in with your new password.</NeoNotice>
-                    )}
 
                     {serverError && (
                         <NeoAlert className="mb-4">

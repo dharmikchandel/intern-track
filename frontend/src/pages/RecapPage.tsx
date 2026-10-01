@@ -8,6 +8,7 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../lib/utils";
+import { notify } from "../lib/toast";
 import { createRecapShare, getRecapPreview, listRecapShares, revokeRecapShare } from "../api/recap";
 import { RecapCard } from "../features/recap/RecapCard";
 import { formatPeriod, localDay } from "../features/recap/format";
@@ -41,12 +42,19 @@ export function RecapPage() {
 
     const create = useMutation({
         mutationFn: () => createRecapShare(start, end),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["recap", "shares"] }),
+        onSuccess: (created) => {
+            queryClient.invalidateQueries({ queryKey: ["recap", "shares"] });
+            // The new link appears in a list that may be below the fold; the toast offers the one thing you want next.
+            notify.success("Share link created.", { action: { label: "Copy link", onClick: () => void copy(created.slug) } });
+        },
     });
 
     const revoke = useMutation({
         mutationFn: revokeRecapShare,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["recap", "shares"] }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["recap", "shares"] });
+            notify.success("Share link turned off.");
+        },
     });
 
     async function copy(slug: string) {
@@ -54,9 +62,11 @@ export function RecapPage() {
             await navigator.clipboard.writeText(shareUrl(slug));
             setCopied(slug);
             setTimeout(() => setCopied((c) => (c === slug ? null : c)), 2000);
+            notify.success("Link copied.");
         } catch {
             // Clipboard can be blocked (insecure context, permissions); the link is shown in full to copy by hand.
             setCopied(null);
+            notify.error("Couldn't copy the link.", { description: "Select it in the list and copy it by hand." });
         }
     }
 
@@ -140,7 +150,6 @@ export function RecapPage() {
                                 <li key={s.id} className="border-2 border-black p-3 bg-slate-50">
                                     <p className="font-black text-sm">{formatPeriod(s.periodStart.slice(0, 10), s.periodEnd.slice(0, 10))}</p>
                                     <p className="text-xs font-mono break-all my-1">{shareUrl(s.slug)}</p>
-                                    <span role="status" className="sr-only">{copied === s.slug ? "Link copied" : ""}</span>
                                     <div className="flex gap-2 mt-2">
                                         <NeoButton variant="ghost" className="px-3 py-2 text-sm min-h-11 flex items-center gap-1" onClick={() => copy(s.slug)}>
                                             {copied === s.slug ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}

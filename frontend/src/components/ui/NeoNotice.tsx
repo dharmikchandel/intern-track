@@ -1,32 +1,19 @@
 import { type HTMLAttributes, forwardRef } from "react";
 import { cn } from "../../lib/utils";
 
-interface NeoNoticeProps extends HTMLAttributes<HTMLDivElement> {
-    // Adds a Dismiss action, for notices that should not linger.
-    onDismiss?: () => void;
-}
-
-// Good news: a save worked, an email is on its way. Achieved Mint fill, black
-// text, announced politely (role="status"). Failures use NeoAlert instead.
-const NeoNotice = forwardRef<HTMLDivElement, NeoNoticeProps>(
-    ({ className, children, onDismiss, ...props }, ref) => {
+// Good news that belongs to the page and stays on it (an email is on its way, on
+// the screen that asked for it). One-off confirmations are toasts; failures use
+// NeoAlert. Achieved Mint fill, black text, announced politely (role="status").
+const NeoNotice = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+    ({ className, children, ...props }, ref) => {
         return (
             <div
                 ref={ref}
                 role="status"
-                className={cn(
-                    "bg-neo-mint text-black p-3 font-bold border-2 border-black shadow-neo",
-                    onDismiss && "flex flex-wrap items-center justify-between gap-3",
-                    className
-                )}
+                className={cn("bg-neo-mint text-black p-3 font-bold border-2 border-black shadow-neo", className)}
                 {...props}
             >
-                {onDismiss ? <span>{children}</span> : children}
-                {onDismiss && (
-                    <button type="button" onClick={onDismiss} className="text-sm ui-link px-2 min-h-11">
-                        Dismiss
-                    </button>
-                )}
+                {children}
             </div>
         );
     }

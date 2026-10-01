@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatCalendarDay } from "../../lib/dates";
@@ -15,12 +15,12 @@ import {
     type DragEndEvent,
     type DragStartEvent,
 } from "@dnd-kit/core";
-import { AlertCircle, ChevronDown, GripVertical, Undo2 } from "lucide-react";
+import { AlertCircle, ChevronDown, GripVertical } from "lucide-react";
 import { NeoAlert } from "../../components/ui/NeoAlert";
-import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoLinkButton } from "../../components/ui/NeoLinkButton";
 import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../../lib/utils";
+import { notify } from "../../lib/toast";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
 import { moveCardInBoard } from "./board";
 import { useTimeZone } from "../auth/useTimeZone";
@@ -28,26 +28,21 @@ import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "./sta
 
 const PAGE_STEP = 25;
 const MAX_PER_COLUMN = 100;
-// Moves into these are the ones that are costly to make by accident.
-const TERMINAL: ApplicationStatus[] = ["OFFER", "REJECTED"];
+// One toast for "the last move", replaced by the next one.
+const MOVE_TOAST = "board-move";
 
 interface BoardViewProps {
     q: string;
     needsFollowUp: boolean;
 }
 
-interface UndoState {
-    id: string;
-    company: string;
-    from: ApplicationStatus;
-    to: ApplicationStatus;
-}
-
 export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     const queryClient = useQueryClient();
     const [perColumn, setPerColumn] = useState(PAGE_STEP);
     const [activeId, setActiveId] = useState<string | null>(null);
-    const [undo, setUndo] = useState<UndoState | null>(null);
+
+    // The undo only means something while this board is on screen.
+    useEffect(() => () => notify.dismiss(MOVE_TOAST), []);
 
     const boardKey = ["applications", "board", { q, needsFollowUp, perColumn }] as const;
 
@@ -66,9 +61,10 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
             queryClient.setQueryData<BoardResponse>(boardKey, (old) => (old ? moveCardInBoard(old, id, status) : old));
             return { previous };
         },
-        onError: (_err, _vars, context) => {
+        onError: (err, _vars, context) => {
             if (context?.previous) queryClient.setQueryData(boardKey, context.previous);
-            setUndo(null);
+            // The card has already snapped back; this says why (and replaces the "moved" toast).
+            notify.error(getErrorMessage(err, "Couldn't move that application, so it is back where it was."), { id: MOVE_TOAST });
         },
         onSettled: (_data, _err, { id }) => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
@@ -89,9 +85,14 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     const activeCard = allCards.find((a) => a.id === activeId) ?? null;
 
     function move(card: Application, to: ApplicationStatus) {
-        if (card.status === to) return;
+        // An empty value is the picker's placeholder, not a column.
+        if (!to || card.status === to) return;
         moveMutation.mutate({ id: card.id, status: to });
-        setUndo(TERMINAL.includes(to) ? { id: card.id, company: card.companyName, from: card.status, to } : null);
+        // Every move says where the card went (it may have left the screen, on a phone) and can be undone.
+        notify.info(`${card.companyName} moved to ${STATUS_LABELS[to]}`, {
+            id: MOVE_TOAST,
+            action: { label: "Undo", undo: true, onClick: () => moveMutation.mutate({ id: card.id, status: card.status }) },
+        });
     }
 
     function handleDragStart(event: DragStartEvent) {
@@ -131,14 +132,6 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     const canShowMore = data.perColumn < MAX_PER_COLUMN;
 
     return (
-        <>
-            {/* The card has already snapped back (see onError); this says why. It clears on the next move. */}
-            {moveMutation.isError && (
-                <NeoAlert className="mb-4">
-                    {getErrorMessage(moveMutation.error, "Couldn't move that application, so it is back where it was.")}
-                </NeoAlert>
-            )}
-
             <DndContext
                 sensors={sensors}
                 onDragStart={handleDragStart}
@@ -164,34 +157,6 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                 </div>
                 <DragOverlay>{activeCard ? <CardBody app={activeCard} floating /> : null}</DragOverlay>
             </DndContext>
-
-            {/* Always mounted, so a screen reader announces the text when it changes. */}
-            <div role="status" className="sr-only">
-                {undo ? `${undo.company} moved to ${STATUS_LABELS[undo.to]}` : ""}
-            </div>
-            {undo && (
-                <div
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[calc(100vw-2rem)] flex items-center gap-4 bg-white border-2 border-black shadow-neo rounded-lg px-4 py-3 font-bold"
-                >
-                    <span>
-                        {undo.company} moved to {STATUS_LABELS[undo.to]}
-                    </span>
-                    <NeoButton
-                        variant="ghost"
-                        className="px-3 py-2 text-sm min-h-11 flex items-center gap-1"
-                        onClick={() => {
-                            moveMutation.mutate({ id: undo.id, status: undo.from });
-                            setUndo(null);
-                        }}
-                    >
-                        <Undo2 className="w-4 h-4" /> Undo
-                    </NeoButton>
-                    <button className="text-sm ui-link p-2 min-h-11" onClick={() => setUndo(null)}>
-                        Dismiss
-                    </button>
-                </div>
-            )}
-        </>
     );
 }
 

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, Download, FileUp, Upload } from "lucide-react";
+import { Download, FileUp, Upload } from "lucide-react";
 import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoModal } from "../../components/ui/NeoModal";
@@ -14,6 +14,7 @@ import {
 } from "../../api/applications";
 import { downloadBlob } from "../../lib/download";
 import { getErrorMessage } from "../../lib/utils";
+import { notify } from "../../lib/toast";
 import { localDay } from "../recap/format";
 import { STATUS_LABELS } from "./statusMeta";
 
@@ -40,7 +41,12 @@ const selectClass = "w-auto p-2 font-bold";
 export function ExportCsvButton({ filters, filtered }: { filters: { q?: string; status?: string; needsFollowUp?: boolean }; filtered: boolean }) {
     const exportCsv = useMutation({
         mutationFn: () => exportApplicationsCsv(filters),
-        onSuccess: (blob) => downloadBlob(blob, `interntrack-applications-${localDay()}.csv`),
+        onSuccess: (blob) => {
+            const name = `interntrack-applications-${localDay()}.csv`;
+            downloadBlob(blob, name);
+            // Browsers download quietly (or into a bar you may not see).
+            notify.success("CSV exported.", { description: name });
+        },
     });
 
     return (
@@ -90,9 +96,19 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
     const commit = useMutation({
         mutationFn: (args: { file: File; dateFormat: CsvDateFormat }) =>
             importApplicationsCsv(args.file, { dryRun: false, dateFormat: args.dateFormat }),
-        onSuccess: () => {
+        onSuccess: (done) => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             queryClient.invalidateQueries({ queryKey: ["analytics"] });
+            // The dialog has done its job: close it and say how it went.
+            const skipped = [
+                done.duplicates > 0 && `${done.duplicates} ${done.duplicates === 1 ? "duplicate" : "duplicates"}`,
+                done.invalid > 0 && `${done.invalid} ${done.invalid === 1 ? "row" : "rows"} with errors`,
+            ].filter(Boolean);
+            notify.success(`Imported ${done.imported} ${done.imported === 1 ? "application" : "applications"}.`, {
+                description: skipped.length > 0 ? `Skipped ${skipped.join(" and ")}.` : undefined,
+                duration: skipped.length > 0 ? 8000 : undefined,
+            });
+            onClose();
         },
     });
 
@@ -116,102 +132,84 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
     }
 
     const summary: CsvImportSummary | undefined = preview.data;
-    const done = commit.data;
     const error = localError ?? (preview.isError ? getErrorMessage(preview.error, "Couldn't read that file.") : null);
 
     return (
         <NeoModal isOpen onClose={onClose} title="Import from CSV" widthClass="max-w-2xl">
-            {done ? (
-                <div className="text-center py-4" role="status">
-                    <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-neo-green-deep" />
-                    <p className="text-2xl font-black mb-1">
-                        Imported {done.imported} {done.imported === 1 ? "application" : "applications"}
-                    </p>
-                    {(done.duplicates > 0 || done.invalid > 0) && (
-                        <p className="font-bold text-slate-600">
-                            Skipped {done.duplicates} {done.duplicates === 1 ? "duplicate" : "duplicates"} and {done.invalid} {done.invalid === 1 ? "row" : "rows"} with errors.
-                        </p>
-                    )}
-                    <NeoButton className="mt-6" onClick={onClose} autoFocus>
-                        Done
+            <div className="space-y-4">
+                <p className="font-bold text-sm text-slate-700">
+                    Required columns: <b>Company, Role, Applied Date</b>. Optional: Status, Link, Notes, Follow-up Date. Up to 2,000 rows and 1 MB per file.
+                    Nothing is saved until you confirm.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3">
+                    <input
+                        ref={fileInput}
+                        type="file"
+                        accept=".csv,text/csv"
+                        className="sr-only"
+                        aria-label="CSV file"
+                        onChange={(e) => {
+                            choose(e.target.files?.[0]);
+                            e.target.value = ""; // allow re-choosing the same file
+                        }}
+                    />
+                    <NeoButton variant="ghost" className="flex items-center gap-2" onClick={() => fileInput.current?.click()}>
+                        <FileUp className="w-5 h-5" />
+                        {file ? "Choose a different file" : "Choose CSV file"}
                     </NeoButton>
+                    {file && <span className="font-bold text-sm break-all">{file.name}</span>}
+                    <button
+                        type="button"
+                        className="font-bold text-sm ui-link ml-auto"
+                        onClick={() => downloadBlob(new Blob(["﻿" + TEMPLATE], { type: "text/csv" }), "interntrack-import-template.csv")}
+                    >
+                        Download template
+                    </button>
                 </div>
-            ) : (
-                <div className="space-y-4">
-                    <p className="font-bold text-sm text-slate-700">
-                        Required columns: <b>Company, Role, Applied Date</b>. Optional: Status, Link, Notes, Follow-up Date. Up to 2,000 rows and 1 MB per file.
-                        Nothing is saved until you confirm.
-                    </p>
 
-                    <div className="flex flex-wrap items-center gap-3">
-                        <input
-                            ref={fileInput}
-                            type="file"
-                            accept=".csv,text/csv"
-                            className="sr-only"
-                            aria-label="CSV file"
-                            onChange={(e) => {
-                                choose(e.target.files?.[0]);
-                                e.target.value = ""; // allow re-choosing the same file
-                            }}
-                        />
-                        <NeoButton variant="ghost" className="flex items-center gap-2" onClick={() => fileInput.current?.click()}>
-                            <FileUp className="w-5 h-5" />
-                            {file ? "Choose a different file" : "Choose CSV file"}
+                {file && (
+                    <label className="flex flex-wrap items-center gap-2 font-bold text-sm">
+                        Dates written like
+                        <NeoSelect className={selectClass} value={dateFormat} onChange={(e) => changeDateFormat(e.target.value as CsvDateFormat)}>
+                            <option value="iso">2026-09-14 (YYYY-MM-DD)</option>
+                            <option value="mdy">09/14/2026 (MM/DD/YYYY)</option>
+                            <option value="dmy">14/09/2026 (DD/MM/YYYY)</option>
+                        </NeoSelect>
+                    </label>
+                )}
+
+                {error && (
+                    <NeoAlert>
+                        {error}
+                    </NeoAlert>
+                )}
+                {preview.isPending && <NeoSkeleton label="Checking your file" className="h-16" />}
+
+                {summary && !preview.isPending && <PreviewBody summary={summary} />}
+
+                {commit.isError && (
+                    <NeoAlert>
+                        {getErrorMessage(commit.error, "The import failed. Nothing was saved.")}
+                    </NeoAlert>
+                )}
+
+                {summary && !preview.isPending && (
+                    <div className="flex justify-end gap-3 pt-2">
+                        <NeoButton variant="ghost" onClick={onClose}>
+                            Cancel
                         </NeoButton>
-                        {file && <span className="font-bold text-sm break-all">{file.name}</span>}
-                        <button
-                            type="button"
-                            className="font-bold text-sm ui-link ml-auto"
-                            onClick={() => downloadBlob(new Blob(["﻿" + TEMPLATE], { type: "text/csv" }), "interntrack-import-template.csv")}
+                        <NeoButton
+                            disabled={summary.importable === 0 || commit.isPending || !file}
+                            onClick={() => file && commit.mutate({ file, dateFormat })}
                         >
-                            Download template
-                        </button>
+                            {commit.isPending
+                                ? "Importing..."
+                                : `Import ${summary.importable} ${summary.importable === 1 ? "application" : "applications"}`}
+                        </NeoButton>
                     </div>
-
-                    {file && (
-                        <label className="flex flex-wrap items-center gap-2 font-bold text-sm">
-                            Dates written like
-                            <NeoSelect className={selectClass} value={dateFormat} onChange={(e) => changeDateFormat(e.target.value as CsvDateFormat)}>
-                                <option value="iso">2026-09-14 (YYYY-MM-DD)</option>
-                                <option value="mdy">09/14/2026 (MM/DD/YYYY)</option>
-                                <option value="dmy">14/09/2026 (DD/MM/YYYY)</option>
-                            </NeoSelect>
-                        </label>
-                    )}
-
-                    {error && (
-                        <NeoAlert>
-                            {error}
-                        </NeoAlert>
-                    )}
-                    {preview.isPending && <NeoSkeleton label="Checking your file" className="h-16" />}
-
-                    {summary && !preview.isPending && <PreviewBody summary={summary} />}
-
-                    {commit.isError && (
-                        <NeoAlert>
-                            {getErrorMessage(commit.error, "The import failed. Nothing was saved.")}
-                        </NeoAlert>
-                    )}
-
-                    {summary && !preview.isPending && (
-                        <div className="flex justify-end gap-3 pt-2">
-                            <NeoButton variant="ghost" onClick={onClose}>
-                                Cancel
-                            </NeoButton>
-                            <NeoButton
-                                disabled={summary.importable === 0 || commit.isPending || !file}
-                                onClick={() => file && commit.mutate({ file, dateFormat })}
-                            >
-                                {commit.isPending
-                                    ? "Importing..."
-                                    : `Import ${summary.importable} ${summary.importable === 1 ? "application" : "applications"}`}
-                            </NeoButton>
-                        </div>
-                    )}
-                </div>
-            )}
+                )}
+            </div>
         </NeoModal>
     );
 }

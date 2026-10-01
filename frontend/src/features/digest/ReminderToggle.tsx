@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { getDigestPreferences, setDigestPreferences } from "../../api/digest";
 import { getErrorMessage } from "../../lib/utils";
+import { notify } from "../../lib/toast";
 
 // The weekly follow-up email on/off switch (lives on the profile page).
 export function ReminderToggle() {
@@ -18,6 +19,8 @@ export function ReminderToggle() {
             return { previous };
         },
         onError: (_err, _value, context) => queryClient.setQueryData(["digest-preferences"], context?.previous),
+        // The switch flips before the server has answered; this is the answer.
+        onSuccess: (_data, enabled) => notify.success(enabled ? "Weekly reminders are on." : "Weekly reminders are off.", { id: "digest-preference" }),
         onSettled: () => queryClient.invalidateQueries({ queryKey: ["digest-preferences"] }),
     });
 

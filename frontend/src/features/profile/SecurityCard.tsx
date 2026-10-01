@@ -8,12 +8,12 @@ import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoCard } from "../../components/ui/NeoCard";
 import { NeoInput } from "../../components/ui/NeoInput";
 import { NeoModal } from "../../components/ui/NeoModal";
-import { NeoNotice } from "../../components/ui/NeoNotice";
 import { IconTile } from "../../components/ui/IconTile";
 import { changePassword } from "../../api/profile";
 import { logoutEverywhere, requestPasswordReset } from "../../api/auth";
 import { changePasswordSchema, type ChangePasswordFormData } from "../../lib/schemas";
 import { getErrorMessage } from "../../lib/utils";
+import { notify } from "../../lib/toast";
 import { useAuth } from "../auth/useAuth";
 
 // Two quiet rows instead of a form that is always open: the password form
@@ -22,7 +22,6 @@ export function SecurityCard() {
     const { user, login, logout } = useAuth();
     const [passwordOpen, setPasswordOpen] = useState(false);
     const [signOutOpen, setSignOutOpen] = useState(false);
-    const [justChanged, setJustChanged] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordFormData>({ resolver: zodResolver(changePasswordSchema) });
 
     const change = useMutation({
@@ -31,11 +30,21 @@ export function SecurityCard() {
         onSuccess: ({ accessToken }) => {
             if (user) login(accessToken, user);
             closePassword();
-            setJustChanged(true);
+            notify.success("Password updated.", { description: "Your other devices were signed out." });
         },
     });
-    const resetLink = useMutation({ mutationFn: () => requestPasswordReset(user!.email) });
-    const signOutEverywhere = useMutation({ mutationFn: logoutEverywhere, onSuccess: () => logout() });
+    const resetLink = useMutation({
+        mutationFn: () => requestPasswordReset(user!.email),
+        onSuccess: () => notify.success("Reset link on its way.", { description: "If that email is registered, check your inbox." }),
+    });
+    const signOutEverywhere = useMutation({
+        mutationFn: logoutEverywhere,
+        onSuccess: () => {
+            logout();
+            // The sign-in page is where this lands, so say why.
+            notify.info("Signed out on every device.");
+        },
+    });
 
     if (!user) return null;
 
@@ -56,7 +65,7 @@ export function SecurityCard() {
                         <p className="font-black">Password</p>
                         <p className="text-sm font-medium text-slate-600">Choose a new one. Your other devices are signed out.</p>
                     </div>
-                    <NeoButton variant="ghost" className="min-h-11 shrink-0" onClick={() => { setJustChanged(false); setPasswordOpen(true); }}>Change password</NeoButton>
+                    <NeoButton variant="ghost" className="min-h-11 shrink-0" onClick={() => setPasswordOpen(true)}>Change password</NeoButton>
                 </li>
                 <li className="pt-4 flex flex-wrap items-center justify-between gap-3">
                     <div className="min-w-0">
@@ -66,7 +75,6 @@ export function SecurityCard() {
                     <NeoButton variant="ghost" className="min-h-11 shrink-0" onClick={() => setSignOutOpen(true)}>Sign out everywhere</NeoButton>
                 </li>
             </ul>
-            {justChanged && <NeoNotice className="mt-4">Password updated. Your other devices were signed out.</NeoNotice>}
 
             <NeoModal isOpen={passwordOpen} onClose={closePassword} title="Change password">
                 <form className="space-y-4" onSubmit={handleSubmit((data) => change.mutate(data))} noValidate>
@@ -88,7 +96,6 @@ export function SecurityCard() {
                             <NeoButton type="submit" disabled={change.isPending}>{change.isPending ? "Updating..." : "Update password"}</NeoButton>
                         </div>
                     </div>
-                    {resetLink.isSuccess && <NeoNotice>If that email is registered, a reset link is on its way.</NeoNotice>}
                     {resetLink.isError && <NeoAlert>{getErrorMessage(resetLink.error, "Couldn't send the link. Try again.")}</NeoAlert>}
                 </form>
             </NeoModal>

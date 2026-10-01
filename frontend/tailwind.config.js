@@ -33,10 +33,13 @@ export default {
             keyframes: {
                 'drawer-in': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(0)' } },
                 'view-in': { from: { opacity: '0', transform: 'translateY(6px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+                'toast-timer': { from: { transform: 'scaleX(1)' }, to: { transform: 'scaleX(0)' } },
             },
             animation: {
                 'drawer-in': 'drawer-in 200ms ease-out',
                 'view-in': 'view-in 180ms ease-out',
+                // The duration is set per toast, inline.
+                'toast-timer': 'toast-timer 1s linear forwards',
             },
             borderRadius: {
                 'neo': '0.75rem', // 12px

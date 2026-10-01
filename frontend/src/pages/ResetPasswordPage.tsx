@@ -10,6 +10,7 @@ import { NeoAlert } from "../components/ui/NeoAlert";
 import { type ResetPasswordFormData, resetPasswordSchema } from "../lib/schemas";
 import { confirmPasswordReset } from "../api/auth";
 import { getErrorMessage } from "../lib/utils";
+import { notify } from "../lib/toast";
 import { useState } from "react";
 
 export function ResetPasswordPage() {
@@ -29,7 +30,8 @@ export function ResetPasswordPage() {
     const mutation = useMutation({
         mutationFn: (data: ResetPasswordFormData) => confirmPasswordReset(token!, data.password),
         onSuccess: () => {
-            navigate("/login", { replace: true, state: { passwordReset: true } });
+            notify.success("Password updated.", { description: "Log in with your new password." });
+            navigate("/login", { replace: true });
         },
         onError: (error) => {
             setServerError(getErrorMessage(error, "That reset link is invalid or has expired."));

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { formatCalendarDay, formatCalendarDayShort } from "../lib/dates";
 import { StatusChip } from "../components/ui/StatusChip";
@@ -7,7 +7,6 @@ import { AlertCircle, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
-import { NeoNotice } from "../components/ui/NeoNotice";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 
 import {
@@ -78,16 +77,7 @@ export function ApplicationsPage() {
         }
     }, [lp.q]);
 
-    // "Added X." arrives in router state after creating an application. Keep it
-    // locally and clear it from history so a refresh does not show it again.
     const location = useLocation();
-    const navigate = useNavigate();
-    const [notice, setNotice] = useState<string | null>(() => (location.state as { notice?: string } | null)?.notice ?? null);
-    useEffect(() => {
-        if ((location.state as { notice?: string } | null)?.notice) {
-            navigate(location.pathname + location.search, { replace: true, state: null });
-        }
-    }, [location, navigate]);
 
     const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ["applications", "list", lp],
@@ -162,8 +152,6 @@ export function ApplicationsPage() {
                     </NeoLinkButton>
                 </div>
             </div>
-
-            {notice && <NeoNotice className="mb-6" onDismiss={() => setNotice(null)}>{notice}</NeoNotice>}
 
             <ApplicationFilters
                 leading={<ViewSwitcher value={view} onChange={changeView} />}

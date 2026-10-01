@@ -6,6 +6,7 @@ import { AuthProvider } from "./features/auth/AuthContext";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import { MainLayout } from "./components/layout/MainLayout";
 import { RouteTitle } from "./components/layout/RouteTitle";
+import { Toaster } from "./components/ui/Toaster";
 
 
 // Pages
@@ -61,6 +62,8 @@ function App() {
               {/* Fallback */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
+            {/* Inside the router so a toast action can navigate; outside the routes so it survives page changes. */}
+            <Toaster />
           </BrowserRouter>
         </AuthProvider>
       </MotionConfig>

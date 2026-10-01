@@ -9,6 +9,7 @@ import { NeoModal } from "../../components/ui/NeoModal";
 import { IconTile } from "../../components/ui/IconTile";
 import { deleteAccount } from "../../api/profile";
 import { getErrorMessage } from "../../lib/utils";
+import { notify } from "../../lib/toast";
 import { plural } from "../recap/format";
 import { useAuth } from "../auth/useAuth";
 
@@ -26,6 +27,8 @@ export function DangerZone({ applicationCount }: { applicationCount?: number }) 
             // A full page load to the landing page: it clears every cached piece of
             // the deleted account's data and cannot be pre-empted by the route
             // guard sending a signed-out user to /login.
+            // The reload below wipes this page, so the confirmation waits for the next one.
+            notify.afterReload("success", "Your account was deleted.");
             logout();
             window.location.replace("/");
         },
