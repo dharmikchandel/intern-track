@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
+import { PaperStack } from "../components/ui/PaperStack";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { getStatusCounts, getFunnel, type FunnelMetrics, type StatusCounts } from "../api/analytics";
 import { FollowUpCard } from "../features/digest/FollowUpCard";
@@ -39,6 +40,7 @@ function DashboardSkeleton() {
 function FirstRun() {
     return (
         <div className="text-center p-10 border-2 border-dashed border-black bg-white">
+            <PaperStack className="mb-10" />
             <h2 className="text-2xl font-black uppercase mb-2">Track your first application</h2>
             <p className="font-bold text-slate-600 max-w-xl mx-auto mb-6">
                 Add one by hand, paste a job link, or import your spreadsheet. Your pipeline, follow-ups and streak fill in here as you go.

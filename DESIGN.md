@@ -251,6 +251,12 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Tables
 - The company name is the row's link to the detail page (there is no Actions column). Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Blue Tint on hover.
 
+### Landing: Product First
+- The hero leads with the real product, not decoration: `ProductPreview` (a small board of fictional sample applications, labelled "Sample data") sits on an offset Signal Blue block (2px ink border, offset 16 to 24px down and right). It reuses the board's lane, header-strip and card styling and reads statuses from `statusMeta`, so it cannot drift from the app. Below `sm` it shows two lanes.
+- Landing sections alternate flat Paper and white, separated by the 2px ink rules. No textures.
+- **Progress line** (How It Works): three steps climb a staircase, filled Blue Tint, Blue Mid, Signal Blue, joined by a thick ink stepped line that ends in an Offer Green "OFFER" pill. Desktop only; below `md` the steps stack. It echoes the status ramp.
+- **Paper stack** (`PaperStack`, built from `SampleApplicationCard`): three tilted sample cards stamped Applied, Interview and Offer. Used only as the first-run dashboard empty state. Decorative and `aria-hidden`; sample names are fictional.
+
 ### Modal and Drawer
 - The modal is a paper panel (2px black border, `shadow-neo-modal`, square corners) centered over a black 50% backdrop with a slight blur; the mobile menu is the same paper panel pinned left at 256px. Both are real dialogs: `role="dialog"` and `aria-modal`, named by their title (the drawer is "Main menu"), closed by Escape, the close button (labelled "Close dialog" / "Close menu") or a backdrop click. Focus moves in on open, Tab stays inside, and focus returns to the opener on close. The shared behaviour lives in `frontend/src/lib/useDialog.ts`; any new overlay must use it.
 
