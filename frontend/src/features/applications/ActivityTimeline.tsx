@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { NeoCard } from "../../components/ui/NeoCard";
+import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { getApplicationActivity, type ActivityItem } from "../../api/applications";
 import { STATUS_LABELS } from "./statusMeta";
@@ -31,7 +32,7 @@ function describeActivity(item: ActivityItem): string {
 }
 
 export function ActivityTimeline({ applicationId }: { applicationId: string }) {
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         // Nested under ["application", id] so the invalidation the edit and
         // board-move mutations already do refreshes this feed too.
         queryKey: ["application", applicationId, "activity"],
@@ -44,7 +45,7 @@ export function ActivityTimeline({ applicationId }: { applicationId: string }) {
             {isLoading ? (
                 <NeoSkeleton label="Loading activity" className="h-24 shadow-none" />
             ) : isError ? (
-                <p className="font-bold text-neo-destructive">Couldn't load activity.</p>
+                <NeoAlert onRetry={() => refetch()}>Couldn't load activity.</NeoAlert>
             ) : !data || data.length === 0 ? (
                 <p className="font-bold text-slate-600">No activity yet.</p>
             ) : (

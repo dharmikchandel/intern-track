@@ -188,7 +188,7 @@ A restrained neutral base of black ink, white paper and pale-slate desk, carryin
 
 ## Layout
 
-Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), and a main area that scrolls independently over the dot grid. Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
+Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), open by default from the `lg` breakpoint, and a main area that scrolls independently over the dot grid. Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
 
 Spacing follows the 4px Tailwind scale. The working rhythm is 8px inside controls, 12 to 16px between related elements, 24px inside cards, and 32px between dashboard cards (`mb-8`). Card grids use 32px gaps on the landing page and 12px gaps inside dense dashboard tiles. The kanban board is a horizontally scrolling row of columns with 12px gaps.
 
@@ -223,7 +223,8 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Buttons
 - **Shape:** 8px corners, 2px black border, 12px x 24px padding, bold system sans.
 - **Primary:** Signal Blue fill, black text, hard rest shadow. Use `NeoButton` for actions and `NeoLinkButton` for navigation (it renders the same look on a router link); never put a `<button>` inside a `<Link>`.
-- **Secondary:** Ultraviolet fill, black text.
+- **Ghost:** white fill, black 2px border, no resting shadow; it lifts (shadow appears) only on hover. Use it for the quieter action beside a primary: Cancel, Import/Export, Sign In, Copy link, Previous/Next.
+- **Secondary:** Ultraviolet fill, black text. Currently unused by any screen; the ghost variant replaced it.
 - **Destructive:** Stop Red fill, white text.
 - **Focus:** keyboard focus draws a 2px Ink (#000) outline with a 2px offset, set once in `index.css` for every link, button, select, checkbox and radio. Inputs keep their blue ring (see Inputs).
 - **Hover / Active:** translate (-2px, -2px) with shadow growing 4px to 6px on hover; on active snap back to (0, 0) with the shadow at 2px. Transition is 150ms on all properties. Disabled is 50% opacity with pointer events off.
@@ -242,6 +243,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Internal Padding:** 24px (cards), 12px (kanban cards and milestone tiles), 8px inside kanban columns.
 
 ### Inputs / Fields
+- **Hint:** `NeoInput` takes a `hint` (quiet 12px help under the field, linked with `aria-describedby`); mark optional fields "(optional)" in the label.
 - **Primitives:** `NeoInput`, `NeoSelect` and `NeoTextarea` share one grammar and one focus ring. Every labelled field goes through them; never hand-write the class string. `NeoSelect` renders a bare select when it has no label (toolbars, cards); override size with `className` (for example `w-auto p-2 font-bold`).
 - **Style:** Paper fill, 2px black border, square corners, 12px x 16px padding, medium weight, grey placeholder. Labels sit above in uppercase tracked bold.
 - **Focus:** no outline; a 4px ring in Signal Blue at 50% opacity.
@@ -271,7 +273,8 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Banner and Empty States
 - **Notice banner:** Highlight Yellow, 2px black border, rest shadow, bold text, underlined inline actions.
 - **Empty state:** Paper, 2px *dashed* black border, centered bold message, no shadow.
-- **Error alert** (`NeoAlert`): a failed action. Stop Red fill, white bold text, 2px black border, rest shadow, `role="alert"`. It sits next to the control that failed (above the submit button, above the board, inside the delete modal), names what didn't happen and what state things are in, and clears on the next attempt. Use it instead of hand-rolling red banners.
+- **Success notice** (`NeoNotice`): Achieved Mint fill, black text, `role="status"`, optional Dismiss. For "Added Stripe." after a save and the password-reset confirmations.
+- **Error alert** (`NeoAlert`): a failed action. Stop Red fill, white bold text, 2px black border, rest shadow, `role="alert"`. It sits next to the control that failed (above the submit button, above the board, inside the delete modal), names what didn't happen and what state things are in, and clears on the next attempt. For a failed load pass `onRetry` to add a "Try again" action. Use it instead of hand-rolling red banners.
 
 ## Do's and Don'ts
 

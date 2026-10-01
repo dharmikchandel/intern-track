@@ -71,7 +71,7 @@ export function VerifyEmailPage() {
                             <p className="font-bold text-slate-600 mb-6">
                                 {error ?? "This verification link is missing its token."}
                             </p>
-                            <NeoLinkButton to="/dashboard" variant="secondary" className="w-full">Go to Dashboard</NeoLinkButton>
+                            <NeoLinkButton to="/dashboard" variant="ghost" className="w-full">Go to Dashboard</NeoLinkButton>
                         </>
                     )}
                 </NeoCard>

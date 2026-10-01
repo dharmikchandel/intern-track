@@ -17,7 +17,7 @@ export function TechStackSection() {
                     {techs.map((tech, index) => (
                         <motion.span
                             key={tech}
-                            className="px-4 py-2 bg-white border-2 border-black rounded-lg font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                            className="px-4 py-2 bg-white border-2 border-black rounded-lg font-black shadow-neo-sm text-sm"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

@@ -45,7 +45,7 @@ export function FeaturesSection() {
         <section className="py-24 bg-white border-b-2 border-black">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                    <span className="inline-block py-1 px-3 rounded-full bg-neo-tertiary text-white border-2 border-black text-sm font-black mb-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span className="inline-block py-1 px-3 rounded-full bg-neo-tertiary text-black border-2 border-black text-sm font-black mb-4 shadow-neo-sm">
                         FEATURES
                     </span>
                     <h2 className="text-4xl md:text-5xl font-black mb-6">Know What To Do Next</h2>

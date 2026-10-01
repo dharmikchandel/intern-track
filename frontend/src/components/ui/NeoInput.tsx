@@ -4,10 +4,12 @@ import { cn } from "../../lib/utils";
 interface NeoInputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     error?: string;
+    // Quiet help under the field (what it is for). Linked with aria-describedby.
+    hint?: string;
 }
 
 const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
-    ({ className, label, error, id, ...props }, ref) => {
+    ({ className, label, error, hint, id, ...props }, ref) => {
         // Tie the label to its input so screen readers announce it and
         // clicking the label focuses the field.
         const generatedId = useId();
@@ -22,6 +24,7 @@ const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
                 <input
                     ref={ref}
                     id={inputId}
+                    aria-describedby={hint ? `${inputId}-hint` : undefined}
                     className={cn(
                         "w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all font-medium placeholder:text-slate-500",
                         error && "border-neo-destructive focus:ring-neo-destructive/50",
@@ -29,6 +32,9 @@ const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
                     )}
                     {...props}
                 />
+                {hint && !error && (
+                    <p id={`${inputId}-hint`} className="text-slate-600 font-bold text-xs mt-1">{hint}</p>
+                )}
                 {error && (
                     <p className="text-neo-destructive font-bold text-sm mt-1">{error}</p>
                 )}

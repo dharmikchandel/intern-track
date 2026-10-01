@@ -51,7 +51,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
 
     const boardKey = ["applications", "board", { q, needsFollowUp, perColumn }] as const;
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: boardKey,
         queryFn: () => getBoard({ q: q || undefined, needsFollowUp: needsFollowUp || undefined, perColumn }),
         placeholderData: keepPreviousData,
@@ -110,8 +110,8 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
     }
     if (isError || !data) {
         return (
-            <NeoAlert className="p-4">
-                Error loading the board.
+            <NeoAlert className="p-4" onRetry={() => refetch()}>
+                Couldn't load the board.
             </NeoAlert>
         );
     }
@@ -122,7 +122,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
             <div className="text-center p-10 border-2 border-dashed border-black bg-white">
                 <p className="font-bold text-lg mb-4">{q || needsFollowUp ? "No applications match these filters." : "No applications yet."}</p>
                 {!q && !needsFollowUp && (
-                    <NeoLinkButton to="/applications/new" variant="secondary">Add your first application</NeoLinkButton>
+                    <NeoLinkButton to="/applications/new">Add your first application</NeoLinkButton>
                 )}
             </div>
         );
@@ -174,8 +174,8 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                         {undo.company} moved to {STATUS_LABELS[undo.to]}
                     </span>
                     <NeoButton
-                        variant="secondary"
-                        className="px-3 py-2 text-sm flex items-center gap-1"
+                        variant="ghost"
+                        className="px-3 py-2 text-sm min-h-11 flex items-center gap-1"
                         onClick={() => {
                             moveMutation.mutate({ id: undo.id, status: undo.from });
                             setUndo(null);

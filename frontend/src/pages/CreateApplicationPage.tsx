@@ -69,11 +69,11 @@ export function CreateApplicationPage() {
 
     const mutation = useMutation({
         mutationFn: createApplication,
-        onSuccess: () => {
+        onSuccess: (_created, variables) => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             // Also invalidate stats
             queryClient.invalidateQueries({ queryKey: ["analytics"] });
-            navigate("/applications");
+            navigate("/applications", { state: { notice: `Added ${variables.companyName}.` } });
         },
     });
 
@@ -91,7 +91,7 @@ export function CreateApplicationPage() {
     return (
         <div className="max-w-2xl mx-auto">
             <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
-                <ArrowLeft className="w-4 h-4" /> Back to List
+                <ArrowLeft className="w-4 h-4" /> Back to Applications
             </Link>
 
             <NeoCard>
@@ -134,20 +134,21 @@ export function CreateApplicationPage() {
 
                     <NeoInput
                         label="Follow-up Date (optional)"
+                        hint="We remind you on your dashboard and in the weekly email."
                         type="date"
                         error={errors.followUpDate?.message}
                         {...register("followUpDate")}
                     />
 
                     <NeoInput
-                        label="Application Link"
+                        label="Application Link (optional)"
                         placeholder="https://..."
                         error={errors.applicationLink?.message}
                         {...register("applicationLink")}
                     />
 
                     <NeoTextarea
-                        label="Notes"
+                        label="Notes (optional)"
                             placeholder="Job description, referral info, etc."
                         error={errors.notes?.message}
                         {...register("notes")}
@@ -162,7 +163,7 @@ export function CreateApplicationPage() {
                         className="w-full"
                         disabled={mutation.isPending}
                     >
-                        {mutation.isPending ? "Tracking..." : "Save Application"}
+                        {mutation.isPending ? "Saving..." : "Save Application"}
                     </NeoButton>
                 </form>
             </NeoCard>

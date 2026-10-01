@@ -24,7 +24,7 @@ export function CTASection() {
                     <NeoLinkButton to="/register" className="text-xl px-10 py-5 h-auto bg-white text-black hover:bg-slate-100 border-2 border-black">
                         Start Tracking Now
                     </NeoLinkButton>
-                    <p className="mt-6 text-sm font-bold opacity-75">No credit card required.</p>
+                    <p className="mt-6 text-sm font-bold">No credit card required.</p>
                 </motion.div>
             </div>
         </section>

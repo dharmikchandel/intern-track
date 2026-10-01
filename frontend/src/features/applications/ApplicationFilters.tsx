@@ -98,8 +98,8 @@ export function ApplicationFilters({
                             value={listControls.order}
                             onChange={(e) => listControls.onOrderChange(e.target.value as "asc" | "desc")}
                         >
-                            <option value="desc">Desc</option>
-                            <option value="asc">Asc</option>
+                            <option value="desc">Descending</option>
+                            <option value="asc">Ascending</option>
                         </NeoSelect>
                     </div>
                 </>

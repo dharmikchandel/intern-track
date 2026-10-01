@@ -67,7 +67,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
                         }
                     }}
                 />
-                <NeoButton type="button" variant="secondary" onClick={run} disabled={capture.isPending || url.trim() === ""} className="shrink-0">
+                <NeoButton type="button" variant="ghost" onClick={run} disabled={capture.isPending || url.trim() === ""} className="shrink-0">
                     {capture.isPending ? "Reading..." : "Autofill"}
                 </NeoButton>
             </div>

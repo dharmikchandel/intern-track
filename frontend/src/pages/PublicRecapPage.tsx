@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
+import { NeoCard } from "../components/ui/NeoCard";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { DotGrid } from "../components/ui/DotGrid";
 import { getPublicRecap } from "../api/recap";
@@ -23,11 +24,11 @@ export function PublicRecapPage() {
                 {isLoading ? (
                     <NeoSkeleton label="Loading recap" className="h-96" />
                 ) : isError || !data ? (
-                    <div className="bg-white border-4 border-black rounded-xl shadow-neo p-8 text-center">
+                    <NeoCard className="p-8 text-center">
                         <h1 className="text-2xl font-black mb-2">This recap isn't available</h1>
                         <p className="font-medium mb-6">The link may be wrong, or the owner has turned sharing off.</p>
                         <NeoLinkButton to="/">Go to TRACKr</NeoLinkButton>
-                    </div>
+                    </NeoCard>
                 ) : (
                     <>
                         <RecapCard stats={data.stats} periodStart={data.periodStart} periodEnd={data.periodEnd} />

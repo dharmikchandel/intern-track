@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard, FileText, PlusCircle, Sparkles, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../../features/auth/useAuth";
@@ -11,11 +11,18 @@ import { DotGrid } from "../ui/DotGrid";
 export function MainLayout() {
     const { logout, user } = useAuth();
     const location = useLocation();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // Labelled by default where there is room; first-timers should not have to decode icons.
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     useDialog(drawerRef, isMobileMenuOpen, () => setIsMobileMenuOpen(false));
+
+    // The page scrolls inside this container, so a new route must reset it by hand.
+    const scrollRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        scrollRef.current?.scrollTo({ top: 0 });
+    }, [location.pathname]);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -60,8 +67,8 @@ export function MainLayout() {
                     </button>
 
                     <div className="text-xl md:text-2xl font-black tracking-tighter text-black flex items-center gap-2">
-                        <Link to="/">
-                            TRACKr. 
+                        <Link to="/dashboard">
+                            TRACKr.
                         </Link>
                         <span className="text-neo-primary text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
                         
@@ -69,10 +76,10 @@ export function MainLayout() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <span className="text-sm font-bold text-slate-700 hidden sm:inline-block border-b-2 border-transparent hover:border-black transition-all cursor-default">
+                    <span className="text-sm font-bold text-slate-700 hidden sm:inline-block max-w-[16rem] truncate">
                         {user?.email}
                     </span>
-                    <div className="w-10 h-10 bg-neo-primary border-2 border-black rounded-full flex items-center justify-center text-black font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="w-10 h-10 bg-neo-primary border-2 border-black rounded-full flex items-center justify-center text-black font-black shadow-neo-sm">
                         {user?.email?.charAt(0).toUpperCase()}
                     </div>
                 </div>
@@ -190,7 +197,7 @@ export function MainLayout() {
                 {/* Main Content Area */}
                 <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden relative">
                     <DotGrid />
-                    <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
+                    <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
                         <div className="max-w-6xl mx-auto min-h-full flex flex-col">
                             <div className="flex-1">
                                 {user && !user.emailVerified && <EmailVerificationBanner />}

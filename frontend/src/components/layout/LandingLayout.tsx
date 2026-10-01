@@ -20,7 +20,7 @@ export function LandingLayout({ children }: LandingLayoutProps) {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <NeoLinkButton to="/login" variant="secondary" className="hidden md:inline-flex">
+                    <NeoLinkButton to="/login" variant="ghost" className="hidden md:inline-flex">
                         Login
                     </NeoLinkButton>
                     <NeoLinkButton to="/register" variant="primary">

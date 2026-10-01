@@ -74,7 +74,11 @@ export function ResetPasswordPage() {
                         <>
                             {serverError && (
                                 <NeoAlert className="mb-4">
-                                    {serverError}
+                                    {serverError}{" "}
+                                    <Link to="/forgot-password" className="underline">
+                                        Request a new link
+                                    </Link>
+                                    .
                                 </NeoAlert>
                             )}
 
@@ -82,6 +86,7 @@ export function ResetPasswordPage() {
                                 <NeoInput
                                     label="New Password"
                                     type="password"
+                                    autoComplete="new-password"
                                     placeholder="••••••••"
                                     error={errors.password?.message}
                                     {...register("password")}
@@ -89,6 +94,7 @@ export function ResetPasswordPage() {
                                 <NeoInput
                                     label="Confirm New Password"
                                     type="password"
+                                    autoComplete="new-password"
                                     placeholder="••••••••"
                                     error={errors.confirmPassword?.message}
                                     {...register("confirmPassword")}

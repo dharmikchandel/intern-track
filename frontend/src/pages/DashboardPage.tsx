@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { NeoAlert } from "../components/ui/NeoAlert";
-import { NeoButton } from "../components/ui/NeoButton";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
@@ -69,7 +68,7 @@ function DashboardNumbers({ counts, funnelData }: { counts: StatusCounts; funnel
                         <NeoCard key={stat.label} className={cn("p-4 flex flex-col items-center justify-center text-center", stat.color, index === stats.length - 1 && "col-span-2 lg:col-span-1")}>
                             <Icon className="w-8 h-8 mb-2 opacity-100" />
                             <span className="text-3xl font-black">{stat.value}</span>
-                            <span className="text-xs font-bold uppercase tracking-wider opacity-80">{stat.label}</span>
+                            <span className="text-xs font-bold uppercase tracking-wider">{stat.label}</span>
                         </NeoCard>
                     )
                 })}
@@ -155,12 +154,7 @@ export function DashboardPage() {
                 STATUS_ORDER.every((s) => status.data[s] === 0) ? <FirstRun /> : <DashboardNumbers counts={status.data} funnelData={funnel.data} />
             ) : (
                 // Never show zeros for numbers we failed to load: they would read as real.
-                <NeoAlert className="flex flex-wrap items-center justify-between gap-3">
-                    <span>Couldn't load your numbers.</span>
-                    <NeoButton className="px-4 py-2 text-sm" onClick={retry}>
-                        Try again
-                    </NeoButton>
-                </NeoAlert>
+                <NeoAlert onRetry={retry}>Couldn't load your numbers.</NeoAlert>
             )}
         </div>
     );

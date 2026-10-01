@@ -74,6 +74,7 @@ export function RegisterPage() {
                         <NeoInput
                             label="Email"
                             type="email"
+                            autoComplete="email"
                             placeholder="you@example.com"
                             error={errors.email?.message}
                             {...register("email")}
@@ -81,6 +82,7 @@ export function RegisterPage() {
                         <NeoInput
                             label="Password"
                             type="password"
+                            autoComplete="new-password"
                             placeholder="••••••••"
                             error={errors.password?.message}
                             {...register("password")}
@@ -88,6 +90,7 @@ export function RegisterPage() {
                         <NeoInput
                             label="Confirm Password"
                             type="password"
+                            autoComplete="new-password"
                             placeholder="••••••••"
                             error={errors.confirmPassword?.message}
                             {...register("confirmPassword")}
@@ -95,7 +98,6 @@ export function RegisterPage() {
 
                         <NeoButton
                             type="submit"
-                            variant="secondary"
                             className="w-full mt-2"
                             disabled={mutation.isPending}
                         >

@@ -7,6 +7,7 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
+import { NeoNotice } from "../components/ui/NeoNotice";
 import { DotGrid } from "../components/ui/DotGrid";
 import { type ForgotPasswordFormData, forgotPasswordSchema } from "../lib/schemas";
 import { requestPasswordReset } from "../api/auth";
@@ -63,9 +64,7 @@ export function ForgotPasswordPage() {
                     )}
 
                     {mutation.isSuccess ? (
-                        <div role="status" className="bg-emerald-100 border-2 border-black p-4 font-bold text-slate-800">
-                            If that email is registered, a reset link is on its way. Check your inbox.
-                        </div>
+                        <NeoNotice className="p-4">If that email is registered, a reset link is on its way. Check your inbox.</NeoNotice>
                     ) : (
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                             <p className="text-sm font-bold text-slate-600">
@@ -74,6 +73,7 @@ export function ForgotPasswordPage() {
                             <NeoInput
                                 label="Email"
                                 type="email"
+                                autoComplete="email"
                                 placeholder="you@example.com"
                                 error={errors.email?.message}
                                 {...register("email")}

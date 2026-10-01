@@ -1,6 +1,8 @@
 import { cn } from "../../lib/utils";
 
-export type NeoButtonVariant = "primary" | "secondary" | "destructive";
+// ghost: white fill, no resting shadow; it only lifts when you point at it. For
+// the quieter action next to a primary (Cancel, Import, Sign In).
+export type NeoButtonVariant = "primary" | "secondary" | "destructive" | "ghost";
 
 // One source for the button look, shared by <NeoButton> and <NeoLinkButton>
 // so a navigation link can look like a button without nesting a <button> in an <a>.
@@ -11,6 +13,7 @@ export function neoButtonClass(variant: NeoButtonVariant = "primary", className?
             "bg-neo-primary text-black": variant === "primary",
             "bg-neo-secondary text-black": variant === "secondary",
             "bg-neo-destructive text-white": variant === "destructive",
+            "bg-white text-black shadow-none hover:shadow-neo hover:bg-slate-50": variant === "ghost",
         },
         className
     );

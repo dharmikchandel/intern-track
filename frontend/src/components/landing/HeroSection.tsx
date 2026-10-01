@@ -27,7 +27,7 @@ export function HeroSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-neo-secondary/10 border-2 border-black text-sm font-black mb-6 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span className="inline-block py-1 px-3 rounded-full bg-neo-secondary/10 border-2 border-black text-sm font-black mb-6 shadow-neo-sm">
                         JOB APPLICATION TRACKER
                     </span>
                     <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-none text-slate-900">
@@ -47,7 +47,7 @@ export function HeroSection() {
                         <NeoLinkButton to="/register" className="text-lg px-8 py-4 h-auto">
                             Start Tracking Free
                         </NeoLinkButton>
-                        <NeoLinkButton to="/login" variant="secondary" className="text-lg px-8 py-4 h-auto">
+                        <NeoLinkButton to="/login" variant="ghost" className="text-lg px-8 py-4 h-auto">
                             Sign In
                         </NeoLinkButton>
                     </div>

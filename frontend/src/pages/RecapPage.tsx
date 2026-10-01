@@ -2,6 +2,7 @@ import { useState } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, Copy, Link2, Trash2 } from "lucide-react";
 import { NeoAlert } from "../components/ui/NeoAlert";
+import { NeoModal } from "../components/ui/NeoModal";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
@@ -25,6 +26,7 @@ export function RecapPage() {
     const [start, setStart] = useState(() => localDay(-89));
     const [end, setEnd] = useState(() => localDay());
     const [copied, setCopied] = useState<string | null>(null);
+    const [revokeId, setRevokeId] = useState<string | null>(null);
 
     const validRange = start !== "" && end !== "" && start <= end;
 
@@ -81,7 +83,7 @@ export function RecapPage() {
                                         setEnd(e);
                                     }}
                                     className={cn(
-                                        "px-3 py-2.5 border-2 border-black font-bold text-sm rounded-md",
+                                        "px-3 py-2.5 border-2 border-black font-bold text-sm min-h-11 rounded-lg",
                                         active ? "bg-neo-primary" : "bg-white hover:bg-slate-100"
                                     )}
                                 >
@@ -101,7 +103,7 @@ export function RecapPage() {
                     {preview.isLoading && validRange ? (
                         <NeoSkeleton label="Building your recap" className="h-96" />
                     ) : preview.isError ? (
-                        <p className="font-bold text-neo-destructive">Couldn't build the recap.</p>
+                        <NeoAlert onRetry={() => preview.refetch()}>Couldn't build the recap.</NeoAlert>
                     ) : preview.data && validRange ? (
                         <RecapCard stats={preview.data.stats} periodStart={start} periodEnd={end} />
                     ) : null}
@@ -140,7 +142,7 @@ export function RecapPage() {
                                     <p className="text-xs font-mono break-all my-1">{shareUrl(s.slug)}</p>
                                     <span role="status" className="sr-only">{copied === s.slug ? "Link copied" : ""}</span>
                                     <div className="flex gap-2 mt-2">
-                                        <NeoButton variant="secondary" className="px-3 py-2 text-sm flex items-center gap-1" onClick={() => copy(s.slug)}>
+                                        <NeoButton variant="ghost" className="px-3 py-2 text-sm min-h-11 flex items-center gap-1" onClick={() => copy(s.slug)}>
                                             {copied === s.slug ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                                             {copied === s.slug ? "Copied" : "Copy link"}
                                         </NeoButton>
@@ -148,7 +150,7 @@ export function RecapPage() {
                                             variant="destructive"
                                             className="px-3 py-2 text-sm flex items-center gap-1"
                                             disabled={revoke.isPending}
-                                            onClick={() => revoke.mutate(s.id)}
+                                            onClick={() => setRevokeId(s.id)}
                                         >
                                             <Trash2 className="w-4 h-4" /> Turn off
                                         </NeoButton>
@@ -159,6 +161,22 @@ export function RecapPage() {
                     )}
                 </NeoCard>
             </div>
+
+            <NeoModal isOpen={revokeId !== null} onClose={() => setRevokeId(null)} title="Turn off this link?">
+                <p className="font-bold mb-6">
+                    Anyone with the link will see a "not available" page. You can create a new link at any time.
+                </p>
+                <div className="flex justify-end gap-4">
+                    <NeoButton variant="ghost" onClick={() => setRevokeId(null)}>Keep it on</NeoButton>
+                    <NeoButton
+                        variant="destructive"
+                        disabled={revoke.isPending}
+                        onClick={() => revokeId && revoke.mutate(revokeId, { onSettled: () => setRevokeId(null) })}
+                    >
+                        {revoke.isPending ? "Turning off..." : "Turn off"}
+                    </NeoButton>
+                </div>
+            </NeoModal>
         </div>
     );
 }

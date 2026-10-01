@@ -11,7 +11,7 @@ export function EmailVerificationBanner() {
     if (dismissed) return null;
 
     return (
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-2 border-black bg-yellow-100 p-4 font-bold text-slate-800 shadow-neo rounded-md">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-2 border-black bg-yellow-100 p-4 font-bold text-slate-800 shadow-neo rounded-lg">
             <div className="flex items-center gap-2">
                 <MailWarning className="w-5 h-5 shrink-0" aria-hidden />
                 {/* Live region: the result of "Resend" is announced, not just shown. */}
@@ -28,14 +28,14 @@ export function EmailVerificationBanner() {
                     type="button"
                     onClick={() => mutation.mutate()}
                     disabled={mutation.isPending || mutation.isSuccess}
-                    className="text-sm underline px-1 hover:bg-neo-primary hover:text-black disabled:opacity-50 disabled:no-underline"
+                    className="text-sm underline px-2 min-h-11 hover:bg-neo-primary hover:text-black disabled:opacity-50 disabled:no-underline"
                 >
                     {mutation.isPending ? "Sending..." : mutation.isSuccess ? "Sent" : "Resend email"}
                 </button>
                 <button
                     type="button"
                     onClick={() => setDismissed(true)}
-                    className="text-sm underline px-1 hover:bg-neo-destructive hover:text-white"
+                    className="text-sm underline px-2 min-h-11 hover:bg-neo-destructive hover:text-white"
                 >
                     Dismiss
                 </button>

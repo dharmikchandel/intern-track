@@ -35,7 +35,8 @@
         --tw-translate-y: 0px !important;
     }
 
-    .animate-pulse {
+    .animate-pulse,
+    .animate-spin {
         animation: none;
     }
 }

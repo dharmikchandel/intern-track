@@ -1,11 +1,12 @@
-import { lazy, Suspense, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { LayoutGrid, List, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
+import { NeoNotice } from "../components/ui/NeoNotice";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 
 import {
@@ -48,6 +49,17 @@ export function ApplicationsPage() {
     // The dashboard's "Review them" link arrives as /applications?followUp=1.
     const [searchParams] = useSearchParams();
     const [needsFollowUp, setNeedsFollowUp] = useState(searchParams.get("followUp") === "1");
+
+    // "Added X." arrives in router state after creating an application. Keep it
+    // locally and clear it from history so a refresh does not show it again.
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [notice, setNotice] = useState<string | null>(() => (location.state as { notice?: string } | null)?.notice ?? null);
+    useEffect(() => {
+        if ((location.state as { notice?: string } | null)?.notice) {
+            navigate(location.pathname + location.search, { replace: true, state: null });
+        }
+    }, [location, navigate]);
     const [sort, setSort] = useState<ApplicationSort>("appliedDate");
     const [order, setOrder] = useState<"asc" | "desc">("desc");
 
@@ -55,7 +67,7 @@ export function ApplicationsPage() {
     // per keystroke.
     const debouncedSearch = useDebouncedValue(search.trim(), 300);
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ["applications", "list", { page, statusFilter, debouncedSearch, needsFollowUp, sort, order }],
         queryFn: () =>
             listApplications({
@@ -90,6 +102,13 @@ export function ApplicationsPage() {
         };
     }
 
+    function clearFilters() {
+        setSearch("");
+        setNeedsFollowUp(false);
+        setStatusFilter("");
+        setPage(1);
+    }
+
     // The board ignores the status dropdown, so it isn't a filter there.
     const hasFilters = Boolean(debouncedSearch || needsFollowUp || (view === "list" && statusFilter));
 
@@ -119,11 +138,12 @@ export function ApplicationsPage() {
                             ["board", LayoutGrid, "Board"],
                         ] as const).map(([mode, Icon, label]) => (
                             <button
+                                type="button"
                                 key={mode}
                                 aria-pressed={view === mode}
                                 onClick={() => changeView(mode)}
                                 className={cn(
-                                    "flex items-center gap-2 px-3 py-2 font-bold text-sm",
+                                    "flex items-center gap-2 px-3 py-2 min-h-11 font-bold text-sm focus-visible:outline-offset-[-4px]",
                                     view === mode ? "bg-neo-primary text-black" : "bg-white hover:bg-slate-100"
                                 )}
                             >
@@ -138,6 +158,8 @@ export function ApplicationsPage() {
                     </NeoLinkButton>
                 </div>
             </div>
+
+            {notice && <NeoNotice className="mb-6" onDismiss={() => setNotice(null)}>{notice}</NeoNotice>}
 
             <ApplicationFilters
                 search={search}
@@ -165,16 +187,18 @@ export function ApplicationsPage() {
             ) : isLoading ? (
                 <NeoSkeleton label="Loading applications" className="h-80" />
             ) : isError ? (
-                <NeoAlert className="p-4">
-                    Error loading applications.
+                <NeoAlert className="p-4" onRetry={() => refetch()}>
+                    Couldn't load your applications.
                 </NeoAlert>
             ) : data?.items.length === 0 ? (
                 <div className="text-center p-10 border-2 border-dashed border-black bg-white">
                     <p className="font-bold text-lg mb-4">
                         {hasFilters ? "No applications match these filters." : "No applications yet."}
                     </p>
-                    {!hasFilters && (
-                        <NeoLinkButton to="/applications/new" variant="secondary">Add your first application</NeoLinkButton>
+                    {hasFilters ? (
+                        <NeoButton variant="ghost" onClick={clearFilters}>Clear filters</NeoButton>
+                    ) : (
+                        <NeoLinkButton to="/applications/new">Add your first application</NeoLinkButton>
                     )}
                 </div>
             ) : (
@@ -211,7 +235,7 @@ export function ApplicationsPage() {
                     {/* Pagination */}
                     <div className="mt-6 flex justify-between items-center">
                         <NeoButton
-                            variant="secondary"
+                            variant="ghost"
                             disabled={page === 1}
                             onClick={() => setPage(p => Math.max(1, p - 1))}
                         >
@@ -219,7 +243,7 @@ export function ApplicationsPage() {
                         </NeoButton>
                         <span className="font-bold">Page {page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
                         <NeoButton
-                            variant="secondary"
+                            variant="ghost"
                             disabled={!data || page >= data.meta.totalPages}
                             onClick={() => setPage(p => p + 1)}
                         >

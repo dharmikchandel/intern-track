@@ -7,6 +7,7 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
+import { NeoNotice } from "../components/ui/NeoNotice";
 import { DotGrid } from "../components/ui/DotGrid";
 import { type LoginFormData, loginSchema } from "../lib/schemas";
 import { loginUser } from "../api/auth";
@@ -69,9 +70,7 @@ export function LoginPage() {
                     <h2 className="text-2xl font-black mb-6 uppercase">Login</h2>
 
                     {justReset && !serverError && (
-                        <div role="status" className="bg-emerald-100 border-2 border-black p-3 mb-4 font-bold text-slate-800">
-                            Password updated. Log in with your new password.
-                        </div>
+                        <NeoNotice className="mb-4">Password updated. Log in with your new password.</NeoNotice>
                     )}
 
                     {serverError && (
@@ -84,6 +83,7 @@ export function LoginPage() {
                         <NeoInput
                             label="Email"
                             type="email"
+                            autoComplete="email"
                             placeholder="you@example.com"
                             error={errors.email?.message}
                             {...register("email")}
@@ -92,6 +92,7 @@ export function LoginPage() {
                             <NeoInput
                                 label="Password"
                                 type="password"
+                                autoComplete="current-password"
                                 placeholder="••••••••"
                                 error={errors.password?.message}
                                 {...register("password")}

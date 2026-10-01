@@ -44,7 +44,7 @@ export function ExportCsvButton({ filters, filtered }: { filters: { q?: string; 
 
     return (
         <div className="flex flex-col items-start">
-            <NeoButton variant="secondary" className="flex items-center gap-2 px-4 py-2 text-sm" disabled={exportCsv.isPending} onClick={() => exportCsv.mutate()}>
+            <NeoButton variant="ghost" className="flex items-center gap-2 px-4 py-2 text-sm min-h-11" disabled={exportCsv.isPending} onClick={() => exportCsv.mutate()}>
                 <Download className="w-4 h-4" />
                 {exportCsv.isPending ? "Exporting..." : filtered ? "Export filtered CSV" : "Export CSV"}
             </NeoButton>
@@ -61,7 +61,7 @@ export function ImportCsvButton() {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <NeoButton variant="secondary" className="flex items-center gap-2 px-4 py-2 text-sm" onClick={() => setOpen(true)}>
+            <NeoButton variant="ghost" className="flex items-center gap-2 px-4 py-2 text-sm min-h-11" onClick={() => setOpen(true)}>
                 <Upload className="w-4 h-4" />
                 Import CSV
             </NeoButton>
@@ -153,7 +153,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
                                 e.target.value = ""; // allow re-choosing the same file
                             }}
                         />
-                        <NeoButton variant="secondary" className="flex items-center gap-2" onClick={() => fileInput.current?.click()}>
+                        <NeoButton variant="ghost" className="flex items-center gap-2" onClick={() => fileInput.current?.click()}>
                             <FileUp className="w-5 h-5" />
                             {file ? "Choose a different file" : "Choose CSV file"}
                         </NeoButton>
@@ -195,7 +195,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
 
                     {summary && !preview.isPending && (
                         <div className="flex justify-end gap-3 pt-2">
-                            <NeoButton variant="secondary" onClick={onClose}>
+                            <NeoButton variant="ghost" onClick={onClose}>
                                 Cancel
                             </NeoButton>
                             <NeoButton

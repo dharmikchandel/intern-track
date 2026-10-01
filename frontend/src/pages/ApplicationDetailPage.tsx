@@ -93,7 +93,7 @@ export function ApplicationDetailPage() {
 
     const backLink = (
         <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
-            <ArrowLeft className="w-4 h-4" /> Back to List
+            <ArrowLeft className="w-4 h-4" /> Back to Applications
         </Link>
     );
 
@@ -134,7 +134,7 @@ export function ApplicationDetailPage() {
                     </div>
                     {!isEditing && (
                         <div className="flex gap-2 shrink-0">
-                            <NeoButton variant="secondary" onClick={() => setIsEditing(true)}>Edit</NeoButton>
+                            <NeoButton variant="ghost" onClick={() => setIsEditing(true)}>Edit</NeoButton>
                             <NeoButton variant="destructive" onClick={() => setShowDeleteModal(true)} aria-label="Delete application"><Trash2 className="w-4 h-4" aria-hidden /></NeoButton>
                         </div>
                     )}
@@ -172,19 +172,20 @@ export function ApplicationDetailPage() {
 
                         <NeoInput
                             label="Follow-up Date (optional)"
+                            hint="We remind you on your dashboard and in the weekly email."
                             type="date"
                             error={errors.followUpDate?.message}
                             {...register("followUpDate")}
                         />
 
                         <NeoInput
-                            label="Application Link"
+                            label="Application Link (optional)"
                             error={errors.applicationLink?.message}
                             {...register("applicationLink")}
                         />
 
                         <NeoTextarea
-                            label="Notes"
+                            label="Notes (optional)"
                             error={errors.notes?.message}
                             {...register("notes")}
                         />
@@ -199,7 +200,7 @@ export function ApplicationDetailPage() {
                             </NeoButton>
                             <NeoButton
                                 type="button"
-                                variant="secondary"
+                                variant="ghost"
                                 onClick={() => {
                                     updateMutation.reset();
                                     setIsEditing(false);
@@ -245,9 +246,9 @@ export function ApplicationDetailPage() {
                                     href={application.applicationLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 font-bold underline hover:bg-neo-secondary mt-1"
+                                    className="inline-flex items-start gap-2 font-bold underline break-all hover:bg-neo-primary mt-1"
                                 >
-                                    {application.applicationLink} <ExternalLink className="w-4 h-4" />
+                                    {application.applicationLink} <ExternalLink className="w-4 h-4 shrink-0 mt-1" aria-hidden />
                                 </a>
                             </div>
                         )}
@@ -269,14 +270,14 @@ export function ApplicationDetailPage() {
             <NeoModal
                 isOpen={showDeleteModal}
                 onClose={closeDeleteModal}
-                title="Delete Application?"
+                title={`Delete ${application.companyName}?`}
             >
                 <p className="font-bold mb-6">Are you sure you want to delete this application? This action cannot be undone.</p>
                 {deleteMutation.isError && (
                     <NeoAlert className="mb-6">{getErrorMessage(deleteMutation.error, "Couldn't delete this application. Please try again.")}</NeoAlert>
                 )}
                 <div className="flex justify-end gap-4">
-                    <NeoButton variant="secondary" onClick={closeDeleteModal}>Cancel</NeoButton>
+                    <NeoButton variant="ghost" onClick={closeDeleteModal}>Cancel</NeoButton>
                     <NeoButton
                         variant="destructive"
                         onClick={() => deleteMutation.mutate()}

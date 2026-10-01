@@ -41,7 +41,7 @@ export function NeoModal({ isOpen, onClose, title, children, widthClass = "max-w
                         type="button"
                         onClick={onClose}
                         aria-label="Close dialog"
-                        className="p-1 hover:bg-slate-100 border-2 border-transparent hover:border-black transition-all"
+                        className="p-2 hover:bg-slate-100 border-2 border-transparent hover:border-black transition-all"
                     >
                         <X className="w-6 h-6" aria-hidden />
                     </button>
