@@ -15,7 +15,7 @@ const NeoNotice = forwardRef<HTMLDivElement, NeoNoticeProps>(
                 ref={ref}
                 role="status"
                 className={cn(
-                    "bg-emerald-100 text-black p-3 font-bold border-2 border-black shadow-neo",
+                    "bg-neo-mint text-black p-3 font-bold border-2 border-black shadow-neo",
                     onDismiss && "flex flex-wrap items-center justify-between gap-3",
                     className
                 )}

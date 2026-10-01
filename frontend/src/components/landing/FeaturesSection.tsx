@@ -12,19 +12,19 @@ const features = [
         icon: LayoutGrid,
         title: "Board or List",
         description: "Drag applications between Applied, Online Assessment, Interview, Offer and Rejected, or search, filter and sort the list.",
-        color: "bg-neo-secondary"
+        color: "bg-neo-green"
     },
     {
         icon: Link2,
         title: "Paste a Job Link",
         description: "Drop in a posting URL and we fill in what we can read: company, role and link. You review before saving.",
-        color: "bg-neo-tertiary"
+        color: "bg-neo-blue-mid"
     },
     {
         icon: Flame,
         title: "Streaks & Milestones",
         description: "Day streaks and milestones celebrate your momentum. A missed day is never treated as a failure.",
-        color: "bg-neo-accent"
+        color: "bg-neo-green"
     },
     {
         icon: Share2,
@@ -36,7 +36,7 @@ const features = [
         icon: FileSpreadsheet,
         title: "Bring Your Spreadsheet",
         description: "Import a CSV with a preview first, and export your applications whenever you want.",
-        color: "bg-neo-secondary"
+        color: "bg-neo-blue-mid"
     }
 ];
 
@@ -45,7 +45,7 @@ export function FeaturesSection() {
         <section className="py-24 bg-white border-b-2 border-black">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                    <span className="inline-block py-1 px-3 rounded-full bg-neo-tertiary text-black border-2 border-black text-sm font-black mb-4 shadow-neo-sm">
+                    <span className="inline-block py-1 px-3 rounded-full bg-neo-green text-black border-2 border-black text-sm font-black mb-4 shadow-neo-sm">
                         FEATURES
                     </span>
                     <h2 className="text-4xl md:text-5xl font-black mb-6">Know What To Do Next</h2>

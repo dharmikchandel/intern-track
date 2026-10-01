@@ -73,7 +73,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
             </div>
 
             {errorMessage && (
-                <p role="alert" className="mt-3 font-bold text-neo-destructive">
+                <p role="alert" className="mt-3 font-bold text-neo-red-deep">
                     {errorMessage}
                 </p>
             )}
@@ -83,7 +83,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
                     role="status"
                     className={cn(
                         "mt-3 border-2 border-black p-3 text-sm font-medium",
-                        summary.job.confidence === "high" ? "bg-emerald-100" : "bg-yellow-100"
+                        summary.job.confidence === "high" ? "bg-neo-mint" : "bg-neo-blue-tint"
                     )}
                 >
                     <p className="font-bold">{HEADLINE[summary.job.confidence]}</p>

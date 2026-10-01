@@ -36,7 +36,7 @@ const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
                     <p id={`${inputId}-hint`} className="text-slate-600 font-bold text-xs mt-1">{hint}</p>
                 )}
                 {error && (
-                    <p className="text-neo-destructive font-bold text-sm mt-1">{error}</p>
+                    <p className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>
                 )}
             </div>
         );

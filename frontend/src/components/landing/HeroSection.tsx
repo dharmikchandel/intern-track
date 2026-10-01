@@ -5,21 +5,6 @@ import { NeoLinkButton } from "../ui/NeoLinkButton";
 export function HeroSection() {
     return (
         <section className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-neo-bg relative overflow-hidden border-b-2 border-black">
-            {/* Dot Grid Background */}
-            <div className="absolute inset-0 z-0 opacity-30"
-                style={{
-                    backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
-                    backgroundSize: "24px 24px"
-                }}
-            >
-                <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-neo-bg to-transparent"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.5 }}
-                />
-            </div>
-
             {/* Content */}
             <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center">
                 <motion.div
@@ -27,7 +12,7 @@ export function HeroSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-neo-secondary/10 border-2 border-black text-sm font-black mb-6 shadow-neo-sm">
+                    <span className="inline-block py-1 px-3 rounded-full bg-neo-blue-tint border-2 border-black text-sm font-black mb-6 shadow-neo-sm">
                         JOB APPLICATION TRACKER
                     </span>
                     <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-none text-slate-900">

@@ -20,52 +20,82 @@
           "oklch(95.0% 0.126 260)"
         ]
       },
-      "ultraviolet": {
+      "blue-mid": {
+        "role": "primary",
+        "displayName": "Blue Mid",
+        "canonical": "#93C5FD",
+        "tonalRamp": [
+          "#84B1E4",
+          "#5E7FA3",
+          "#394C62",
+          "#131921",
+          "#A1CCFD",
+          "#BDDBFE",
+          "#D8EAFE",
+          "#F4F9FF"
+        ]
+      },
+      "blue-tint": {
+        "role": "primary",
+        "displayName": "Blue Tint",
+        "canonical": "#DBEAFE",
+        "oklch": "oklch(93.2% 0.032 256)",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 256)",
+          "oklch(26.4% 0.018 256)",
+          "oklch(37.9% 0.022 256)",
+          "oklch(49.3% 0.026 256)",
+          "oklch(60.7% 0.030 256)",
+          "oklch(72.1% 0.029 256)",
+          "oklch(83.6% 0.025 256)",
+          "oklch(95.0% 0.021 256)"
+        ]
+      },
+      "offer-green": {
         "role": "secondary",
-        "displayName": "Ultraviolet",
-        "canonical": "#8E51FF",
-        "oklch": "oklch(60.1% 0.242 294)",
+        "displayName": "Offer Green",
+        "canonical": "#86EFAC",
+        "oklch": "oklch(87.1% 0.136 154)",
         "tonalRamp": [
-          "oklch(15.0% 0.109 294)",
-          "oklch(26.4% 0.140 294)",
-          "oklch(37.9% 0.170 294)",
-          "oklch(49.3% 0.201 294)",
-          "oklch(60.7% 0.231 294)",
-          "oklch(72.1% 0.223 294)",
-          "oklch(83.6% 0.193 294)",
-          "oklch(95.0% 0.162 294)"
+          "oklch(15.0% 0.061 154)",
+          "oklch(26.4% 0.078 154)",
+          "oklch(37.9% 0.096 154)",
+          "oklch(49.3% 0.113 154)",
+          "oklch(60.7% 0.130 154)",
+          "oklch(72.1% 0.126 154)",
+          "oklch(83.6% 0.108 154)",
+          "oklch(95.0% 0.091 154)"
         ]
       },
-      "hazard-orange": {
-        "role": "tertiary",
-        "displayName": "Hazard Orange",
-        "canonical": "#F97316",
-        "oklch": "oklch(70.5% 0.187 48)",
+      "mint": {
+        "role": "secondary",
+        "displayName": "Mint",
+        "canonical": "#D1FAE5",
+        "oklch": "oklch(95.0% 0.051 163)",
         "tonalRamp": [
-          "oklch(15.0% 0.084 48)",
-          "oklch(26.4% 0.107 48)",
-          "oklch(37.9% 0.131 48)",
-          "oklch(49.3% 0.154 48)",
-          "oklch(60.7% 0.178 48)",
-          "oklch(72.1% 0.172 48)",
-          "oklch(83.6% 0.149 48)",
-          "oklch(95.0% 0.125 48)"
+          "oklch(15.0% 0.023 163)",
+          "oklch(26.4% 0.029 163)",
+          "oklch(37.9% 0.036 163)",
+          "oklch(49.3% 0.042 163)",
+          "oklch(60.7% 0.048 163)",
+          "oklch(72.1% 0.047 163)",
+          "oklch(83.6% 0.040 163)",
+          "oklch(95.0% 0.034 163)"
         ]
       },
-      "indigo-accent": {
-        "role": "tertiary",
-        "displayName": "Indigo Accent",
-        "canonical": "#6366F1",
-        "oklch": "oklch(58.5% 0.204 277)",
+      "green-deep": {
+        "role": "secondary",
+        "displayName": "Green Deep",
+        "canonical": "#15803D",
         "tonalRamp": [
-          "oklch(15.0% 0.092 277)",
-          "oklch(26.4% 0.117 277)",
-          "oklch(37.9% 0.143 277)",
-          "oklch(49.3% 0.169 277)",
-          "oklch(60.7% 0.194 277)",
-          "oklch(72.1% 0.188 277)",
-          "oklch(83.6% 0.162 277)",
-          "oklch(95.0% 0.137 277)"
+          "#137337",
+          "#0E5227",
+          "#083118",
+          "#031008",
+          "#339056",
+          "#6FB188",
+          "#ABD2BA",
+          "#E8F2EC"
         ]
       },
       "stop-red": {
@@ -82,6 +112,21 @@
           "oklch(72.1% 0.192 25)",
           "oklch(83.6% 0.165 25)",
           "oklch(95.0% 0.139 25)"
+        ]
+      },
+      "red-deep": {
+        "role": "semantic",
+        "displayName": "Red Deep",
+        "canonical": "#B91C1C",
+        "tonalRamp": [
+          "#A61919",
+          "#771212",
+          "#470B0B",
+          "#180404",
+          "#C23939",
+          "#D47474",
+          "#E6AEAE",
+          "#F8E8E8"
         ]
       },
       "ink": {
@@ -103,6 +148,21 @@
       "paper": {
         "role": "neutral",
         "displayName": "Paper",
+        "canonical": "#F6F4EE",
+        "tonalRamp": [
+          "#DDDCD6",
+          "#9E9D99",
+          "#5F5E5C",
+          "#201F1F",
+          "#F7F5F0",
+          "#F9F8F5",
+          "#FCFBF9",
+          "#FEFEFD"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card",
         "canonical": "#FFFFFF",
         "oklch": "oklch(100.0% 0.000 90)",
         "tonalRamp": [
@@ -114,38 +174,6 @@
           "oklch(72.1% 0.000 90)",
           "oklch(83.6% 0.000 90)",
           "oklch(95.0% 0.000 90)"
-        ]
-      },
-      "desk": {
-        "role": "neutral",
-        "displayName": "Desk",
-        "canonical": "#F1F5F9",
-        "oklch": "oklch(96.8% 0.007 248)",
-        "tonalRamp": [
-          "oklch(15.0% 0.007 248)",
-          "oklch(26.4% 0.007 248)",
-          "oklch(37.9% 0.007 248)",
-          "oklch(49.3% 0.007 248)",
-          "oklch(60.7% 0.007 248)",
-          "oklch(72.1% 0.007 248)",
-          "oklch(83.6% 0.007 248)",
-          "oklch(95.0% 0.007 248)"
-        ]
-      },
-      "dot-grid": {
-        "role": "neutral",
-        "displayName": "Dot Grid",
-        "canonical": "#94A3B8",
-        "oklch": "oklch(71.1% 0.035 257)",
-        "tonalRamp": [
-          "oklch(15.0% 0.016 257)",
-          "oklch(26.4% 0.020 257)",
-          "oklch(37.9% 0.025 257)",
-          "oklch(49.3% 0.029 257)",
-          "oklch(60.7% 0.033 257)",
-          "oklch(72.1% 0.032 257)",
-          "oklch(83.6% 0.028 257)",
-          "oklch(95.0% 0.024 257)"
         ]
       },
       "text-body": {
@@ -194,134 +222,6 @@
           "oklch(72.1% 0.038 257)",
           "oklch(83.6% 0.032 257)",
           "oklch(95.0% 0.027 257)"
-        ]
-      },
-      "highlight-yellow": {
-        "role": "neutral",
-        "displayName": "Highlight Yellow",
-        "canonical": "#FEF9C3",
-        "oklch": "oklch(97.3% 0.069 103)",
-        "tonalRamp": [
-          "oklch(15.0% 0.031 103)",
-          "oklch(26.4% 0.040 103)",
-          "oklch(37.9% 0.049 103)",
-          "oklch(49.3% 0.057 103)",
-          "oklch(60.7% 0.066 103)",
-          "oklch(72.1% 0.064 103)",
-          "oklch(83.6% 0.055 103)",
-          "oklch(95.0% 0.046 103)"
-        ]
-      },
-      "status-applied-bg": {
-        "role": "semantic",
-        "displayName": "Applied Tint",
-        "canonical": "#DBEAFE",
-        "oklch": "oklch(93.2% 0.032 256)",
-        "tonalRamp": [
-          "oklch(15.0% 0.014 256)",
-          "oklch(26.4% 0.018 256)",
-          "oklch(37.9% 0.022 256)",
-          "oklch(49.3% 0.026 256)",
-          "oklch(60.7% 0.030 256)",
-          "oklch(72.1% 0.029 256)",
-          "oklch(83.6% 0.025 256)",
-          "oklch(95.0% 0.021 256)"
-        ]
-      },
-      "status-applied-text": {
-        "role": "semantic",
-        "displayName": "Applied Ink",
-        "canonical": "#1E40AF",
-        "oklch": "oklch(42.4% 0.181 266)",
-        "tonalRamp": [
-          "oklch(15.0% 0.081 266)",
-          "oklch(26.4% 0.104 266)",
-          "oklch(37.9% 0.127 266)",
-          "oklch(49.3% 0.150 266)",
-          "oklch(60.7% 0.172 266)",
-          "oklch(72.1% 0.167 266)",
-          "oklch(83.6% 0.144 266)",
-          "oklch(95.0% 0.121 266)"
-        ]
-      },
-      "status-oa-text": {
-        "role": "semantic",
-        "displayName": "Assessment Ink",
-        "canonical": "#854D0E",
-        "oklch": "oklch(47.6% 0.103 62)",
-        "tonalRamp": [
-          "oklch(15.0% 0.047 62)",
-          "oklch(26.4% 0.060 62)",
-          "oklch(37.9% 0.073 62)",
-          "oklch(49.3% 0.085 62)",
-          "oklch(60.7% 0.098 62)",
-          "oklch(72.1% 0.095 62)",
-          "oklch(83.6% 0.082 62)",
-          "oklch(95.0% 0.069 62)"
-        ]
-      },
-      "status-interview-bg": {
-        "role": "semantic",
-        "displayName": "Interview Tint",
-        "canonical": "#F3E8FF",
-        "oklch": "oklch(94.6% 0.033 307)",
-        "tonalRamp": [
-          "oklch(15.0% 0.015 307)",
-          "oklch(26.4% 0.019 307)",
-          "oklch(37.9% 0.023 307)",
-          "oklch(49.3% 0.027 307)",
-          "oklch(60.7% 0.031 307)",
-          "oklch(72.1% 0.030 307)",
-          "oklch(83.6% 0.026 307)",
-          "oklch(95.0% 0.022 307)"
-        ]
-      },
-      "status-interview-text": {
-        "role": "semantic",
-        "displayName": "Interview Ink",
-        "canonical": "#6B21A8",
-        "oklch": "oklch(43.8% 0.198 304)",
-        "tonalRamp": [
-          "oklch(15.0% 0.089 304)",
-          "oklch(26.4% 0.114 304)",
-          "oklch(37.9% 0.139 304)",
-          "oklch(49.3% 0.164 304)",
-          "oklch(60.7% 0.189 304)",
-          "oklch(72.1% 0.183 304)",
-          "oklch(83.6% 0.158 304)",
-          "oklch(95.0% 0.133 304)"
-        ]
-      },
-      "status-offer-bg": {
-        "role": "semantic",
-        "displayName": "Offer Green",
-        "canonical": "#86EFAC",
-        "oklch": "oklch(87.1% 0.136 154)",
-        "tonalRamp": [
-          "oklch(15.0% 0.061 154)",
-          "oklch(26.4% 0.078 154)",
-          "oklch(37.9% 0.096 154)",
-          "oklch(49.3% 0.113 154)",
-          "oklch(60.7% 0.130 154)",
-          "oklch(72.1% 0.126 154)",
-          "oklch(83.6% 0.108 154)",
-          "oklch(95.0% 0.091 154)"
-        ]
-      },
-      "achieved-mint": {
-        "role": "semantic",
-        "displayName": "Achieved Mint",
-        "canonical": "#D1FAE5",
-        "oklch": "oklch(95.0% 0.051 163)",
-        "tonalRamp": [
-          "oklch(15.0% 0.023 163)",
-          "oklch(26.4% 0.029 163)",
-          "oklch(37.9% 0.036 163)",
-          "oklch(49.3% 0.042 163)",
-          "oklch(60.7% 0.048 163)",
-          "oklch(72.1% 0.047 163)",
-          "oklch(83.6% 0.040 163)",
-          "oklch(95.0% 0.034 163)"
         ]
       }
     },
@@ -421,20 +321,20 @@
       "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#3B82F6;color:#000;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-primary:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-primary:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(59,130,246,.5)}"
     },
     {
-      "name": "Secondary Button",
-      "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "Second-voice action such as Sign In.",
-      "html": "<button class=\"ds-btn-secondary\">Sign In</button>",
-      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#8E51FF;color:#000;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-secondary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-secondary:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-secondary:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(142,81,255,.5)}"
-    },
-    {
       "name": "Destructive Button",
       "kind": "button",
       "refersTo": "button-destructive",
-      "description": "Delete and other irreversible actions. White text on Stop Red.",
+      "description": "Delete and other irreversible actions. Black text on Stop Red (5.6:1).",
       "html": "<button class=\"ds-btn-destructive\">Delete</button>",
-      "css": ".ds-btn-destructive{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#EF4444;color:#fff;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-destructive:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-destructive:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-destructive:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(239,68,68,.5)}"
+      "css": ".ds-btn-destructive{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#EF4444;color:#000;box-shadow:4px 4px 0 0 #000;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;}.ds-btn-destructive:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 #000}.ds-btn-destructive:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-destructive:focus-visible{outline:none;box-shadow:4px 4px 0 0 #000,0 0 0 4px rgba(239,68,68,.5)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The quieter action beside a primary. White, no resting shadow; it lifts on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;font-weight:700;padding:12px 24px;border:2px solid #000;border-radius:8px;background:#fff;color:#000;box-shadow:none;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}.ds-btn-ghost:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 0 #000;background:#F8FAFC}.ds-btn-ghost:active{transform:translate(0,0);box-shadow:2px 2px 0 0 #000}.ds-btn-ghost:focus-visible{outline:2px solid #000;outline-offset:2px}"
     },
     {
       "name": "Card",
@@ -466,7 +366,7 @@
       "refersTo": "status-applied-bg",
       "description": "Application status pills: tinted fill, dark matching text, black outline.",
       "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-c-applied\">Applied</span><span class=\"ds-chip ds-c-oa\">Online Assessment</span><span class=\"ds-chip ds-c-int\">Interview</span><span class=\"ds-chip ds-c-offer\">Offer</span><span class=\"ds-chip ds-c-rej\">Rejected</span></div>",
-      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px}.ds-chip{padding:4px 8px;border:2px solid #000;border-radius:2px;font-size:12px;font-weight:700}.ds-c-applied{background:#DBEAFE;color:#1E40AF}.ds-c-oa{background:#FEF9C3;color:#854D0E}.ds-c-int{background:#F3E8FF;color:#6B21A8}.ds-c-offer{background:#86EFAC;color:#000}.ds-c-rej{background:#EF4444;color:#fff}"
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px}.ds-chip{padding:4px 8px;border:2px solid #000;border-radius:2px;font-size:12px;font-weight:700}.ds-c-applied{background:#DBEAFE;color:#000}.ds-c-oa{background:#93C5FD;color:#000}.ds-c-int{background:#3B82F6;color:#000}.ds-c-offer{background:#86EFAC;color:#000}.ds-c-rej{background:#EF4444;color:#000}"
     },
     {
       "name": "Kanban Card",
@@ -474,7 +374,7 @@
       "refersTo": "card",
       "description": "Signature: a compact application card that sits in a status column.",
       "html": "<div class=\"ds-kcard\"><a class=\"ds-k-co\">Stripe</a><p class=\"ds-k-role\">Software Engineering Intern</p><div class=\"ds-k-meta\"><span>Applied Sep 12</span><span class=\"ds-k-due\">Follow up due</span></div></div>",
-      "css": ".ds-kcard{width:240px;background:#fff;border:2px solid #000;border-radius:8px;padding:12px;box-shadow:4px 4px 0 0 #000}.ds-k-co{display:block;font-weight:900;line-height:1.2;cursor:pointer}.ds-k-co:hover{text-decoration:underline}.ds-k-role{margin:2px 0 0;font-size:14px;font-weight:500;color:#334155}.ds-k-meta{margin-top:8px;display:flex;gap:12px;font-size:12px;font-weight:700;color:#475569}.ds-k-due{color:#EF4444}"
+      "css": ".ds-kcard{width:240px;background:#fff;border:2px solid #000;border-radius:8px;padding:12px;box-shadow:4px 4px 0 0 #000}.ds-k-co{display:block;font-weight:900;line-height:1.2;cursor:pointer}.ds-k-co:hover{text-decoration:underline}.ds-k-role{margin:2px 0 0;font-size:14px;font-weight:500;color:#334155}.ds-k-meta{margin-top:8px;display:flex;gap:12px;font-size:12px;font-weight:700;color:#475569}.ds-k-due{color:#B91C1C}"
     },
     {
       "name": "Milestone Tiles",
@@ -490,25 +390,25 @@
       "refersTo": "card",
       "description": "Highlight Yellow attention strip with underlined inline actions.",
       "html": "<div class=\"ds-banner\"><span>Verify your email to get reminders.</span><a class=\"ds-banner-link\">Resend</a></div>",
-      "css": ".ds-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#FEF9C3;border:2px solid #000;border-radius:6px;box-shadow:4px 4px 0 0 #000;padding:16px;font-weight:700;color:#1E293B;width:360px}.ds-banner-link{font-size:14px;text-decoration:underline;cursor:pointer}.ds-banner-link:hover{color:#3B82F6}"
+      "css": ".ds-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#DBEAFE;border:2px solid #000;border-radius:6px;box-shadow:4px 4px 0 0 #000;padding:16px;font-weight:700;color:#1E293B;width:360px}.ds-banner-link{font-size:14px;text-decoration:underline;cursor:pointer}.ds-banner-link:hover{color:#3B82F6}"
     },
     {
       "name": "Error Alert",
       "kind": "custom",
       "refersTo": "button-destructive",
-      "description": "A failed action, announced to screen readers. Sits beside the control that failed.",
+      "description": "A failed action, announced to screen readers. Stop Red fill, black text.",
       "html": "<div class=\"ds-alert\" role=\"alert\">Couldn't save your changes. Please try again.</div>",
-      "css": ".ds-alert{max-width:340px;padding:12px;background:#EF4444;color:#fff;font-weight:700;border:2px solid #000;box-shadow:4px 4px 0 0 #000}"
+      "css": ".ds-alert{max-width:340px;padding:12px;background:#EF4444;color:#000;font-weight:700;border:2px solid #000;box-shadow:4px 4px 0 0 #000}"
     }
   ],
   "narrative": {
     "northStar": "The Loud Spreadsheet Killer",
-    "overview": "TRACKr exists because a 50-column Excel sheet is miserable to live in during a job hunt. The interface answers that by being the opposite of a spreadsheet: heavy black outlines, hard offset shadows, saturated flat color, and a dotted desk behind everything. Every card, button and column looks like a physical object with an edge, so the work surface feels handled rather than filled in. It is a tool used daily, so the loudness sits in the chrome and the edges, never in the reading: type is plain system sans, content sits on white paper, and color is reserved for meaning.\n\nThe voice is confident, high-contrast and encouraging. Copy and visuals both push momentum, not guilt: a missed day is never shown as a loss, empty states invite a next action, and milestones get a rotated \"New\" stamp instead of confetti. The system is bold because the user's ambition is bold, but it stays orderly enough to scan a board of forty applications.",
+    "overview": "TRACKr exists because a 50-column Excel sheet is miserable to live in during a job hunt. The interface answers that by being the opposite of a spreadsheet: heavy black outlines, hard offset shadows, saturated flat color, and a flat warm paper ground with nothing printed on it. Every card, button and column looks like a physical object with an edge, so the work surface feels handled rather than filled in. It is a tool used daily, so the loudness sits in the chrome and the edges, never in the reading: type is plain system sans, content sits on white paper, and color is reserved for meaning.\n\nThe voice is confident, high-contrast and encouraging. Copy and visuals both push momentum, not guilt: a missed day is never shown as a loss, empty states invite a next action, and milestones get a rotated \"New\" stamp instead of confetti. The system is bold because the user's ambition is bold, but it stays orderly enough to scan a board of forty applications.",
     "keyCharacteristics": [
       "2px pure-black outline on nearly everything that is a surface or is interactive.",
       "Hard, blur-free offset shadows that act as the object's edge, not as ambient depth.",
-      "Flat, saturated color fills; color always carries meaning (status, action, danger).",
-      "White paper cards on a pale slate desk with a dot-grid texture.",
+      "Three hues only, each with one job: blue is action and progress, green is a good outcome, red is rejection, danger and overdue. Ink and paper do the rest.",
+      "White cards on a flat warm-paper ground. No pattern behind the work; the kanban board draws its own lanes.",
       "Heavy weights (800 to 900) for headings and labels; system sans only.",
       "Interaction is physical: elements lift toward you on hover and press into the page on click."
     ],
@@ -520,12 +420,12 @@
       },
       {
         "name": "The Black-Text-On-Color Rule",
-        "body": "Text on Signal Blue, Ultraviolet and Offer green is black. White text is reserved for Stop Red, black fills (table header, BETA pill) and the small landing eyebrow pills in Hazard Orange or Indigo.",
+        "body": "Text on every colored fill is black: Signal Blue, Blue Mid, Offer Green and Stop Red. White text is reserved for black fills (table header, BETA pill, recap header).",
         "section": "colors"
       },
       {
         "name": "The Flat-Fill Rule",
-        "body": "No gradients, no tints-as-glow. The only gradient in the product is a transparent fade-out of the hero's dot grid.",
+        "body": "No gradients, no tints-as-glow, no patterned backgrounds.",
         "section": "colors"
       },
       {
@@ -547,14 +447,19 @@
         "name": "The Press Rule",
         "body": "Interactive means pressable. Anything interactive with a resting shadow must lift on hover and sink on active. Cards keep their resting shadow as their physical edge, but a card only moves if it is itself a link or button.",
         "section": "elevation"
+      },
+      {
+        "name": "The Three-Hues Rule",
+        "body": "Blue, green and red are the only hues. Do not introduce purple, orange, indigo or yellow; a new meaning is expressed with an icon, a word or a tint of an existing hue.",
+        "section": "colors"
       }
     ],
     "dos": [
       "Do outline every surface and interactive control in 2px solid black (#000).",
       "Do use the hard-edge offset shadows (4px rest, 6px lifted, 2px pressed) and pair them with the lift/press motion.",
-      "Do keep text on Signal Blue, Ultraviolet and Offer green black; use white only on Stop Red, black fills, and the landing eyebrow pills.",
+      "Do keep text on every colored fill black; use white only on black fills.",
       "Do use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.",
-      "Do build page structure from paper cards on the Desk background with the dot grid behind them.",
+      "Do build page structure from white cards on the flat Paper ground, with nothing printed behind them.",
       "Do keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.",
       "Do use dashed 2px borders to mean \"empty\", \"unachieved\" or \"drop target\".",
       "Do rely on the global 2px Ink focus outline for links and buttons; never suppress it with `outline-none` unless the control supplies its own visible ring.",

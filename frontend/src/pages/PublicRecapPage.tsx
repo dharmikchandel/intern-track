@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
-import { DotGrid } from "../components/ui/DotGrid";
 import { getPublicRecap } from "../api/recap";
 import { RecapCard } from "../features/recap/RecapCard";
 
@@ -19,7 +18,6 @@ export function PublicRecapPage() {
 
     return (
         <div className="min-h-screen bg-neo-bg relative overflow-hidden flex items-center justify-center p-4">
-            <DotGrid />
             <div className="relative z-10 w-full max-w-xl py-8">
                 {isLoading ? (
                     <NeoSkeleton label="Loading recap" className="h-96" />

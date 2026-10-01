@@ -10,12 +10,14 @@ export const STATUS_LABELS: Record<ApplicationStatus, string> = {
 
 export const STATUS_ORDER: ApplicationStatus[] = ["APPLIED", "OA", "INTERVIEW", "OFFER", "REJECTED"];
 
+// A blue ramp that deepens as an application gets closer, then green for an
+// offer and red for a rejection. Black text on every fill.
 export const STATUS_COLORS: Record<ApplicationStatus, string> = {
-    APPLIED: "bg-blue-100 text-blue-800",
-    OA: "bg-yellow-100 text-yellow-800",
-    INTERVIEW: "bg-purple-100 text-purple-800",
-    OFFER: "bg-green-300 text-black",
-    REJECTED: "bg-neo-destructive text-white",
+    APPLIED: "bg-neo-blue-tint text-black",
+    OA: "bg-neo-blue-mid text-black",
+    INTERVIEW: "bg-neo-primary text-black",
+    OFFER: "bg-neo-green text-black",
+    REJECTED: "bg-neo-destructive text-black",
 };
 
 const ACTIVE: ApplicationStatus[] = ["APPLIED", "OA", "INTERVIEW"];

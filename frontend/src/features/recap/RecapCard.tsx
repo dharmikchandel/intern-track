@@ -24,12 +24,12 @@ export function RecapCard({ stats, periodStart, periodEnd }: RecapCardProps) {
             </div>
 
             <div className="grid grid-cols-2 border-b-4 border-black">
-                <Block className="bg-purple-100 border-r-4" value={`${stats.interviewRate}%`} label="interview rate" detail={`${plural(stats.reachedInterview, "application")} reached an interview`} />
-                <Block className="bg-green-300" value={`${stats.offerRate}%`} label="offer rate" detail={plural(stats.offers, "offer")} />
+                <Block className="bg-neo-blue-mid border-r-4" value={`${stats.interviewRate}%`} label="interview rate" detail={`${plural(stats.reachedInterview, "application")} reached an interview`} />
+                <Block className="bg-neo-green" value={`${stats.offerRate}%`} label="offer rate" detail={plural(stats.offers, "offer")} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3">
-                <Block className="bg-yellow-100 sm:border-r-4 border-b-4 sm:border-b-0" value={String(stats.longestStreakDays)} label="day streak" detail="longest run of days applying" small />
+                <Block className="bg-neo-blue-tint sm:border-r-4 border-b-4 sm:border-b-0" value={String(stats.longestStreakDays)} label="day streak" detail="longest run of days applying" small />
                 <Block
                     className="bg-white sm:border-r-4 border-b-4 sm:border-b-0"
                     value={stats.busiestWeek ? String(stats.busiestWeek.applications) : "0"}

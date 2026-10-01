@@ -96,7 +96,7 @@ export function RecapPage() {
                         <NeoInput label="From" type="date" value={start} max={end || undefined} onChange={(e) => setStart(e.target.value)} />
                         <NeoInput label="To" type="date" value={end} min={start || undefined} onChange={(e) => setEnd(e.target.value)} />
                     </div>
-                    {!validRange && <p className="mt-3 font-bold text-neo-destructive">Choose a start date on or before the end date.</p>}
+                    {!validRange && <p className="mt-3 font-bold text-neo-red-deep">Choose a start date on or before the end date.</p>}
                 </NeoCard>
 
                 <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
@@ -128,7 +128,7 @@ export function RecapPage() {
                             Add at least {preview.data.minApplications} applications in this period to share a recap.
                         </p>
                     )}
-                    {create.isError && <p role="alert" className="mt-3 font-bold text-neo-destructive">{getErrorMessage(create.error, "Couldn't create the link.")}</p>}
+                    {create.isError && <p role="alert" className="mt-3 font-bold text-neo-red-deep">{getErrorMessage(create.error, "Couldn't create the link.")}</p>}
 
                     {revoke.isError && (
                         <NeoAlert className="mt-6">{getErrorMessage(revoke.error, "Couldn't turn that link off. It is still active; please try again.")}</NeoAlert>

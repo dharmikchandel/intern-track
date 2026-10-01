@@ -8,7 +8,6 @@ import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoNotice } from "../components/ui/NeoNotice";
-import { DotGrid } from "../components/ui/DotGrid";
 import { type ForgotPasswordFormData, forgotPasswordSchema } from "../lib/schemas";
 import { requestPasswordReset } from "../api/auth";
 import { getErrorMessage } from "../lib/utils";
@@ -39,7 +38,6 @@ export function ForgotPasswordPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
-            <DotGrid />
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}

@@ -8,7 +8,6 @@ import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoNotice } from "../components/ui/NeoNotice";
-import { DotGrid } from "../components/ui/DotGrid";
 import { type LoginFormData, loginSchema } from "../lib/schemas";
 import { loginUser } from "../api/auth";
 import { useAuth } from "../features/auth/useAuth";
@@ -50,7 +49,6 @@ export function LoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
-            <DotGrid />
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -115,7 +113,7 @@ export function LoginPage() {
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Don't have an account?{" "}
-                        <Link to="/register" className="underline hover:bg-neo-secondary hover:text-black">
+                        <Link to="/register" className="underline hover:bg-neo-primary hover:text-black">
                             Register here
                         </Link>
                     </div>

@@ -1,27 +1,21 @@
 ---
 name: TRACKr
-description: A loud, tactile neo-brutalist job application tracker, built to be the opposite of a spreadsheet.
+description: A loud, tactile neo-brutalist job application tracker on flat warm paper, built to be the opposite of a spreadsheet.
 colors:
   signal-blue: "#3B82F6"
-  ultraviolet: "#8E51FF"
-  hazard-orange: "#F97316"
-  indigo-accent: "#6366F1"
+  blue-mid: "#93C5FD"
+  blue-tint: "#DBEAFE"
+  offer-green: "#86EFAC"
+  mint: "#D1FAE5"
+  green-deep: "#15803D"
   stop-red: "#EF4444"
+  red-deep: "#B91C1C"
   ink: "#000000"
-  paper: "#FFFFFF"
-  desk: "#F1F5F9"
-  dot-grid: "#94A3B8"
+  paper: "#F6F4EE"
+  card: "#FFFFFF"
   text-body: "#1E293B"
   text-secondary: "#475569"
   text-muted: "#64748B"
-  highlight-yellow: "#FEF9C3"
-  status-applied-bg: "#DBEAFE"
-  status-applied-text: "#1E40AF"
-  status-oa-text: "#854D0E"
-  status-interview-bg: "#F3E8FF"
-  status-interview-text: "#6B21A8"
-  status-offer-bg: "#86EFAC"
-  achieved-mint: "#D1FAE5"
 typography:
   display:
     fontFamily: "ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji"
@@ -70,23 +64,23 @@ components:
     typography: "{typography.body}"
     rounded: "{rounded.lg}"
     padding: "12px 24px"
-  button-secondary:
-    backgroundColor: "{colors.ultraviolet}"
+  button-ghost:
+    backgroundColor: "{colors.card}"
     textColor: "{colors.ink}"
     rounded: "{rounded.lg}"
     padding: "12px 24px"
   button-destructive:
     backgroundColor: "{colors.stop-red}"
-    textColor: "{colors.paper}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.lg}"
     padding: "12px 24px"
   card:
-    backgroundColor: "{colors.paper}"
+    backgroundColor: "{colors.card}"
     textColor: "{colors.text-body}"
     rounded: "{rounded.lg}"
     padding: "24px"
   input:
-    backgroundColor: "{colors.paper}"
+    backgroundColor: "{colors.card}"
     textColor: "{colors.text-body}"
     typography: "{typography.body}"
     rounded: "{rounded.none}"
@@ -98,16 +92,16 @@ components:
     padding: "12px"
   table-head:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
+    textColor: "{colors.card}"
     typography: "{typography.label}"
     padding: "16px"
   badge-beta:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
+    textColor: "{colors.card}"
     rounded: "{rounded.full}"
     padding: "2px 8px"
   milestone-tile-achieved:
-    backgroundColor: "{colors.achieved-mint}"
+    backgroundColor: "{colors.mint}"
     textColor: "{colors.ink}"
     padding: "12px"
 ---
@@ -118,7 +112,7 @@ components:
 
 **Creative North Star: "The Loud Spreadsheet Killer"**
 
-TRACKr exists because a 50-column Excel sheet is miserable to live in during a job hunt. The interface answers that by being the opposite of a spreadsheet: heavy black outlines, hard offset shadows, saturated flat color, and a dotted desk behind everything. Every card, button and column looks like a physical object with an edge, so the work surface feels handled rather than filled in. It is a tool used daily, so the loudness sits in the chrome and the edges, never in the reading: type is plain system sans, content sits on white paper, and color is reserved for meaning.
+TRACKr exists because a 50-column Excel sheet is miserable to live in during a job hunt. The interface answers that by being the opposite of a spreadsheet: heavy black outlines, hard offset shadows, saturated flat color, and a flat warm paper ground with nothing printed on it. Every card, button and column looks like a physical object with an edge, so the work surface feels handled rather than filled in. It is a tool used daily, so the loudness sits in the chrome and the edges, never in the reading: type is plain system sans, content sits on white paper, and color is reserved for meaning.
 
 The voice is confident, high-contrast and encouraging. Copy and visuals both push momentum, not guilt: a missed day is never shown as a loss, empty states invite a next action, and milestones get a rotated "New" stamp instead of confetti. The system is bold because the user's ambition is bold, but it stays orderly enough to scan a board of forty applications.
 
@@ -127,45 +121,47 @@ This system rejects three things: generic Material/SaaS dashboards (soft shadows
 **Key Characteristics:**
 - 2px pure-black outline on nearly everything that is a surface or is interactive.
 - Hard, blur-free offset shadows that act as the object's edge, not as ambient depth.
-- Flat, saturated color fills; color always carries meaning (status, action, danger).
-- White paper cards on a pale slate desk with a dot-grid texture.
+- Three hues only, each with one job: blue is action and progress, green is a good outcome, red is rejection, danger and overdue. Ink and paper do the rest.
+- White cards on a flat warm-paper ground. No pattern behind the work; the kanban board draws its own lanes.
 - Heavy weights (800 to 900) for headings and labels; system sans only.
 - Interaction is physical: elements lift toward you on hover and press into the page on click.
 
 ## Colors
 
-A restrained neutral base of black ink, white paper and pale-slate desk, carrying a small set of saturated flat accents. Accents are never blended or gradated; they are fills.
+"Three Signals": ink, warm paper and white cards, plus blue, green and red with one job each. Colors are flat fills, never blended or gradated. Status reads as a pipeline: a blue ramp that deepens as an application gets closer, then green for an offer or red for a rejection.
 
 ### Primary
-- **Signal Blue** (#3B82F6): the one action color. Primary buttons, the active navigation item, progress-bar fills, focus rings (at 50% opacity), links that need emphasis, and the "Job Hunt" headline word. Text on it is always black, never white.
+- **Signal Blue** (#3B82F6): the one action color. Primary buttons, the active navigation item, progress-bar fills, the Interview status, focus rings (at 50% opacity), and the "Job Hunt" headline word. Text on it is always black.
+- **Blue Mid** (#93C5FD): Online Assessment, and secondary emphasis on landing tiles.
+- **Blue Tint** (#DBEAFE): Applied, informational notices (the verify-email banner, low-confidence autofill), and table-row hover.
 
-### Secondary
-- **Ultraviolet** (#8E51FF): the secondary button, the tinted eyebrow pill on the hero (at 10%), and the register headline. Used sparingly; it is the second voice, never the first.
+### Green
+- **Offer Green** (#86EFAC): the Offer status, the offer-rate recap tile, and positive feature tiles. Black text.
+- **Mint** (#D1FAE5): completed milestone tiles and every success notice or "ready" state (`NeoNotice`).
+- **Green Deep** (#15803D): green text and icons on light grounds (5:1).
 
-### Tertiary
-- **Hazard Orange** (#F97316): landing-page eyebrow pills and feature icon tiles only.
-- **Indigo Accent** (#6366F1): landing-page eyebrow pills and a feature icon tile. Do not introduce either into the app UI.
+### Red
+- **Stop Red** (#EF4444): fills for destructive buttons, error alerts, the Rejected status, and the error stat. Text on it is **black** (5.6:1; white would be 3.8:1).
+- **Red Deep** (#B91C1C): red *text* on light grounds: overdue dates, inline error messages, the logout label (6.5:1). Never set body-size text in Stop Red itself.
 
 ### Neutral
 - **Ink** (#000000): every border, every hard shadow, the table header, the BETA pill, and the darkest text. It is the defining color of the system.
-- **Paper** (#FFFFFF): card, input, table, modal, sidebar and header surfaces.
-- **Desk** (#F1F5F9): the page background behind all paper surfaces.
-- **Dot Grid** (#94A3B8): the 1px radial dots that texture the app's main area (75% opacity, 24px pitch).
-- **Text Body** (#1E293B): default body text. **Text Secondary** (#475569) for supporting copy and metadata; **Text Muted** (#64748B) for inactive nav, placeholders and footnotes.
-- **Highlight Yellow** (#FEF9C3): table-row hover, the email verification banner, and the Online Assessment status.
+- **Paper** (#F6F4EE): the warm ground behind every screen, in the app, on auth pages and on the landing page. Flat, never textured.
+- **Card** (#FFFFFF): card, input, table, modal, sidebar and header surfaces.
+- **Text Body** (#1E293B) is default text. **Text Secondary** (#475569) for supporting copy and metadata. **Text Muted** (#64748B) only on white (4.8:1); on Paper it is 4.3:1, so use Text Secondary there.
 
 ### Semantic
-- **Stop Red** (#EF4444): destructive buttons, error text and borders, overdue follow-up indicators, the Rejected column header. White text sits on it.
-- **Status pairs** (single source: `frontend/src/features/applications/statusMeta.ts`; the dashboard tiles, board headers, list chips and detail page all read it, and no screen may define its own): Applied (#DBEAFE on #1E40AF), Online Assessment (#FEF9C3 on #854D0E), Interview (#F3E8FF on #6B21A8), Offer (#86EFAC on black), Rejected (Stop Red on white). These tint kanban column headers, dashboard stat tiles and status chips. Labels always come from `STATUS_LABELS`, never the raw enum.
-- **Achieved Mint** (#D1FAE5): completed milestone tiles and every success notice or "ready" state. Unachieved tiles are white with a dashed slate border.
-- **Notice vocabulary:** success is Achieved Mint, warning or attention (overdue follow-ups, low-confidence autofill, duplicate rows, the verify-email banner, notes) is Highlight Yellow, and failure is Stop Red with white text (`NeoAlert`). Do not use other pale tints (red-50, rose, amber, green-100) for these meanings.
+- **Status colors** (single source: `frontend/src/features/applications/statusMeta.ts`; the dashboard tiles, board headers, list chips and detail page all read it, and no screen may define its own): Applied (Blue Tint), Online Assessment (Blue Mid), Interview (Signal Blue), Offer (Offer Green), Rejected (Stop Red). Black text on every one. Labels always come from `STATUS_LABELS`, never the raw enum.
+- **Notice vocabulary:** success is Mint, information is Blue Tint, failure is Stop Red (`NeoAlert`). There is no warning color: an overdue follow-up is red text on a white card, and attention is carried by words and an icon, not a fourth hue.
 
 ### Named Rules
 **The Color-Is-Meaning Rule.** A saturated fill always means something: an action, a status, or danger. Never use accent color as decoration on an app screen.
 
-**The Black-Text-On-Color Rule.** Text on Signal Blue, Ultraviolet and Offer green is black. White text is reserved for Stop Red, black fills (table header, BETA pill) and the small landing eyebrow pills in Hazard Orange or Indigo.
+**The Black-Text-On-Color Rule.** Text on every colored fill is black: Signal Blue, Blue Mid, Offer Green and Stop Red. White text is reserved for black fills (table header, BETA pill, recap header).
 
-**The Flat-Fill Rule.** No gradients, no tints-as-glow. The only gradient in the product is a transparent fade-out of the hero's dot grid.
+**The Three-Hues Rule.** Blue, green and red are the only hues. Do not introduce purple, orange, indigo or yellow; a new meaning is expressed with an icon, a word or a tint of an existing hue.
+
+**The Flat-Fill Rule.** No gradients, no tints-as-glow, no patterned backgrounds.
 
 ## Typography
 
@@ -188,7 +184,7 @@ A restrained neutral base of black ink, white paper and pale-slate desk, carryin
 
 ## Layout
 
-Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), open by default from the `lg` breakpoint, and a main area that scrolls independently over the dot grid. Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
+Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), open by default from the `lg` breakpoint, and a main area that scrolls independently over flat Paper. Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
 
 Spacing follows the 4px Tailwind scale. The working rhythm is 8px inside controls, 12 to 16px between related elements, 24px inside cards, and 32px between dashboard cards (`mb-8`). Card grids use 32px gaps on the landing page and 12px gaps inside dense dashboard tiles. The kanban board is a horizontally scrolling row of columns with 12px gaps.
 
@@ -224,13 +220,12 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Shape:** 8px corners, 2px black border, 12px x 24px padding, bold system sans.
 - **Primary:** Signal Blue fill, black text, hard rest shadow. Use `NeoButton` for actions and `NeoLinkButton` for navigation (it renders the same look on a router link); never put a `<button>` inside a `<Link>`.
 - **Ghost:** white fill, black 2px border, no resting shadow; it lifts (shadow appears) only on hover. Use it for the quieter action beside a primary: Cancel, Import/Export, Sign In, Copy link, Previous/Next.
-- **Secondary:** Ultraviolet fill, black text. Currently unused by any screen; the ghost variant replaced it.
-- **Destructive:** Stop Red fill, white text.
+- **Destructive:** Stop Red fill, black text.
 - **Focus:** keyboard focus draws a 2px Ink (#000) outline with a 2px offset, set once in `index.css` for every link, button, select, checkbox and radio. Inputs keep their blue ring (see Inputs).
 - **Hover / Active:** translate (-2px, -2px) with shadow growing 4px to 6px on hover; on active snap back to (0, 0) with the shadow at 2px. Transition is 150ms on all properties. Disabled is 50% opacity with pointer events off.
 
 ### Chips and Pills
-- **Style:** fully round, 2px black border, small edge shadow for eyebrow pills; bare pills (BETA, column counts) have no shadow. Landing eyebrow pills take a meaning-neutral accent fill (Hazard Orange or Indigo) with white text.
+- **Style:** fully round, 2px black border, small edge shadow for eyebrow pills; bare pills (BETA, column counts) have no shadow. Landing eyebrow pills take a meaning-neutral fill from the blue or green family with black text.
 - **BETA badge:** black fill, white text, 12px bold.
 - **Status chips:** status-pair fill with matching dark text; in tables they are square-ish (2px radius) with a 2px black border and 12px bold text.
 - **New stamp:** Signal Blue, black 2px border, 10px uppercase 900-weight text, rotated +3 degrees, pinned to a tile's corner.
@@ -254,16 +249,16 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - Sidebar items are 12px-radius, 2px-bordered rows. **Inactive:** Text Muted on transparent with a transparent border. **Hover:** black border and a slate-50 fill. **Active:** Signal Blue fill, black text, black border, rest shadow, and a heavier 2.5px icon stroke. The collapsed sidebar centers icons and exposes labels as tooltips. The header pairs a bold wordmark ("TRACKr." with a BETA pill) with a circular Signal Blue avatar carrying the user's initial. Below `md` a hamburger opens a 256px drawer over a dimmed, blurred backdrop.
 
 ### Tables
-- The company name is the row's link to the detail page (there is no Actions column). Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Highlight Yellow on hover.
+- The company name is the row's link to the detail page (there is no Actions column). Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Blue Tint on hover.
 
 ### Modal and Drawer
 - The modal is a paper panel (2px black border, `shadow-neo-modal`, square corners) centered over a black 50% backdrop with a slight blur; the mobile menu is the same paper panel pinned left at 256px. Both are real dialogs: `role="dialog"` and `aria-modal`, named by their title (the drawer is "Main menu"), closed by Escape, the close button (labelled "Close dialog" / "Close menu") or a backdrop click. Focus moves in on open, Tab stays inside, and focus returns to the opener on close. The shared behaviour lives in `frontend/src/lib/useDialog.ts`; any new overlay must use it.
 
 ### Kanban Board (signature)
-- Five status columns, each a bordered container whose header strip carries the status fill (see Semantic), an uppercase title, and a white, bordered count pill. Application cards are white, 2px black, 8px rounded, rest-shadowed, with a bold truncated company name, a medium role line, and small 12px bold metadata. A card overdue for follow-up turns its date red and gains an alert glyph. Dragging lifts the card with a hover shadow and a 2-degree tilt, leaves the origin at 40% opacity, and surfaces a bottom-center toast with an Undo action.
+- Five status columns drawn as lanes on the paper: a dashed ink-at-40% outline (it turns solid, with a Blue Tint fill, while a card is dragged over it), with a header strip that carries the status fill (see Semantic), an uppercase title, and a white, bordered count pill. Application cards are white, 2px black, 8px rounded, rest-shadowed, with a bold truncated company name, a medium role line, and small 12px bold metadata. A card overdue for follow-up turns its date red and gains an alert glyph. Dragging lifts the card with a hover shadow and a 2-degree tilt, leaves the origin at 40% opacity, and surfaces a bottom-center toast with an Undo action.
 
 ### Momentum Card (signature)
-- A paper card with a large 900-weight streak number beside a grid of milestone tiles. Achieved tiles are Achieved Mint with a solid black border and check icon; unachieved tiles are white with a dashed slate border, a hollow circle, and a 1px-bordered progress bar filled with Signal Blue.
+- A paper card with a large 900-weight streak number beside a grid of milestone tiles. Achieved tiles are Mint with a solid black border and check icon; unachieved tiles are white with a dashed slate border, a hollow circle, and a 1px-bordered progress bar filled with Signal Blue.
 
 ### Loading, Error and Empty States
 - **Loading:** `NeoSkeleton`, a pulsing paper block with the same border, radius and shadow as the thing that is loading (dashboard tiles, detail card, board, list, activity, recap, follow-up and momentum cards), with an `sr-only` status line. Never a bare "Loading..." line, and optional cards hold their space so the page does not jump.
@@ -271,19 +266,19 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Empty:** a 2px dashed black box with a plain sentence (the first-run dashboard replaces the zero tiles with "Track your first application") and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
 
 ### Banner and Empty States
-- **Notice banner:** Highlight Yellow, 2px black border, rest shadow, bold text, underlined inline actions.
+- **Notice banner:** Blue Tint, 2px black border, rest shadow, bold text, underlined inline actions.
 - **Empty state:** Paper, 2px *dashed* black border, centered bold message, no shadow.
 - **Success notice** (`NeoNotice`): Achieved Mint fill, black text, `role="status"`, optional Dismiss. For "Added Stripe." after a save and the password-reset confirmations.
-- **Error alert** (`NeoAlert`): a failed action. Stop Red fill, white bold text, 2px black border, rest shadow, `role="alert"`. It sits next to the control that failed (above the submit button, above the board, inside the delete modal), names what didn't happen and what state things are in, and clears on the next attempt. For a failed load pass `onRetry` to add a "Try again" action. Use it instead of hand-rolling red banners.
+- **Error alert** (`NeoAlert`): a failed action. Stop Red fill, black bold text, 2px black border, rest shadow, `role="alert"`. It sits next to the control that failed (above the submit button, above the board, inside the delete modal), names what didn't happen and what state things are in, and clears on the next attempt. For a failed load pass `onRetry` to add a "Try again" action. Use it instead of hand-rolling red banners.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** outline every surface and interactive control in 2px solid black (#000).
 - **Do** use the hard-edge offset shadows (4px rest, 6px lifted, 2px pressed) and pair them with the lift/press motion.
-- **Do** keep text on Signal Blue, Ultraviolet and Offer green black; use white only on Stop Red, black fills, and the landing eyebrow pills.
+- **Do** keep text on every colored fill black; use white only on black fills.
 - **Do** use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.
-- **Do** build page structure from paper cards on the Desk background with the dot grid behind them.
+- **Do** build page structure from white cards on the flat Paper ground, with nothing printed behind them.
 - **Do** keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.
 - **Do** make text links black and underlined; on hover fill them with Signal Blue (black text) instead of recolouring the text, which drops contrast.
 - **Do** mark the current nav item with `aria-current="page"`, and announce async results (resend sent, link copied, success notices) in a `role="status"` region.
@@ -302,8 +297,7 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 
 ### Known drift (not system)
 These are inconsistencies found in the code. Treat them as bugs to resolve, not patterns to copy.
-- Recap share card tiles: interview rate uses the Interview status purple and offer rate Offer green; the other tiles are Highlight Yellow or paper. Keep new tiles to that rule.
+- Recap share card tiles: interview rate is Blue Mid, offer rate is Offer Green, streak is Blue Tint, the rest are white. Keep new tiles to palette A.
 - Some code still breaks the radius rule in Shapes: `rounded-md` overrides on small buttons and the notice banner, and the recap share card (`rounded-xl`, 4px border).
 - Shadows are still inlined as arbitrary values in places (`shadow-[2px_2px_0px_rgba(0,0,0,1)]`) instead of `shadow-neo-sm`. They match the tokens visually; swap them when touched.
-- White text on Stop Red (#EF4444) is about 3.8:1, below WCAG AA for normal-size text; it is acceptable only at bold or large sizes.
 - `font-sans` is the only font token; there is no configured webfont, so rendering varies by OS.

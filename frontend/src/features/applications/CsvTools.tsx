@@ -49,7 +49,7 @@ export function ExportCsvButton({ filters, filtered }: { filters: { q?: string; 
                 {exportCsv.isPending ? "Exporting..." : filtered ? "Export filtered CSV" : "Export CSV"}
             </NeoButton>
             {exportCsv.isError && (
-                <p role="alert" className="text-sm font-bold text-neo-destructive mt-1">
+                <p role="alert" className="text-sm font-bold text-neo-red-deep mt-1">
                     {getErrorMessage(exportCsv.error, "Couldn't export. Please try again.")}
                 </p>
             )}
@@ -121,7 +121,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
         <NeoModal isOpen onClose={onClose} title="Import from CSV" widthClass="max-w-2xl">
             {done ? (
                 <div className="text-center py-4">
-                    <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-emerald-600" />
+                    <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-neo-green-deep" />
                     <p className="text-2xl font-black mb-1">
                         Imported {done.imported} {done.imported === 1 ? "application" : "applications"}
                     </p>
@@ -219,9 +219,9 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
     return (
         <div className="space-y-4">
             <div className="grid grid-cols-3 gap-3 text-center">
-                <Stat value={summary.importable} label="Ready to import" tone="bg-emerald-100" />
-                <Stat value={summary.duplicates} label="Duplicates (skipped)" tone="bg-yellow-100" />
-                <Stat value={summary.invalid} label="With errors (skipped)" tone="bg-neo-destructive text-white" />
+                <Stat value={summary.importable} label="Ready to import" tone="bg-neo-mint" />
+                <Stat value={summary.duplicates} label="Duplicates (skipped)" tone="bg-neo-blue-tint" />
+                <Stat value={summary.invalid} label="With errors (skipped)" tone="bg-neo-destructive text-black" />
             </div>
 
             <p className="text-sm font-bold text-slate-700">

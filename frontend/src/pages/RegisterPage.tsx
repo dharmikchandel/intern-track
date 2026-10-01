@@ -7,7 +7,6 @@ import { NeoCard } from "../components/ui/NeoCard";
 import { NeoInput } from "../components/ui/NeoInput";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
-import { DotGrid } from "../components/ui/DotGrid";
 import { type RegisterFormData, registerSchema } from "../lib/schemas";
 import { registerUser } from "../api/auth";
 import { useAuth } from "../features/auth/useAuth";
@@ -45,7 +44,6 @@ export function RegisterPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
-            <DotGrid />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -55,7 +53,7 @@ export function RegisterPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                         TRACKr.
                     </h1>
                     <p className="font-bold text-slate-600">Start tracking your job hunt</p>

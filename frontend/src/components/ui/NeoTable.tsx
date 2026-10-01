@@ -36,7 +36,7 @@ const NeoTableRow = forwardRef<
 >(({ className, ...props }, ref) => (
     <tr
         ref={ref}
-        className={cn("border-b-2 border-black last:border-0 hover:bg-yellow-100 transition-colors", className)}
+        className={cn("border-b-2 border-black last:border-0 hover:bg-neo-blue-tint transition-colors", className)}
         {...props}
     />
 ));

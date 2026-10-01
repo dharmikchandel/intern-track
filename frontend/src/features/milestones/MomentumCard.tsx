@@ -34,7 +34,7 @@ function MilestoneTile({ milestone }: { milestone: Milestone }) {
 
     return (
         <li
-            className={`relative border-2 p-3 ${achieved ? "border-black bg-emerald-100" : "border-dashed border-slate-400 bg-white"}`}
+            className={`relative border-2 p-3 ${achieved ? "border-black bg-neo-mint" : "border-dashed border-slate-400 bg-white"}`}
             aria-label={`${TITLES[milestone.id]}: ${achieved ? "achieved" : "not yet"}`}
         >
             {isNew && (

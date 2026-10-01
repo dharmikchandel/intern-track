@@ -231,7 +231,7 @@ export function ApplicationDetailPage() {
                         {application.followUpDate && (
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Follow-up Date</span>
-                                <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-destructive" : ""}`}>
+                                <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-red-deep" : ""}`}>
                                     <Calendar className="w-5 h-5" />
                                     {format(new Date(application.followUpDate), "PPP")}
                                     {isFollowUpDue(application) && <span className="text-xs uppercase border-2 border-neo-destructive px-1">Due</span>}
@@ -256,7 +256,7 @@ export function ApplicationDetailPage() {
                         {application.notes && (
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase mb-2">Notes</span>
-                                <div className="bg-yellow-100 p-4 border-2 border-black font-medium whitespace-pre-wrap">
+                                <div className="bg-neo-bg p-4 border-2 border-black font-medium whitespace-pre-wrap">
                                     {application.notes}
                                 </div>
                             </div>

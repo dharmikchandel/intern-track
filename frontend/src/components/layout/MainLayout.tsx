@@ -6,7 +6,6 @@ import { cn } from "../../lib/utils";
 import { useDialog } from "../../lib/useDialog";
 import { Footer } from "./Footer";
 import { EmailVerificationBanner } from "./EmailVerificationBanner";
-import { DotGrid } from "../ui/DotGrid";
 
 export function MainLayout() {
     const { logout, user } = useAuth();
@@ -70,7 +69,7 @@ export function MainLayout() {
                         <Link to="/dashboard">
                             TRACKr.
                         </Link>
-                        <span className="text-neo-primary text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
+                        <span className="text-xs bg-black text-white px-2 py-0.5 rounded-full">BETA</span>
                         
                     </div>
                 </div>
@@ -126,7 +125,7 @@ export function MainLayout() {
                             title={!isSidebarOpen ? "Logout" : ""}
                             aria-label={!isSidebarOpen ? "Logout" : undefined}
                             className={cn(
-                                "flex items-center gap-3 px-3 py-3 w-full font-bold text-neo-destructive hover:bg-neo-destructive hover:text-white hover:border-black border-2 border-transparent rounded-neo transition-all",
+                                "flex items-center gap-3 px-3 py-3 w-full font-bold text-neo-red-deep hover:bg-neo-destructive hover:text-black hover:border-black border-2 border-transparent rounded-neo transition-all",
                                 !isSidebarOpen && "justify-center"
                             )}
                         >
@@ -150,7 +149,7 @@ export function MainLayout() {
                         >
                             <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">
                                 <h2 className="text-2xl font-black text-black">Menu</h2>
-                                <button type="button" onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 text-black hover:bg-neo-destructive hover:text-white border-2 border-transparent hover:border-black rounded-neo transition-all">
+                                <button type="button" onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 text-black hover:bg-neo-destructive hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all">
                                     <X className="w-6 h-6" aria-hidden />
                                 </button>
                             </div>
@@ -185,7 +184,7 @@ export function MainLayout() {
                                     logout();
                                     toggleMobileMenu();
                                 }}
-                                className="flex items-center gap-4 px-4 py-3 font-bold text-neo-destructive border-2 border-transparent hover:border-black rounded-neo hover:bg-neo-destructive hover:text-white mt-auto"
+                                className="flex items-center gap-4 px-4 py-3 font-bold text-neo-red-deep border-2 border-transparent hover:border-black rounded-neo hover:bg-neo-destructive hover:text-black mt-auto"
                             >
                                 <LogOut className="w-6 h-6" aria-hidden />
                                 <span>Logout</span>
@@ -196,7 +195,6 @@ export function MainLayout() {
 
                 {/* Main Content Area */}
                 <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden relative">
-                    <DotGrid />
                     <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
                         <div className="max-w-6xl mx-auto min-h-full flex flex-col">
                             <div className="flex-1">

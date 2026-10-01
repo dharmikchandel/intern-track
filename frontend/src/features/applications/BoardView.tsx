@@ -210,8 +210,9 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
             ref={setNodeRef}
             aria-label={`${STATUS_LABELS[status]} column`}
             className={cn(
-                "min-w-[200px] flex-1 border-2 border-black rounded-lg bg-white transition-colors",
-                isOver && "bg-neo-primary/20"
+                // A lane drawn on the paper: dashed until a card hovers over it, then solid.
+                "min-w-[200px] flex-1 border-2 border-dashed border-black/40 rounded-lg overflow-hidden transition-colors",
+                isOver && "border-solid border-black bg-neo-blue-tint"
             )}
         >
             <header className={cn("flex items-center justify-between px-3 py-2 border-b-2 border-black font-black uppercase text-sm", STATUS_COLORS[status])}>
@@ -220,7 +221,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
             </header>
             <div className="p-2 flex flex-col gap-3 min-h-[80px]">
                 {cards.length === 0 && (
-                    <div className="flex-1 flex items-center justify-center border-2 border-dashed border-slate-400 rounded-lg p-3 text-center text-xs font-bold text-slate-500">
+                    <div className="flex-1 flex items-center justify-center p-3 text-center text-xs font-bold text-slate-600">
                         Nothing here yet
                     </div>
                 )}
@@ -291,7 +292,7 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-slate-600">
                 <span>Applied {format(new Date(app.appliedDate), "MMM d")}</span>
                 {app.followUpDate && (
-                    <span className={cn("inline-flex items-center gap-1", due && "text-neo-destructive")}>
+                    <span className={cn("inline-flex items-center gap-1", due && "text-neo-red-deep")}>
                         {due && <AlertCircle className="w-3 h-3" aria-hidden />}
                         {due && <span className="sr-only">Overdue: </span>}
                         Follow up {format(new Date(app.followUpDate), "MMM d")}

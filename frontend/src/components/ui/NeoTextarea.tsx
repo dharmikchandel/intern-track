@@ -27,7 +27,7 @@ const NeoTextarea = forwardRef<HTMLTextAreaElement, NeoTextareaProps>(
                     )}
                     {...props}
                 />
-                {error && <p className="text-neo-destructive font-bold text-sm mt-1">{error}</p>}
+                {error && <p className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>}
             </div>
         );
     }

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoButton } from "../components/ui/NeoButton";
-import { DotGrid } from "../components/ui/DotGrid";
 import { unsubscribeFromDigest } from "../api/digest";
 import { getErrorMessage } from "../lib/utils";
 
@@ -30,7 +29,6 @@ export function UnsubscribePage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
-            <DotGrid />
             <div className="w-full max-w-md relative z-10">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">

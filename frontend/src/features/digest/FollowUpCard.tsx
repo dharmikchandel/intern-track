@@ -44,11 +44,11 @@ export function FollowUpCard() {
     }
 
     return (
-        <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 ${overdue > 0 ? "bg-yellow-100" : "bg-white"}`}>
+        <NeoCard className={`mb-8 flex flex-col md:flex-row md:flex-wrap md:items-center justify-between gap-4 bg-white`}>
             <div className="flex items-center gap-4">
-                <BellRing className={`w-8 h-8 ${overdue > 0 ? "text-neo-destructive" : "text-slate-500"}`} />
+                <BellRing className={`w-8 h-8 ${overdue > 0 ? "text-neo-red-deep" : "text-slate-500"}`} />
                 <div>
-                    <p className="text-xl font-black">
+                    <p className={`text-xl font-black ${overdue > 0 ? "text-neo-red-deep" : ""}`}>
                         {overdue === 0 ? "No follow-ups due" : `${overdue} ${overdue === 1 ? "application needs" : "applications need"} a follow-up`}
                     </p>
                     {overdue > 0 && (
