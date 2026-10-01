@@ -13,7 +13,7 @@ export function PaperStack({ className }: { className?: string }) {
                 role="Software Intern"
                 status="APPLIED"
                 meta="Sample"
-                className="absolute left-0 top-6 w-48 -rotate-6"
+                className="absolute left-0 top-6 w-40 sm:w-48 -rotate-6"
             />
             <SampleApplicationCard
                 compact
@@ -21,7 +21,7 @@ export function PaperStack({ className }: { className?: string }) {
                 role="Design Intern"
                 status="INTERVIEW"
                 meta="Sample"
-                className="absolute left-[calc(50%-6rem)] top-0 w-48 rotate-2"
+                className="absolute left-[calc(50%-5rem)] sm:left-[calc(50%-6rem)] top-0 w-40 sm:w-48 rotate-2"
             />
             <SampleApplicationCard
                 compact
@@ -29,7 +29,7 @@ export function PaperStack({ className }: { className?: string }) {
                 role="Analyst Intern"
                 status="OFFER"
                 meta="Sample"
-                className="absolute right-0 top-10 w-48 -rotate-3"
+                className="absolute right-0 top-10 w-40 sm:w-48 -rotate-3"
             />
         </div>
     );

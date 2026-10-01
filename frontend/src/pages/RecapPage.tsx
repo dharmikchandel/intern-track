@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Copy, Link2, Trash2 } from "lucide-react";
+import { Check, Copy, Link2, Link2Off } from "lucide-react";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoModal } from "../components/ui/NeoModal";
 import { NeoButton } from "../components/ui/NeoButton";
@@ -100,7 +100,7 @@ export function RecapPage() {
                 </NeoCard>
 
                 <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
-                    {preview.isLoading && validRange ? (
+                    {(preview.isLoading || preview.isPlaceholderData) && validRange ? (
                         <NeoSkeleton label="Building your recap" className="h-96" />
                     ) : preview.isError ? (
                         <NeoAlert onRetry={() => preview.refetch()}>Couldn't build the recap.</NeoAlert>
@@ -148,11 +148,11 @@ export function RecapPage() {
                                         </NeoButton>
                                         <NeoButton
                                             variant="destructive"
-                                            className="px-3 py-2 text-sm flex items-center gap-1"
+                                            className="px-3 py-2 text-sm min-h-11 flex items-center gap-1"
                                             disabled={revoke.isPending}
                                             onClick={() => setRevokeId(s.id)}
                                         >
-                                            <Trash2 className="w-4 h-4" /> Turn off
+                                            <Link2Off className="w-4 h-4" aria-hidden /> Turn off
                                         </NeoButton>
                                     </div>
                                 </li>

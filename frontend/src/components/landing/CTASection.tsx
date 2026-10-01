@@ -18,7 +18,7 @@ export function CTASection() {
                     <p className="text-xl md:text-2xl font-bold mb-10 max-w-2xl mx-auto opacity-90">
                         Put your whole job search in one place and always know what to do next.
                     </p>
-                    <NeoLinkButton to="/register" className="text-xl px-10 py-5 h-auto bg-white text-black hover:bg-slate-100 border-2 border-black">
+                    <NeoLinkButton to="/register" variant="ghost" className="text-xl px-10 py-5 shadow-neo">
                         Start Tracking Now
                     </NeoLinkButton>
                     <p className="mt-6 text-sm font-bold">No credit card required.</p>

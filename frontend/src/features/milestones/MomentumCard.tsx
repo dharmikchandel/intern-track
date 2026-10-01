@@ -34,7 +34,7 @@ function MilestoneTile({ milestone }: { milestone: Milestone }) {
 
     return (
         <li
-            className={`relative border-2 p-3 ${achieved ? "border-black bg-neo-mint" : "border-dashed border-slate-400 bg-white"}`}
+            className={`relative border-2 p-3 ${achieved ? "border-black bg-neo-mint" : "border-dashed border-slate-500 bg-white"}`}
             aria-label={`${TITLES[milestone.id]}: ${achieved ? "achieved" : "not yet"}`}
         >
             {isNew && (
@@ -44,7 +44,7 @@ function MilestoneTile({ milestone }: { milestone: Milestone }) {
                 {achieved ? (
                     <Check className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
                 ) : (
-                    <span className="w-4 h-4 mt-0.5 shrink-0 border-2 border-slate-400 rounded-full" aria-hidden />
+                    <span className="w-4 h-4 mt-0.5 shrink-0 border-2 border-slate-500 rounded-full" aria-hidden />
                 )}
                 <div className="min-w-0">
                     <p className={`text-sm font-black leading-tight ${achieved ? "" : "text-slate-500"}`}>{TITLES[milestone.id]}</p>

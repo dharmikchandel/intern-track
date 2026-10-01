@@ -4,7 +4,6 @@ import { LayoutDashboard, FileText, PlusCircle, Sparkles, LogOut, Menu, X } from
 import { useAuth } from "../../features/auth/useAuth";
 import { cn } from "../../lib/utils";
 import { useDialog } from "../../lib/useDialog";
-import { Footer } from "./Footer";
 import { EmailVerificationBanner } from "./EmailVerificationBanner";
 
 export function MainLayout() {
@@ -49,7 +48,7 @@ export function MainLayout() {
                         onClick={toggleMobileMenu}
                         aria-label="Open menu"
                         aria-expanded={isMobileMenuOpen}
-                        className="md:hidden p-2 hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
+                        className="md:hidden p-2 min-h-11 min-w-11 flex items-center justify-center hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
                     >
                         <Menu className="w-6 h-6" aria-hidden />
                     </button>
@@ -60,7 +59,7 @@ export function MainLayout() {
                         onClick={toggleSidebar}
                         aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
                         aria-expanded={isSidebarOpen}
-                        className="hidden md:flex p-2 hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
+                        className="hidden md:flex p-2 min-h-11 min-w-11 items-center justify-center hover:bg-neo-primary hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all active:shadow-neo"
                     >
                         <Menu className="w-6 h-6" aria-hidden />
                     </button>
@@ -144,12 +143,12 @@ export function MainLayout() {
                             aria-modal="true"
                             aria-label="Main menu"
                             tabIndex={-1}
-                            className="bg-white w-64 h-full border-r-2 border-black shadow-neo-modal p-4 flex flex-col focus:outline-none"
+                            className="bg-white w-64 h-full border-r-2 border-black shadow-neo-modal p-4 flex flex-col overscroll-contain animate-drawer-in focus:outline-none"
                             onClick={e => e.stopPropagation()}
                         >
                             <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">
                                 <h2 className="text-2xl font-black text-black">Menu</h2>
-                                <button type="button" onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 text-black hover:bg-neo-destructive hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all">
+                                <button type="button" onClick={toggleMobileMenu} aria-label="Close menu" className="p-2 min-h-11 min-w-11 flex items-center justify-center text-black hover:bg-neo-destructive hover:text-black border-2 border-transparent hover:border-black rounded-neo transition-all">
                                     <X className="w-6 h-6" aria-hidden />
                                 </button>
                             </div>
@@ -194,14 +193,13 @@ export function MainLayout() {
                 )}
 
                 {/* Main Content Area */}
-                <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden relative">
+                <main className="flex-1 flex flex-col h-app-main overflow-hidden relative">
                     <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
                         <div className="max-w-6xl mx-auto min-h-full flex flex-col">
                             <div className="flex-1">
                                 {user && !user.emailVerified && <EmailVerificationBanner />}
                                 <Outlet />
                             </div>
-                            <Footer className="mt-8" />
                         </div>
                     </div>
                 </main>

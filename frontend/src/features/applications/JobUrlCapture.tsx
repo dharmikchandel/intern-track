@@ -49,7 +49,7 @@ export function JobUrlCapture({ onParsed }: JobUrlCaptureProps) {
         : null;
 
     return (
-        <div className="mb-8 border-2 border-black bg-neo-primary/10 p-4 rounded-lg">
+        <div className="mb-8 border-2 border-black bg-neo-bg p-4 rounded-lg">
             <div className="flex items-center gap-2 font-black uppercase text-sm mb-2">
                 <Sparkles className="w-4 h-4" /> Paste a job link to autofill
             </div>

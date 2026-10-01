@@ -51,14 +51,14 @@ export function ResetPasswordPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                     <p className="font-bold text-slate-600">Choose a new password</p>
                 </div>
 
                 <NeoCard>
-                    <h2 className="text-2xl font-black mb-6 uppercase">Reset Password</h2>
+                    <h1 className="text-2xl font-black mb-6 uppercase">Reset Password</h1>
 
                     {!token ? (
                         <NeoAlert>
@@ -83,6 +83,7 @@ export function ResetPasswordPage() {
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                 <NeoInput
                                     label="New Password"
+                                    hint="At least 8 characters."
                                     type="password"
                                     autoComplete="new-password"
                                     placeholder="••••••••"

@@ -9,7 +9,8 @@ import { NeoInput } from "../components/ui/NeoInput";
 import { NeoSelect } from "../components/ui/NeoSelect";
 import { NeoTextarea } from "../components/ui/NeoTextarea";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
-import { NeoModal } from "../components/ui/NeoModal"; // Assuming we have this, or use Confirm pattern
+import { NeoModal } from "../components/ui/NeoModal";
+import { NeoNotice } from "../components/ui/NeoNotice";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
 import { ActivityTimeline } from "../features/applications/ActivityTimeline";
@@ -17,8 +18,8 @@ import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../fe
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { getErrorMessage } from "../lib/utils";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
-import { useState, useEffect } from "react";
-import { format } from "date-fns";
+import { useState, useEffect, useRef } from "react";
+import { formatCalendarDay } from "../lib/dates";
 
 export function ApplicationDetailPage() {
     const { id } = useParams<{ id: string }>();
@@ -26,6 +27,8 @@ export function ApplicationDetailPage() {
     const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [notice, setNotice] = useState<string | null>(null);
+    const headingRef = useRef<HTMLHeadingElement>(null);
 
     const { data: application, isLoading, isError, error, refetch } = useQuery({
         queryKey: ["application", id],
@@ -64,6 +67,9 @@ export function ApplicationDetailPage() {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             queryClient.invalidateQueries({ queryKey: ["analytics"] });
             setIsEditing(false);
+            setNotice("Changes saved.");
+            // The Edit/Save buttons unmount, so put focus back on the page title.
+            requestAnimationFrame(() => headingRef.current?.focus());
         },
     });
 
@@ -126,15 +132,20 @@ export function ApplicationDetailPage() {
         <div className="max-w-3xl mx-auto">
             {backLink}
 
+            {notice && <NeoNotice className="mb-6" onDismiss={() => setNotice(null)}>{notice}</NeoNotice>}
+
             <NeoCard className="mb-6">
                 <div className="flex flex-col md:flex-row justify-between items-start mb-6 border-b-2 border-black pb-4 gap-4">
                     <div className="flex-1 min-w-0 pr-4">
-                        <h1 className="text-3xl md:text-4xl font-black break-words leading-tight">{application.companyName}</h1>
-                        <p className="text-lg md:text-xl font-bold text-slate-600 truncate">{application.role}</p>
+                        <h1 ref={headingRef} tabIndex={-1} className="text-3xl md:text-4xl font-black break-words leading-tight focus:outline-none">{application.companyName}</h1>
+                        <p className="text-lg md:text-xl font-bold text-slate-600 break-words">{application.role}</p>
                     </div>
                     {!isEditing && (
                         <div className="flex gap-2 shrink-0">
-                            <NeoButton variant="ghost" onClick={() => setIsEditing(true)}>Edit</NeoButton>
+                            <NeoButton variant="ghost" onClick={() => {
+                                setNotice(null);
+                                setIsEditing(true);
+                            }}>Edit</NeoButton>
                             <NeoButton variant="destructive" onClick={() => setShowDeleteModal(true)} aria-label="Delete application"><Trash2 className="w-4 h-4" aria-hidden /></NeoButton>
                         </div>
                     )}
@@ -223,7 +234,7 @@ export function ApplicationDetailPage() {
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Applied Date</span>
                                 <div className="flex items-center gap-2 mt-1 font-bold">
                                     <Calendar className="w-5 h-5" />
-                                    {format(new Date(application.appliedDate), "PPP")}
+                                    {formatCalendarDay(application.appliedDate, "PPP")}
                                 </div>
                             </div>
                         </div>
@@ -233,8 +244,8 @@ export function ApplicationDetailPage() {
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Follow-up Date</span>
                                 <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-red-deep" : ""}`}>
                                     <Calendar className="w-5 h-5" />
-                                    {format(new Date(application.followUpDate), "PPP")}
-                                    {isFollowUpDue(application) && <span className="text-xs uppercase border-2 border-neo-destructive px-1">Due</span>}
+                                    {formatCalendarDay(application.followUpDate, "PPP")}
+                                    {isFollowUpDue(application) && <span className="text-xs uppercase border-2 border-black bg-neo-destructive text-black px-1">Overdue</span>}
                                 </div>
                             </div>
                         )}

@@ -30,7 +30,7 @@ Used daily, in short sessions, on desktop and on a phone. The main screens are t
 
 ## Capabilities and Constraints
 
-Confirmed functionality: email and password accounts with short-lived access tokens and rotating refresh cookies; password reset and email verification (login is deliberately **not** blocked on verification, which shows as a dismissible banner); application CRUD with search, filter and sort; kanban board; per-application activity timeline; weekly follow-up digest with opt-out; job-URL capture (server-side fetch guarded against SSRF); CSV import with preview and export guarded against formula injection; streaks and milestones; shareable recap; analytics.
+Confirmed functionality (landing page previews use clearly labelled sample data with fictional companies, never real customers): email and password accounts with short-lived access tokens and rotating refresh cookies; password reset and email verification (login is deliberately **not** blocked on verification, which shows as a dismissible banner); application CRUD with search, filter and sort (the list marks overdue follow-ups, shows a total count, and can clear filters); kanban board; per-application activity timeline; weekly follow-up digest with opt-out; job-URL capture (server-side fetch guarded against SSRF); CSV import with preview and export guarded against formula injection; streaks and milestones; shareable recap; analytics.
 
 Binding constraints:
 - **Recap privacy:** a public recap exposes aggregate numbers only, frozen at creation, never per-application data. Revoking a share stops its link resolving. This guarantee is structural and must not be loosened.

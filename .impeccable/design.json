@@ -455,6 +455,7 @@
       }
     ],
     "dos": [
+      "Do give every page exactly one `h1`: the page title. Auth-page wordmarks are not headings. Announce async swaps (verifying, imported, unsubscribed) with `aria-live` or `role=\"status\"`.",
       "Do outline every surface and interactive control in 2px solid black (#000).",
       "Do use the hard-edge offset shadows (4px rest, 6px lifted, 2px pressed) and pair them with the lift/press motion.",
       "Do keep text on every colored fill black; use white only on black fills.",

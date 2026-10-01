@@ -53,14 +53,14 @@ export function RegisterPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                     <p className="font-bold text-slate-600">Start tracking your job hunt</p>
                 </div>
 
                 <NeoCard>
-                    <h2 className="text-2xl font-black mb-6 uppercase">Register</h2>
+                    <h1 className="text-2xl font-black mb-6 uppercase">Create account</h1>
 
                     {serverError && (
                         <NeoAlert className="mb-4">
@@ -79,6 +79,7 @@ export function RegisterPage() {
                         />
                         <NeoInput
                             label="Password"
+                            hint="At least 8 characters."
                             type="password"
                             autoComplete="new-password"
                             placeholder="••••••••"
@@ -99,14 +100,14 @@ export function RegisterPage() {
                             className="w-full mt-2"
                             disabled={mutation.isPending}
                         >
-                            {mutation.isPending ? "Creating Account..." : "Register"}
+                            {mutation.isPending ? "Creating account..." : "Create account"}
                         </NeoButton>
                     </form>
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Already have an account?{" "}
                         <Link to="/login" className="underline hover:bg-neo-primary hover:text-black">
-                            Login here
+                            Sign in
                         </Link>
                     </div>
                 </NeoCard>

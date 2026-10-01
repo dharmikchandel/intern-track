@@ -30,11 +30,11 @@ export function HeroSection() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
-                        <NeoLinkButton to="/register" className="text-lg px-8 py-4 h-auto">
+                        <NeoLinkButton to="/register" className="text-lg px-8 py-4">
                             Start Tracking Free
                         </NeoLinkButton>
-                        <NeoLinkButton to="/login" variant="ghost" className="text-lg px-8 py-4 h-auto">
-                            Sign In
+                        <NeoLinkButton to="/login" variant="ghost" className="text-lg px-8 py-4">
+                            Sign in
                         </NeoLinkButton>
                     </div>
                 </motion.div>

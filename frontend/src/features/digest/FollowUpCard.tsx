@@ -52,7 +52,7 @@ export function FollowUpCard() {
                         {overdue === 0 ? "No follow-ups due" : `${overdue} ${overdue === 1 ? "application needs" : "applications need"} a follow-up`}
                     </p>
                     {overdue > 0 && (
-                        <Link to="/applications?followUp=1" className="font-bold underline">
+                        <Link to="/applications?followUp=1" className="inline-flex items-center min-h-11 font-bold underline hover:bg-neo-primary">
                             Review them
                         </Link>
                     )}

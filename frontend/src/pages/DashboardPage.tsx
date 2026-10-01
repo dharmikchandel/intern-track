@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { NeoCard } from "../components/ui/NeoCard";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
+import { Footer } from "../components/layout/Footer";
 import { PaperStack } from "../components/ui/PaperStack";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { getStatusCounts, getFunnel, type FunnelMetrics, type StatusCounts } from "../api/analytics";
@@ -10,6 +11,7 @@ import { FollowUpCard } from "../features/digest/FollowUpCard";
 import { MomentumCard } from "../features/milestones/MomentumCard";
 import { Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp, type LucideIcon } from "lucide-react";
 import { cn } from "../lib/utils";
+import { plural } from "../features/recap/format";
 import { STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import type { ApplicationStatus } from "../api/applications";
 
@@ -39,7 +41,7 @@ function DashboardSkeleton() {
 // what to do instead.
 function FirstRun() {
     return (
-        <div className="text-center p-10 border-2 border-dashed border-black bg-white">
+        <div className="text-center p-6 sm:p-10 border-2 border-dashed border-black bg-white">
             <PaperStack className="mb-10" />
             <h2 className="text-2xl font-black uppercase mb-2">Track your first application</h2>
             <p className="font-bold text-slate-600 max-w-xl mx-auto mb-6">
@@ -47,7 +49,7 @@ function FirstRun() {
             </p>
             <NeoLinkButton to="/applications/new" className="flex items-center gap-2 mx-auto w-fit">
                 <Plus className="w-5 h-5" />
-                New Application
+                Add your first application
             </NeoLinkButton>
         </div>
     );
@@ -90,12 +92,12 @@ function DashboardNumbers({ counts, funnelData }: { counts: StatusCounts; funnel
                             </div>
                             <div className="h-5 w-full bg-slate-100 rounded-full overflow-hidden border-2 border-black">
                                 <div
-                                    className="h-full bg-neo-primary transition-all duration-1000 motion-reduce:transition-none border-r-2 border-black"
+                                    className={cn("h-full bg-neo-primary transition-all duration-1000 motion-reduce:transition-none", funnelData.interviewRate > 0 && "border-r-2 border-black")}
                                     style={{ width: `${Math.min(100, funnelData.interviewRate)}%` }}
                                 />
                             </div>
                             <p className="text-xs font-bold text-slate-500 mt-2">
-                                {funnelData.interviewCount} interviews from {funnelData.totalApplied} applications
+                                {plural(funnelData.interviewCount, "interview")} from {plural(funnelData.totalApplied, "application")}
                             </p>
                         </div>
 
@@ -106,12 +108,12 @@ function DashboardNumbers({ counts, funnelData }: { counts: StatusCounts; funnel
                             </div>
                             <div className="h-5 w-full bg-slate-100 rounded-full overflow-hidden border-2 border-black">
                                 <div
-                                    className="h-full bg-neo-primary transition-all duration-1000 motion-reduce:transition-none border-r-2 border-black"
+                                    className={cn("h-full bg-neo-green transition-all duration-1000 motion-reduce:transition-none", funnelData.offerRate > 0 && "border-r-2 border-black")}
                                     style={{ width: `${Math.min(100, funnelData.offerRate)}%` }}
                                 />
                             </div>
                             <p className="text-xs font-bold text-slate-500 mt-2">
-                                {funnelData.offerCount} offers from {funnelData.totalApplied} applications
+                                {plural(funnelData.offerCount, "offer")} from {plural(funnelData.totalApplied, "application")}
                             </p>
                         </div>
                     </div>
@@ -126,6 +128,7 @@ export function DashboardPage() {
     const funnel = useQuery({ queryKey: ["analytics", "funnel"], queryFn: getFunnel });
 
     const isLoading = status.isLoading || funnel.isLoading;
+    const isFirstRun = Boolean(status.data && STATUS_ORDER.every((s) => status.data[s] === 0));
     const retry = () => {
         if (status.isError) void status.refetch();
         if (funnel.isError) void funnel.refetch();
@@ -146,18 +149,24 @@ export function DashboardPage() {
                 </NeoLinkButton>
             </div>
 
-            <FollowUpCard />
-
-            <MomentumCard />
+            {/* A brand-new account sees one next step, not an empty streak and a "no follow-ups" card above it. */}
+            {!isFirstRun && (
+                <>
+                    <FollowUpCard />
+                    <MomentumCard />
+                </>
+            )}
 
             {isLoading ? (
                 <DashboardSkeleton />
             ) : status.data && funnel.data ? (
-                STATUS_ORDER.every((s) => status.data[s] === 0) ? <FirstRun /> : <DashboardNumbers counts={status.data} funnelData={funnel.data} />
+                isFirstRun ? <FirstRun /> : <DashboardNumbers counts={status.data} funnelData={funnel.data} />
             ) : (
                 // Never show zeros for numbers we failed to load: they would read as real.
                 <NeoAlert onRetry={retry}>Couldn't load your numbers.</NeoAlert>
             )}
+
+            <Footer className="mt-8" />
         </div>
     );
 }

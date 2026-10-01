@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { LayoutGrid, List, Plus } from "lucide-react";
+import { formatCalendarDay } from "../lib/dates";
+import { AlertCircle, LayoutGrid, List, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { NeoAlert } from "../components/ui/NeoAlert";
@@ -20,7 +20,7 @@ import {
 import { listApplications, type ApplicationSort } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
 import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
-import { STATUS_COLORS, STATUS_LABELS } from "../features/applications/statusMeta";
+import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS } from "../features/applications/statusMeta";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
 import { cn } from "../lib/utils";
 
@@ -72,7 +72,7 @@ export function ApplicationsPage() {
         queryFn: () =>
             listApplications({
                 page,
-                limit: 8,
+                limit: 15,
                 status: statusFilter || undefined,
                 q: debouncedSearch || undefined,
                 needsFollowUp: needsFollowUp || undefined,
@@ -180,6 +180,14 @@ export function ApplicationsPage() {
                 }
             />
 
+            {hasFilters && (
+                <div className="-mt-3 mb-6">
+                    <NeoButton variant="ghost" className="px-4 py-2 text-sm min-h-11" onClick={clearFilters}>
+                        Clear filters
+                    </NeoButton>
+                </div>
+            )}
+
             {view === "board" ? (
                 <Suspense fallback={<NeoSkeleton label="Loading board" className="h-80" />}>
                     <BoardView q={debouncedSearch} needsFollowUp={needsFollowUp} />
@@ -219,6 +227,11 @@ export function ApplicationsPage() {
                                         <Link to={`/applications/${app.id}`} className="font-black hover:underline">
                                             {app.companyName}
                                         </Link>
+                                        {isFollowUpDue(app) && (
+                                            <span className="flex items-center gap-1 text-xs font-bold text-neo-red-deep">
+                                                <AlertCircle className="w-3 h-3" aria-hidden /> Follow-up due
+                                            </span>
+                                        )}
                                     </NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
@@ -226,7 +239,7 @@ export function ApplicationsPage() {
                                             {STATUS_LABELS[app.status]}
                                         </span>
                                     </NeoTableCell>
-                                    <NeoTableCell>{format(new Date(app.appliedDate), "MMM d, yyyy")}</NeoTableCell>
+                                    <NeoTableCell>{formatCalendarDay(app.appliedDate, "MMM d, yyyy")}</NeoTableCell>
                                 </NeoTableRow>
                             ))}
                         </NeoTableBody>
@@ -241,7 +254,10 @@ export function ApplicationsPage() {
                         >
                             Previous
                         </NeoButton>
-                        <span className="font-bold">Page {page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
+                        <span className="font-bold text-center">
+                            Showing {(page - 1) * 15 + 1}-{Math.min(page * 15, data?.meta.total ?? 0)} of {data?.meta.total ?? 0}
+                            <span className="block text-xs text-slate-600">Page {page} of {Math.max(1, data?.meta.totalPages ?? 1)}</span>
+                        </span>
                         <NeoButton
                             variant="ghost"
                             disabled={!data || page >= data.meta.totalPages}

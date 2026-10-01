@@ -25,6 +25,15 @@
     }
 }
 
+@layer utilities {
+    /* The app's scroll area: viewport minus the 64px header. dvh tracks mobile
+       browser toolbars; the vh line is the fallback for browsers without it. */
+    .h-app-main {
+        height: calc(100vh - 64px);
+        height: calc(100dvh - 64px);
+    }
+}
+
 /* Reduced motion, without losing feedback: hover/press lifts stop moving (the
    hard shadow still grows and shrinks, so the state change stays visible) and
    loading pulses go still. Framer animations are handled by <MotionConfig>. */
@@ -36,7 +45,8 @@
     }
 
     .animate-pulse,
-    .animate-spin {
+    .animate-spin,
+    .animate-drawer-in {
         animation: none;
     }
 }

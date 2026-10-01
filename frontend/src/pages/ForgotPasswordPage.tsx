@@ -46,14 +46,14 @@ export function ForgotPasswordPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                     <p className="font-bold text-slate-600">Reset your password</p>
                 </div>
 
                 <NeoCard>
-                    <h2 className="text-2xl font-black mb-6 uppercase">Forgot Password</h2>
+                    <h1 className="text-2xl font-black mb-6 uppercase">Forgot Password</h1>
 
                     {serverError && (
                         <NeoAlert className="mb-4">

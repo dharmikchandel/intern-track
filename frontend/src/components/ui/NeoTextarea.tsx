@@ -20,6 +20,8 @@ const NeoTextarea = forwardRef<HTMLTextAreaElement, NeoTextareaProps>(
                 <textarea
                     ref={ref}
                     id={textareaId}
+                    aria-invalid={error ? true : undefined}
+                    aria-describedby={error ? `${textareaId}-error` : undefined}
                     className={cn(
                         "w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all font-medium min-h-[100px]",
                         error && "border-neo-destructive focus:ring-neo-destructive/50",
@@ -27,7 +29,7 @@ const NeoTextarea = forwardRef<HTMLTextAreaElement, NeoTextareaProps>(
                     )}
                     {...props}
                 />
-                {error && <p className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>}
+                {error && <p id={`${textareaId}-error`} className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>}
             </div>
         );
     }

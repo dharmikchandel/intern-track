@@ -31,24 +31,24 @@ export function UnsubscribePage() {
         <div className="min-h-screen flex items-center justify-center bg-neo-bg p-4 relative overflow-hidden">
             <div className="w-full max-w-md relative z-10">
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                 </div>
-                <NeoCard className="text-center space-y-4">
+                <NeoCard className="text-center space-y-4" aria-live="polite">
                     {status === "done" ? (
                         <>
-                            <h2 className="text-2xl font-black">You're unsubscribed</h2>
+                            <h1 className="text-2xl font-black">You're unsubscribed</h1>
                             <p className="font-medium">You won't get follow-up reminder emails anymore. You can turn them back on from your <Link to="/dashboard" className="underline">dashboard</Link>.</p>
                         </>
                     ) : status === "error" ? (
                         <>
-                            <h2 className="text-2xl font-black">Link not valid</h2>
+                            <h1 className="text-2xl font-black">Link not valid</h1>
                             <p className="font-medium">{error}</p>
                         </>
                     ) : (
                         <>
-                            <h2 className="text-2xl font-black">Stop follow-up reminders?</h2>
+                            <h1 className="text-2xl font-black">Stop follow-up reminders?</h1>
                             <p className="font-medium">You'll no longer get the weekly email listing applications that need a follow-up.</p>
                             <NeoButton onClick={confirm} disabled={status === "working"} className="w-full">
                                 {status === "working" ? "Unsubscribing..." : "Unsubscribe"}

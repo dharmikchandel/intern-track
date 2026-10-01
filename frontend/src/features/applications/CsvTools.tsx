@@ -4,6 +4,7 @@ import { CheckCircle2, Download, FileUp, Upload } from "lucide-react";
 import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoModal } from "../../components/ui/NeoModal";
+import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { NeoSelect } from "../../components/ui/NeoSelect";
 import {
     exportApplicationsCsv,
@@ -120,7 +121,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
     return (
         <NeoModal isOpen onClose={onClose} title="Import from CSV" widthClass="max-w-2xl">
             {done ? (
-                <div className="text-center py-4">
+                <div className="text-center py-4" role="status">
                     <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-neo-green-deep" />
                     <p className="text-2xl font-black mb-1">
                         Imported {done.imported} {done.imported === 1 ? "application" : "applications"}
@@ -130,7 +131,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
                             Skipped {done.duplicates} {done.duplicates === 1 ? "duplicate" : "duplicates"} and {done.invalid} {done.invalid === 1 ? "row" : "rows"} with errors.
                         </p>
                     )}
-                    <NeoButton className="mt-6" onClick={onClose}>
+                    <NeoButton className="mt-6" onClick={onClose} autoFocus>
                         Done
                     </NeoButton>
                 </div>
@@ -183,7 +184,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
                             {error}
                         </NeoAlert>
                     )}
-                    {preview.isPending && <p className="font-bold animate-pulse">Checking your file...</p>}
+                    {preview.isPending && <NeoSkeleton label="Checking your file" className="h-16" />}
 
                     {summary && !preview.isPending && <PreviewBody summary={summary} />}
 

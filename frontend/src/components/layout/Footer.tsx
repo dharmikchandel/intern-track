@@ -9,16 +9,14 @@ export function Footer({ className }: FooterProps) {
         <footer className={cn("w-full py-8 border-2 rounded-lg border-black bg-white shadow-neo", className)}>
             <div className="container mx-auto px-6 flex flex-col justify-center items-center gap-6 text-center">
                 <div className="max-w-xl">
-                    <p className="text-xl font-black text-slate-800 italic tracking-tight">
+                    <p className="text-xl font-black text-slate-800 tracking-tight">
                         "Every rejection is a redirection. Your offer is waiting."
                     </p>
-                    <div className="w-16 h-1 bg-neo-primary mx-auto my-3 rounded-full"></div>
+                    <div className="h-3" aria-hidden />
                     <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Keep pushing forward</p>
                 </div>
 
-                <div className="flex items-center gap-6 text-sm font-bold text-slate-500 mt-2">
-                    <span className="text-slate-500">© {new Date().getFullYear()} TRACKr.</span>
-                </div>
+                <p className="text-sm font-bold text-slate-500">© {new Date().getFullYear()} TRACKr.</p>
             </div>
         </footer>
     );

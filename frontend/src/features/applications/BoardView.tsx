@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { formatCalendarDay } from "../../lib/dates";
 import {
     DndContext,
     DragOverlay,
@@ -15,11 +15,10 @@ import {
     type DragEndEvent,
     type DragStartEvent,
 } from "@dnd-kit/core";
-import { AlertCircle, GripVertical, Undo2 } from "lucide-react";
+import { AlertCircle, ChevronDown, GripVertical, Undo2 } from "lucide-react";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoButton } from "../../components/ui/NeoButton";
 import { NeoLinkButton } from "../../components/ui/NeoLinkButton";
-import { NeoSelect } from "../../components/ui/NeoSelect";
 import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
@@ -146,7 +145,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                 onDragCancel={() => setActiveId(null)}
             >
                 {/* pb/pr leave room for the offset card shadows, which overflow-x would clip. */}
-                <div className="flex gap-3 overflow-x-auto pb-4 pr-2 items-start">
+                <div className="flex gap-3 overflow-x-auto snap-x snap-proximity pb-4 pr-2 items-start">
                     {STATUS_ORDER.map((status) => {
                         const column = data.columns.find((c) => c.status === status);
                         return (
@@ -165,9 +164,12 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                 <DragOverlay>{activeCard ? <CardBody app={activeCard} floating /> : null}</DragOverlay>
             </DndContext>
 
+            {/* Always mounted, so a screen reader announces the text when it changes. */}
+            <div role="status" className="sr-only">
+                {undo ? `${undo.company} moved to ${STATUS_LABELS[undo.to]}` : ""}
+            </div>
             {undo && (
                 <div
-                    role="status"
                     className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[calc(100vw-2rem)] flex items-center gap-4 bg-white border-2 border-black shadow-neo rounded-lg px-4 py-3 font-bold"
                 >
                     <span>
@@ -183,7 +185,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                     >
                         <Undo2 className="w-4 h-4" /> Undo
                     </NeoButton>
-                    <button className="text-sm underline p-2 -m-2" onClick={() => setUndo(null)}>
+                    <button className="text-sm underline p-2 min-h-11" onClick={() => setUndo(null)}>
                         Dismiss
                     </button>
                 </div>
@@ -211,7 +213,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
             aria-label={`${STATUS_LABELS[status]} column`}
             className={cn(
                 // A lane drawn on the paper: dashed until a card hovers over it, then solid.
-                "min-w-[200px] flex-1 border-2 border-dashed border-black/40 rounded-lg overflow-hidden transition-colors",
+                "min-w-[75vw] sm:min-w-[200px] snap-start flex-1 border-2 border-dashed border-black/40 rounded-lg overflow-hidden transition-colors",
                 isOver && "border-solid border-black bg-neo-blue-tint"
             )}
         >
@@ -232,7 +234,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
                     <div className="text-center text-xs font-bold text-slate-600">
                         Showing {cards.length} of {total}
                         {canShowMore ? (
-                            <button className="block mx-auto px-3 py-2 underline" onClick={onShowMore}>
+                            <button className="block mx-auto px-3 py-2 min-h-11 underline" onClick={onShowMore}>
                                 Show more
                             </button>
                         ) : (
@@ -290,30 +292,38 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
                 {handle}
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-slate-600">
-                <span>Applied {format(new Date(app.appliedDate), "MMM d")}</span>
+                <span>Applied {formatCalendarDay(app.appliedDate, "MMM d")}</span>
                 {app.followUpDate && (
                     <span className={cn("inline-flex items-center gap-1", due && "text-neo-red-deep")}>
                         {due && <AlertCircle className="w-3 h-3" aria-hidden />}
                         {due && <span className="sr-only">Overdue: </span>}
-                        Follow up {format(new Date(app.followUpDate), "MMM d")}
+                        Follow up {formatCalendarDay(app.followUpDate, "MMM d")}
                     </span>
                 )}
             </div>
             {onMove && (
                 // Tap/keyboard alternative to dragging, so moving a card never
                 // depends on a precise gesture (mobile) or a pointer (a11y).
-                <NeoSelect
-                    aria-label={`Move ${app.companyName} to`}
-                    value={app.status}
-                    onChange={(e) => onMove(e.target.value as ApplicationStatus)}
-                    className="mt-2 p-1 text-xs font-bold min-h-11 md:min-h-0"
-                >
-                    {STATUS_ORDER.map((s) => (
-                        <option key={s} value={s}>
-                            {s === app.status ? STATUS_LABELS[s] : `Move to ${STATUS_LABELS[s]}`}
+                <label className="relative mt-2 inline-flex items-center gap-1 min-h-11 md:min-h-0 cursor-pointer text-xs font-black uppercase tracking-wide hover:underline has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+                    <span aria-hidden>Move to</span>
+                    <ChevronDown className="w-3 h-3" aria-hidden />
+                    {/* The native select sits invisibly on top, so keyboards and phone pickers work as usual. */}
+                    <select
+                        aria-label={`Move ${app.companyName} to`}
+                        value=""
+                        onChange={(e) => onMove(e.target.value as ApplicationStatus)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    >
+                        <option value="" disabled>
+                            Move to...
                         </option>
-                    ))}
-                </NeoSelect>
+                        {STATUS_ORDER.filter((s) => s !== app.status).map((s) => (
+                            <option key={s} value={s}>
+                                {STATUS_LABELS[s]}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             )}
         </div>
     );

@@ -18,12 +18,13 @@ export function PublicRecapPage() {
 
     return (
         <div className="min-h-screen bg-neo-bg relative overflow-hidden flex items-center justify-center p-4">
-            <div className="relative z-10 w-full max-w-xl py-8">
+            <main className="relative z-10 w-full max-w-xl py-8">
+                <h1 className="sr-only">Job search recap</h1>
                 {isLoading ? (
                     <NeoSkeleton label="Loading recap" className="h-96" />
                 ) : isError || !data ? (
                     <NeoCard className="p-8 text-center">
-                        <h1 className="text-2xl font-black mb-2">This recap isn't available</h1>
+                        <h2 className="text-2xl font-black mb-2">This recap isn't available</h2>
                         <p className="font-medium mb-6">The link may be wrong, or the owner has turned sharing off.</p>
                         <NeoLinkButton to="/">Go to TRACKr</NeoLinkButton>
                     </NeoCard>
@@ -36,7 +37,7 @@ export function PublicRecapPage() {
                         </div>
                     </>
                 )}
-            </div>
+            </main>
         </div>
     );
 }

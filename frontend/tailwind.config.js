@@ -27,6 +27,15 @@ export default {
                 'neo-sm': '2px 2px 0px 0px #000000', // small pieces: avatar, pills, icon tiles
                 'neo-modal': '8px 8px 0px 0px #000000', // overlays: modal, mobile drawer
             },
+            dropShadow: {
+                'neo-sm': '2px 2px 0 #000000', // hard-edge shadow for display text (auth wordmark)
+            },
+            keyframes: {
+                'drawer-in': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(0)' } },
+            },
+            animation: {
+                'drawer-in': 'drawer-in 200ms ease-out',
+            },
             borderRadius: {
                 'neo': '0.75rem', // 12px
             },

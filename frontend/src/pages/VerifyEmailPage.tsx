@@ -40,23 +40,23 @@ export function VerifyEmailPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                 </div>
 
-                <NeoCard className="text-center">
+                <NeoCard className="text-center" aria-live="polite">
                     {status === "verifying" && (
                         <>
                             <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-slate-700" />
-                            <h2 className="text-xl font-black uppercase">Verifying your email...</h2>
+                            <h1 className="text-xl font-black uppercase">Verifying your email...</h1>
                         </>
                     )}
 
                     {status === "success" && (
                         <>
                             <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-neo-green-deep" />
-                            <h2 className="text-xl font-black uppercase mb-2">Email Verified</h2>
+                            <h1 className="text-xl font-black uppercase mb-2">Email Verified</h1>
                             <p className="font-bold text-slate-600 mb-6">Your email is confirmed. You're all set.</p>
                             <NeoLinkButton to="/dashboard" className="w-full">Go to Dashboard</NeoLinkButton>
                         </>
@@ -65,7 +65,7 @@ export function VerifyEmailPage() {
                     {status === "error" && (
                         <>
                             <XCircle className="w-12 h-12 mx-auto mb-4 text-neo-red-deep" />
-                            <h2 className="text-xl font-black uppercase mb-2">Verification Failed</h2>
+                            <h1 className="text-xl font-black uppercase mb-2">Verification Failed</h1>
                             <p className="font-bold text-slate-600 mb-6">
                                 {error ?? "This verification link is missing its token."}
                             </p>

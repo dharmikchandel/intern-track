@@ -24,7 +24,8 @@ const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
                 <input
                     ref={ref}
                     id={inputId}
-                    aria-describedby={hint ? `${inputId}-hint` : undefined}
+                    aria-invalid={error ? true : undefined}
+                    aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
                     className={cn(
                         "w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all font-medium placeholder:text-slate-500",
                         error && "border-neo-destructive focus:ring-neo-destructive/50",
@@ -36,7 +37,7 @@ const NeoInput = forwardRef<HTMLInputElement, NeoInputProps>(
                     <p id={`${inputId}-hint`} className="text-slate-600 font-bold text-xs mt-1">{hint}</p>
                 )}
                 {error && (
-                    <p className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>
+                    <p id={`${inputId}-error`} className="text-neo-red-deep font-bold text-sm mt-1">{error}</p>
                 )}
             </div>
         );

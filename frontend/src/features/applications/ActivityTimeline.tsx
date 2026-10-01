@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { formatCalendarDay } from "../../lib/dates";
 import { NeoCard } from "../../components/ui/NeoCard";
 import { NeoAlert } from "../../components/ui/NeoAlert";
 import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
@@ -9,7 +10,7 @@ import { STATUS_LABELS } from "./statusMeta";
 const statusLabel = (value?: string | null) =>
     value && value in STATUS_LABELS ? STATUS_LABELS[value as keyof typeof STATUS_LABELS] : (value ?? "unknown");
 
-const day = (value?: string | null) => (value ? format(new Date(value), "MMM d, yyyy") : "");
+const day = (value?: string | null) => (value ? formatCalendarDay(value, "MMM d, yyyy") : "");
 
 // The server stores structured facts, not sentences; the wording lives here so
 // it can change without touching stored history.

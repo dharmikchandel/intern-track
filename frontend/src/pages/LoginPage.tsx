@@ -58,14 +58,14 @@ export function LoginPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <div className="text-4xl font-black tracking-tighter text-neo-primary drop-shadow-neo-sm">
                         TRACKr.
-                    </h1>
+                    </div>
                     <p className="font-bold text-slate-600">Job Application Tracker</p>
                 </div>
 
                 <NeoCard>
-                    <h2 className="text-2xl font-black mb-6 uppercase">Login</h2>
+                    <h1 className="text-2xl font-black mb-6 uppercase">Sign in</h1>
 
                     {justReset && !serverError && (
                         <NeoNotice className="mb-4">Password updated. Log in with your new password.</NeoNotice>
@@ -96,7 +96,7 @@ export function LoginPage() {
                                 {...register("password")}
                             />
                             <div className="text-right mt-1">
-                                <Link to="/forgot-password" className="text-xs font-bold underline hover:bg-neo-primary hover:text-black">
+                                <Link to="/forgot-password" className="inline-flex items-center min-h-11 text-sm font-bold underline hover:bg-neo-primary hover:text-black">
                                     Forgot password?
                                 </Link>
                             </div>
@@ -107,14 +107,14 @@ export function LoginPage() {
                             className="w-full mt-2"
                             disabled={mutation.isPending}
                         >
-                            {mutation.isPending ? "Logging in..." : "Login"}
+                            {mutation.isPending ? "Signing in..." : "Sign in"}
                         </NeoButton>
                     </form>
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Don't have an account?{" "}
                         <Link to="/register" className="underline hover:bg-neo-primary hover:text-black">
-                            Register here
+                            Create one
                         </Link>
                     </div>
                 </NeoCard>

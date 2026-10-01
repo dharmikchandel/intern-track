@@ -184,7 +184,7 @@ This system rejects three things: generic Material/SaaS dashboards (soft shadows
 
 ## Layout
 
-Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), open by default from the `lg` breakpoint, and a main area that scrolls independently over flat Paper. Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
+Two shells share one grammar. The **app shell** is a 64px sticky white header with a 2px black bottom rule, a left sidebar that toggles between 96px (icons only) and 256px (icons plus labels), open by default from the `lg` breakpoint, and a main area that scrolls independently over flat Paper (height is the viewport minus the header, using `dvh` with a `vh` fallback). Content sits in a centered `max-w-6xl` column with 16px page padding on mobile and 32px from `md` upward. The sidebar is replaced by a 256px drawer below the `md` (768px) breakpoint. The **landing shell** is an 80px sticky header and full-width sections separated by 2px black rules, each with 96px vertical padding and a centered container.
 
 Spacing follows the 4px Tailwind scale. The working rhythm is 8px inside controls, 12 to 16px between related elements, 24px inside cards, and 32px between dashboard cards (`mb-8`). Card grids use 32px gaps on the landing page and 12px gaps inside dense dashboard tiles. The kanban board is a horizontally scrolling row of columns with 12px gaps.
 
@@ -205,6 +205,8 @@ Depth is structural, not atmospheric. Every raised surface carries a hard, zero-
 **The Hard-Edge Rule.** A shadow is either a solid black offset with zero blur, or it is absent. Never introduce a blurred shadow.
 
 **The Reduced-Motion Rule.** With `prefers-reduced-motion`, nothing translates: hover/press lifts stop moving but the hard shadow still grows and shrinks, framer entrances keep only their opacity fade, and pulses go still. State changes must stay visible without movement.
+
+**The Wordmark Rule.** Auth-page wordmarks are Signal Blue with the hard `drop-shadow-neo-sm` (2px, ink). It is the one place a shadow is applied to text.
 
 **The Press Rule.** Interactive means pressable. Anything interactive with a resting shadow must lift on hover and sink on active. Cards keep their resting shadow as their physical edge, but a card only moves if it is itself a link or button.
 
@@ -240,16 +242,16 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Inputs / Fields
 - **Hint:** `NeoInput` takes a `hint` (quiet 12px help under the field, linked with `aria-describedby`); mark optional fields "(optional)" in the label.
 - **Primitives:** `NeoInput`, `NeoSelect` and `NeoTextarea` share one grammar and one focus ring. Every labelled field goes through them; never hand-write the class string. `NeoSelect` renders a bare select when it has no label (toolbars, cards); override size with `className` (for example `w-auto p-2 font-bold`).
-- **Style:** Paper fill, 2px black border, square corners, 12px x 16px padding, medium weight, grey placeholder. Labels sit above in uppercase tracked bold.
+- **Style:** white (Card) fill, 2px black border, square corners, 12px x 16px padding, medium weight, grey placeholder. Labels sit above in uppercase tracked bold.
 - **Focus:** no outline; a 4px ring in Signal Blue at 50% opacity.
-- **Error:** border and message turn Stop Red, ring turns red at 50%; message is bold 14px below the field.
+- **Error:** border turns Stop Red, ring turns red at 50%; the message is bold 14px Red Deep below the field and is linked to it (`aria-invalid` + `aria-describedby`). This field-level text is the one sanctioned inline error; a failed *action* uses `NeoAlert`.
 - **Disabled:** not specifically styled.
 
 ### Navigation
 - Sidebar items are 12px-radius, 2px-bordered rows. **Inactive:** Text Muted on transparent with a transparent border. **Hover:** black border and a slate-50 fill. **Active:** Signal Blue fill, black text, black border, rest shadow, and a heavier 2.5px icon stroke. The collapsed sidebar centers icons and exposes labels as tooltips. The header pairs a bold wordmark ("TRACKr." with a BETA pill) with a circular Signal Blue avatar carrying the user's initial. Below `md` a hamburger opens a 256px drawer over a dimmed, blurred backdrop.
 
 ### Tables
-- The company name is the row's link to the detail page (there is no Actions column). Paper body inside a black-bordered, shadowed, 8px-rounded frame. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Blue Tint on hover.
+- The company name is the row's link to the detail page (there is no Actions column). White body inside a black-bordered, shadowed, 8px-rounded frame. A company with an overdue follow-up shows a red-deep "Follow-up due" line with an alert glyph under its name (the same cue as the board). The list shows 15 rows per page with a "Showing x-y of N" count; "Clear filters" sits under the filter bar whenever any filter is active. Header row is solid black with white uppercase tracked text and 16px padding; rows are separated by 2px black rules and turn Blue Tint on hover.
 
 ### Landing: Product First
 - The hero leads with the real product, not decoration: `ProductPreview` (a small board of fictional sample applications, labelled "Sample data") sits on an offset Signal Blue block (2px ink border, offset 16 to 24px down and right). It reuses the board's lane, header-strip and card styling and reads statuses from `statusMeta`, so it cannot drift from the app. Below `sm` it shows two lanes.
@@ -258,21 +260,26 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Paper stack** (`PaperStack`, built from `SampleApplicationCard`): three tilted sample cards stamped Applied, Interview and Offer. Used only as the first-run dashboard empty state. Decorative and `aria-hidden`; sample names are fictional.
 
 ### Modal and Drawer
-- The modal is a paper panel (2px black border, `shadow-neo-modal`, square corners) centered over a black 50% backdrop with a slight blur; the mobile menu is the same paper panel pinned left at 256px. Both are real dialogs: `role="dialog"` and `aria-modal`, named by their title (the drawer is "Main menu"), closed by Escape, the close button (labelled "Close dialog" / "Close menu") or a backdrop click. Focus moves in on open, Tab stays inside, and focus returns to the opener on close. The shared behaviour lives in `frontend/src/lib/useDialog.ts`; any new overlay must use it.
+- The modal is a paper panel (2px black border, `shadow-neo-modal`, square corners) centered over a black 50% backdrop with a slight blur; the mobile menu is the same paper panel pinned left at 256px, sliding in over 200ms (still under reduced motion), with scroll contained inside overlays. Both are real dialogs: `role="dialog"` and `aria-modal`, named by their title (the drawer is "Main menu"), closed by Escape, the close button (labelled "Close dialog" / "Close menu") or a backdrop click. Focus moves in on open, Tab stays inside, and focus returns to the opener on close. The shared behaviour lives in `frontend/src/lib/useDialog.ts`; any new overlay must use it.
 
 ### Kanban Board (signature)
 - Five status columns drawn as lanes on the paper: a dashed ink-at-40% outline (it turns solid, with a Blue Tint fill, while a card is dragged over it), with a header strip that carries the status fill (see Semantic), an uppercase title, and a white, bordered count pill. Application cards are white, 2px black, 8px rounded, rest-shadowed, with a bold truncated company name, a medium role line, and small 12px bold metadata. A card overdue for follow-up turns its date red and gains an alert glyph. Dragging lifts the card with a hover shadow and a 2-degree tilt, leaves the origin at 40% opacity, and surfaces a bottom-center toast with an Undo action.
 
+- **Move control:** each card ends with a quiet "MOVE TO v" label (uppercase 12px, underlines on hover) over an invisible native select, so keyboards and phone pickers work without a bordered field on every card. It lists the other four stages. Below `sm` the lanes are 75vw wide with proximity scroll-snap, so the next lane peeks as a scroll cue.
+
 ### Momentum Card (signature)
 - A paper card with a large 900-weight streak number beside a grid of milestone tiles. Achieved tiles are Mint with a solid black border and check icon; unachieved tiles are white with a dashed slate border, a hollow circle, and a 1px-bordered progress bar filled with Signal Blue.
+
+### Footer
+- The brand quote and copyright close the landing page and the dashboard only. App screens do not repeat it. On the landing page the footer is a flat full-width band (no radius, no shadow); on the dashboard it is a card. The quote is not italic; italic is not in the type system, and there is no decorative accent rule.
 
 ### Loading, Error and Empty States
 - **Loading:** `NeoSkeleton`, a pulsing paper block with the same border, radius and shadow as the thing that is loading (dashboard tiles, detail card, board, list, activity, recap, follow-up and momentum cards), with an `sr-only` status line. Never a bare "Loading..." line, and optional cards hold their space so the page does not jump.
 - **Error:** a `NeoAlert` with a "Try again" action where a retry makes sense. Never render zeros or blanks for data that failed to load. A missing record says "not found" (404 only); any other failure says it could not load.
-- **Empty:** a 2px dashed black box with a plain sentence (the first-run dashboard replaces the zero tiles with "Track your first application") and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
+- **Empty:** a 2px dashed black box with a plain sentence (a brand-new dashboard leads with this and hides the streak and follow-up cards until there is something to show) (the first-run dashboard replaces the zero tiles with "Track your first application") and, where there is one obvious next step, a link button ("Add your first application"). Empty kanban columns show a small dashed "Nothing here yet" slot.
 
 ### Banner and Empty States
-- **Notice banner:** Blue Tint, 2px black border, rest shadow, bold text, underlined inline actions.
+- **Notice banner:** Blue Tint, 2px black border, rest shadow, bold text, underlined inline actions. Save confirmations ("Changes saved.", "Added X.") use `NeoNotice`; after saving, focus returns to the page title.
 - **Empty state:** Paper, 2px *dashed* black border, centered bold message, no shadow.
 - **Success notice** (`NeoNotice`): Achieved Mint fill, black text, `role="status"`, optional Dismiss. For "Added Stripe." after a save and the password-reset confirmations.
 - **Error alert** (`NeoAlert`): a failed action. Stop Red fill, black bold text, 2px black border, rest shadow, `role="alert"`. It sits next to the control that failed (above the submit button, above the board, inside the delete modal), names what didn't happen and what state things are in, and clears on the next attempt. For a failed load pass `onRetry` to add a "Try again" action. Use it instead of hand-rolling red banners.
@@ -286,6 +293,8 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 - **Do** use weight 800 to 900 for headings and uppercase tracked labels for form, table and column headings.
 - **Do** build page structure from white cards on the flat Paper ground, with nothing printed behind them.
 - **Do** keep the tone encouraging: frame progress as momentum and never as shortfall or guilt.
+- **Do** show a date the user picked (applied, follow-up) with `formatCalendarDay` from `lib/dates.ts`: those are saved as midnight UTC and must not be formatted in the viewer's timezone. Real moments (created at, "2:30 pm") use plain `date-fns` and show in local time.
+- **Do** give every page exactly one `h1`: the page title. Auth-page wordmarks are not headings. Announce async swaps (verifying, imported, unsubscribed) with `aria-live` or `role="status"`.
 - **Do** make text links black and underlined; on hover fill them with Signal Blue (black text) instead of recolouring the text, which drops contrast.
 - **Do** mark the current nav item with `aria-current="page"`, and announce async results (resend sent, link copied, success notices) in a `role="status"` region.
 - **Do** keep touch targets at least 44px (use padding, negative margin or `min-h-11`, not a bigger icon) and give every route a title via `RouteTitle`.
@@ -304,6 +313,5 @@ Character: tactile and unmissable. If it is interactive, it looks like a physica
 ### Known drift (not system)
 These are inconsistencies found in the code. Treat them as bugs to resolve, not patterns to copy.
 - Recap share card tiles: interview rate is Blue Mid, offer rate is Offer Green, streak is Blue Tint, the rest are white. Keep new tiles to palette A.
-- Some code still breaks the radius rule in Shapes: `rounded-md` overrides on small buttons and the notice banner, and the recap share card (`rounded-xl`, 4px border).
-- Shadows are still inlined as arbitrary values in places (`shadow-[2px_2px_0px_rgba(0,0,0,1)]`) instead of `shadow-neo-sm`. They match the tokens visually; swap them when touched.
+- The recap share card (`rounded-xl`, 4px border) is the one deliberate exception to the radius rule in Shapes; a `rounded-md` remains on the status chips in tables only where Shapes allows it.
 - `font-sans` is the only font token; there is no configured webfont, so rendering varies by OS.
