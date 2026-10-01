@@ -365,7 +365,7 @@
       "kind": "chip",
       "refersTo": "status-applied-bg",
       "description": "Application status pills: tinted fill, dark matching text, black outline.",
-      "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-c-applied\">Applied</span><span class=\"ds-chip ds-c-oa\">Online Assessment</span><span class=\"ds-chip ds-c-int\">Interview</span><span class=\"ds-chip ds-c-offer\">Offer</span><span class=\"ds-chip ds-c-rej\">Rejected</span></div>",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-c-applied\">Applied</span><span class=\"ds-chip ds-c-oa\">Assessment</span><span class=\"ds-chip ds-c-int\">Interview</span><span class=\"ds-chip ds-c-offer\">Offer</span><span class=\"ds-chip ds-c-rej\">Rejected</span></div>",
       "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px}.ds-chip{padding:4px 8px;border:2px solid #000;border-radius:2px;font-size:12px;font-weight:700}.ds-c-applied{background:#DBEAFE;color:#000}.ds-c-oa{background:#93C5FD;color:#000}.ds-c-int{background:#3B82F6;color:#000}.ds-c-offer{background:#86EFAC;color:#000}.ds-c-rej{background:#EF4444;color:#000}"
     },
     {

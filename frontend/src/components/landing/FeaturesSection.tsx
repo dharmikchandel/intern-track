@@ -11,7 +11,7 @@ const features = [
     {
         icon: LayoutGrid,
         title: "Board or List",
-        description: "Drag applications between Applied, Online Assessment, Interview, Offer and Rejected, or search, filter and sort the list.",
+        description: "Drag applications between Applied, Assessment, Interview, Offer and Rejected, or search, filter and sort the list.",
         color: "bg-neo-green"
     },
     {

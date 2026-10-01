@@ -16,6 +16,7 @@ const TITLES: Array<[path: string, title: string]> = [
     ["/applications/:id", "Application"],
     ["/applications", "Applications"],
     ["/recap", "Recap"],
+    ["/profile", "Profile"],
 ];
 
 let defaultTitle: string | null = null;

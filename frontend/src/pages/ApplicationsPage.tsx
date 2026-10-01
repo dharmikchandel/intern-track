@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { formatCalendarDay } from "../lib/dates";
+import { formatCalendarDay, formatCalendarDayShort } from "../lib/dates";
+import { StatusChip } from "../components/ui/StatusChip";
 import { AlertCircle, LayoutGrid, List, Plus } from "lucide-react";
 import { NeoButton } from "../components/ui/NeoButton";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
@@ -19,7 +20,7 @@ import {
 import { listApplications } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
 import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
-import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS } from "../features/applications/statusMeta";
+import { isFollowUpDue } from "../features/applications/statusMeta";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
 import { SortableHead } from "../features/applications/SortableHead";
 import { defaultOrderFor, parseListParams, withListParams, type ListParams, type ListView, type SortColumn } from "../features/applications/listParams";
@@ -249,11 +250,12 @@ export function ApplicationsPage() {
                                     </NeoTableCell>
                                     <NeoTableCell>{app.role}</NeoTableCell>
                                     <NeoTableCell>
-                                        <span className={`inline-block px-2 py-1 border-2 border-black font-bold text-xs rounded-sm ${STATUS_COLORS[app.status]}`}>
-                                            {STATUS_LABELS[app.status]}
-                                        </span>
+                                        <StatusChip status={app.status} className="w-24" />
                                     </NeoTableCell>
-                                    <NeoTableCell>{formatCalendarDay(app.appliedDate, "MMM d, yyyy")}</NeoTableCell>
+                                    <NeoTableCell>
+                                        <span className="sm:hidden">{formatCalendarDayShort(app.appliedDate)}</span>
+                                        <span className="hidden sm:inline">{formatCalendarDay(app.appliedDate, "MMM d, yyyy")}</span>
+                                    </NeoTableCell>
                                 </NeoTableRow>
                             ))}
                         </NeoTableBody>

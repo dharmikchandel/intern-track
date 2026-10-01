@@ -8,8 +8,9 @@ import { PaperStack } from "../components/ui/PaperStack";
 import { NeoLinkButton } from "../components/ui/NeoLinkButton";
 import { getStatusCounts, getFunnel, type FunnelMetrics, type StatusCounts } from "../api/analytics";
 import { FollowUpCard } from "../features/digest/FollowUpCard";
+import { useFollowUpCount } from "../features/digest/useFollowUpCount";
 import { MomentumCard } from "../features/milestones/MomentumCard";
-import { Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp, type LucideIcon } from "lucide-react";
+import { CheckCircle2, Plus, Briefcase, FileCheck, Award, XCircle, TrendingUp, type LucideIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 import { plural } from "../features/recap/format";
 import { STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
@@ -78,7 +79,7 @@ function DashboardNumbers({ counts, funnelData }: { counts: StatusCounts; funnel
                 })}
             </div>
 
-            <div className="grid grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 gap-8 mb-8">
                 <NeoCard className="bg-white">
                     <h2 className="text-xl font-black uppercase mb-6 flex items-center gap-2 text-black">
                         <TrendingUp className="w-6 h-6 text-neo-primary" /> Funnel Metrics
@@ -127,7 +128,9 @@ export function DashboardPage() {
     const status = useQuery({ queryKey: ["analytics", "status"], queryFn: getStatusCounts });
     const funnel = useQuery({ queryKey: ["analytics", "funnel"], queryFn: getFunnel });
 
-    const isLoading = status.isLoading || funnel.isLoading;
+    const followUps = useFollowUpCount();
+    // One loading phase for the whole first screen, so nothing pops in and shifts the page.
+    const isLoading = status.isLoading || funnel.isLoading || followUps.isLoading;
     const isFirstRun = Boolean(status.data && STATUS_ORDER.every((s) => status.data[s] === 0));
     const retry = () => {
         if (status.isError) void status.refetch();
@@ -141,7 +144,13 @@ export function DashboardPage() {
                     <h1 className="text-4xl font-black uppercase tracking-tighter">
                         Dashboard
                     </h1>
-                    <p className="text-slate-600 font-bold">Your progress at a glance</p>
+                    {followUps.data === 0 ? (
+                        <p className="flex items-center gap-1.5 text-slate-600 font-bold">
+                            <CheckCircle2 className="w-4 h-4 text-neo-green-deep" aria-hidden /> All caught up: no follow-ups due
+                        </p>
+                    ) : (
+                        <p className="text-slate-600 font-bold">Your progress at a glance</p>
+                    )}
                 </div>
                 <NeoLinkButton to="/applications/new" className="flex items-center gap-2">
                     <Plus className="w-5 h-5" />
@@ -149,18 +158,20 @@ export function DashboardPage() {
                 </NeoLinkButton>
             </div>
 
-            {/* A brand-new account sees one next step, not an empty streak and a "no follow-ups" card above it. */}
-            {!isFirstRun && (
-                <>
-                    <FollowUpCard />
-                    <MomentumCard />
-                </>
-            )}
-
             {isLoading ? (
                 <DashboardSkeleton />
             ) : status.data && funnel.data ? (
-                isFirstRun ? <FirstRun /> : <DashboardNumbers counts={status.data} funnelData={funnel.data} />
+                isFirstRun ? (
+                    // A brand-new account sees one next step, not an empty streak and a "no follow-ups" row.
+                    <FirstRun />
+                ) : (
+                    <>
+                        {/* Order: what needs doing, the pipeline, the funnel, then the encouragement. */}
+                        {followUps.data !== undefined && followUps.data > 0 && <FollowUpCard overdue={followUps.data} />}
+                        <DashboardNumbers counts={status.data} funnelData={funnel.data} />
+                        <MomentumCard variant="compact" />
+                    </>
+                )
             ) : (
                 // Never show zeros for numbers we failed to load: they would read as real.
                 <NeoAlert onRetry={retry}>Couldn't load your numbers.</NeoAlert>

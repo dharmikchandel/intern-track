@@ -39,7 +39,7 @@ export function UnsubscribePage() {
                     {status === "done" ? (
                         <>
                             <h1 className="text-2xl font-black">You're unsubscribed</h1>
-                            <p className="font-medium">You won't get follow-up reminder emails anymore. You can turn them back on from your <Link to="/dashboard" className="underline">dashboard</Link>.</p>
+                            <p className="font-medium">You won't get follow-up reminder emails anymore. You can turn them back on in your <Link to="/profile" className="underline">profile</Link>.</p>
                         </>
                     ) : status === "error" ? (
                         <>

@@ -18,7 +18,7 @@ export function SortableHead({ label, column, sort, order, onSort }: SortableHea
     const Icon = !active ? ArrowUpDown : order === "asc" ? ArrowUp : ArrowDown;
 
     return (
-        <NeoTableHead aria-sort={active ? (order === "asc" ? "ascending" : "descending") : "none"} className="p-0">
+        <NeoTableHead aria-sort={active ? (order === "asc" ? "ascending" : "descending") : "none"} className="p-0 sm:p-0">
             <button
                 type="button"
                 onClick={() => onSort(column)}

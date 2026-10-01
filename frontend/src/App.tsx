@@ -19,6 +19,7 @@ import { UnsubscribePage } from "./pages/UnsubscribePage";
 import { PublicRecapPage } from "./pages/PublicRecapPage";
 import { RecapPage } from "./pages/RecapPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { ProfilePage } from "./pages/ProfilePage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
 import { CreateApplicationPage } from "./pages/CreateApplicationPage";
 import { ApplicationDetailPage } from "./pages/ApplicationDetailPage";
@@ -53,6 +54,7 @@ function App() {
                   <Route path="/applications/new" element={<CreateApplicationPage />} />
                   <Route path="/applications/:id" element={<ApplicationDetailPage />} />
                   <Route path="/recap" element={<RecapPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 </Route>
               </Route>
 

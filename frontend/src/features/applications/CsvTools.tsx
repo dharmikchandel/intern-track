@@ -238,7 +238,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
             </p>
 
             {summary.sample.length > 0 && (
-                <div className="overflow-x-auto border-2 border-black">
+                <div className="overflow-x-auto border-2 border-black rounded-lg">
                     <table className="w-full text-sm">
                         <caption className="sr-only">First rows that will be imported</caption>
                         <thead className="bg-slate-100 text-left">
@@ -266,7 +266,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
             {summary.errors.length > 0 && (
                 <div>
                     <p className="font-black text-sm uppercase mb-1">Rows with errors (they will be skipped)</p>
-                    <ul className="max-h-40 overflow-y-auto border-2 border-black p-2 text-sm space-y-1 bg-white">
+                    <ul className="max-h-40 overflow-y-auto border-2 border-black rounded-lg p-2 text-sm space-y-1 bg-white">
                         {summary.errors.map((e) => (
                             <li key={e.row}>
                                 <b>Row {e.row}:</b> {e.message}
@@ -282,7 +282,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
             {summary.duplicateRows.length > 0 && (
                 <details className="text-sm">
                     <summary className="font-black uppercase cursor-pointer">Duplicates that will be skipped ({summary.duplicates})</summary>
-                    <ul className="mt-1 max-h-32 overflow-y-auto border-2 border-black p-2 space-y-1 bg-white">
+                    <ul className="mt-1 max-h-32 overflow-y-auto border-2 border-black rounded-lg p-2 space-y-1 bg-white">
                         {summary.duplicateRows.map((d) => (
                             <li key={d.row}>
                                 Row {d.row}: {d.companyName}, {d.role} ({d.appliedDate})
@@ -300,7 +300,7 @@ function PreviewBody({ summary }: { summary: CsvImportSummary }) {
 
 function Stat({ value, label, tone }: { value: number; label: string; tone: string }) {
     return (
-        <div className={`border-2 border-black p-3 ${tone}`}>
+        <div className={`border-2 border-black rounded-lg p-3 ${tone}`}>
             <div className="text-3xl font-black">{value}</div>
             <div className="text-xs font-bold uppercase">{label}</div>
         </div>

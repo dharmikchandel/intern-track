@@ -188,7 +188,7 @@ export function validateRow(cells: string[], ctx: RowContext): { value: ImportRo
   if (rawStatus) {
     const found = STATUS_WORDS[rawStatus.toLowerCase().replace(/[^a-z]/g, "")];
     if (found) status = found;
-    else errors.push(`Unknown status "${shorten(rawStatus)}" (use Applied, OA, Interview, Offer or Rejected)`);
+    else errors.push(`Unknown status "${shorten(rawStatus)}" (use Applied, Assessment, Interview, Offer or Rejected)`);
   }
 
   const dateHint = ctx.dateFormat === "iso" ? "use YYYY-MM-DD" : ctx.dateFormat === "mdy" ? "use MM/DD/YYYY" : "use DD/MM/YYYY";

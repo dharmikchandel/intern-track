@@ -11,10 +11,11 @@ import { NeoTextarea } from "../components/ui/NeoTextarea";
 import { NeoSkeleton } from "../components/ui/NeoSkeleton";
 import { NeoModal } from "../components/ui/NeoModal";
 import { NeoNotice } from "../components/ui/NeoNotice";
+import { StatusChip } from "../components/ui/StatusChip";
 import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
 import { ActivityTimeline } from "../features/applications/ActivityTimeline";
-import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
+import { isFollowUpDue, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { getErrorMessage } from "../lib/utils";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
@@ -228,9 +229,7 @@ export function ApplicationDetailPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Status</span>
-                                <span className={`inline-block mt-1 px-3 py-1 border-2 border-black font-black ${STATUS_COLORS[application.status]}`}>
-                                    {STATUS_LABELS[application.status]}
-                                </span>
+                                <StatusChip status={application.status} className="mt-1 px-3 text-sm font-black" />
                             </div>
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Applied Date</span>

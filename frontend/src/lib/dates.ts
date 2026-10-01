@@ -16,3 +16,9 @@ export function calendarDay(iso: string): Date {
 export function formatCalendarDay(iso: string, pattern: string): string {
     return format(calendarDay(iso), pattern);
 }
+
+// For tight spaces (a phone-width table): drops the year when it is this year.
+export function formatCalendarDayShort(iso: string, now = new Date()): string {
+    const day = calendarDay(iso);
+    return format(day, day.getFullYear() === now.getFullYear() ? "MMM d" : "MMM d, yyyy");
+}

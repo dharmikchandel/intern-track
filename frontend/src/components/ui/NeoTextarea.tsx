@@ -23,7 +23,7 @@ const NeoTextarea = forwardRef<HTMLTextAreaElement, NeoTextareaProps>(
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? `${textareaId}-error` : undefined}
                     className={cn(
-                        "w-full px-4 py-3 bg-white border-2 border-black focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all font-medium min-h-[100px]",
+                        "w-full px-4 py-3 bg-white border-2 border-black rounded-lg focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all font-medium min-h-[100px]",
                         error && "border-neo-destructive focus:ring-neo-destructive/50",
                         className
                     )}

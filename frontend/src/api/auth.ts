@@ -55,3 +55,8 @@ export async function resendVerificationEmail() {
     const res = await client.post<{ message: string }>("/email-verification/resend");
     return res.data;
 }
+
+// Ends every session for this account on every device (revokes all refresh tokens).
+export async function logoutEverywhere() {
+    await client.post("/auth/logout-all");
+}

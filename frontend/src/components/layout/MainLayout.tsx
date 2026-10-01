@@ -73,14 +73,15 @@ export function MainLayout() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <span className="text-sm font-bold text-slate-700 hidden sm:inline-block max-w-[16rem] truncate">
-                        {user?.email}
-                    </span>
-                    <div className="w-10 h-10 bg-neo-primary border-2 border-black rounded-full flex items-center justify-center text-black font-black shadow-neo-sm">
-                        {user?.email?.charAt(0).toUpperCase()}
-                    </div>
-                </div>
+                <Link
+                    to="/profile"
+                    aria-label="Your profile"
+                    aria-current={location.pathname === "/profile" ? "page" : undefined}
+                    title={user?.email}
+                    className="w-11 h-11 bg-neo-primary border-2 border-black rounded-full flex items-center justify-center text-black font-black shadow-neo-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-0 active:translate-y-0 active:shadow-none"
+                >
+                    {user?.email?.charAt(0).toUpperCase()}
+                </Link>
             </header>
 
             <div className="flex flex-1 overflow-hidden relative">
@@ -143,7 +144,7 @@ export function MainLayout() {
                             aria-modal="true"
                             aria-label="Main menu"
                             tabIndex={-1}
-                            className="bg-white w-64 h-full border-r-2 border-black shadow-neo-modal p-4 flex flex-col overscroll-contain animate-drawer-in focus:outline-none"
+                            className="bg-white w-64 h-full border-r-2 border-black rounded-r-lg shadow-neo-modal p-4 flex flex-col overscroll-contain animate-drawer-in focus:outline-none"
                             onClick={e => e.stopPropagation()}
                         >
                             <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">

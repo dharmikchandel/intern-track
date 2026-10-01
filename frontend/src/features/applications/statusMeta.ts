@@ -2,7 +2,7 @@ import type { Application, ApplicationStatus } from "../../api/applications";
 
 export const STATUS_LABELS: Record<ApplicationStatus, string> = {
     APPLIED: "Applied",
-    OA: "Online Assessment",
+    OA: "Assessment",
     INTERVIEW: "Interview",
     OFFER: "Offer",
     REJECTED: "Rejected",
