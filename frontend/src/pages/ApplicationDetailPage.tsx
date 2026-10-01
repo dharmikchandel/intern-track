@@ -103,8 +103,8 @@ export function ApplicationDetailPage() {
     };
 
     const backLink = (
-        <Link to={backTo} className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
-            <ArrowLeft className="w-4 h-4" /> Back to Applications
+        <Link to={backTo} className="group inline-flex items-center gap-2 font-bold mb-4 ui-link-quiet">
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" aria-hidden /> Back to Applications
         </Link>
     );
 
@@ -260,7 +260,7 @@ export function ApplicationDetailPage() {
                                     href={application.applicationLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-start gap-2 font-bold underline break-all hover:bg-neo-primary mt-1"
+                                    className="inline-flex items-start gap-2 font-bold ui-link break-all mt-1"
                                 >
                                     {application.applicationLink} <ExternalLink className="w-4 h-4 shrink-0 mt-1" aria-hidden />
                                 </a>

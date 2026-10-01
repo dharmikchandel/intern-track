@@ -63,7 +63,7 @@ export function ResetPasswordPage() {
                     {!token ? (
                         <NeoAlert>
                             This link is missing its reset token. Request a new one from the{" "}
-                            <Link to="/forgot-password" className="underline">
+                            <Link to="/forgot-password" className="ui-link">
                                 forgot password page
                             </Link>
                             .
@@ -73,7 +73,7 @@ export function ResetPasswordPage() {
                             {serverError && (
                                 <NeoAlert className="mb-4">
                                     {serverError}{" "}
-                                    <Link to="/forgot-password" className="underline">
+                                    <Link to="/forgot-password" className="ui-link">
                                         Request a new link
                                     </Link>
                                     .
@@ -111,7 +111,7 @@ export function ResetPasswordPage() {
                     )}
 
                     <div className="mt-6 text-center text-sm font-bold">
-                        <Link to="/login" className="underline hover:bg-neo-primary hover:text-black">
+                        <Link to="/login" className="ui-link">
                             Back to login
                         </Link>
                     </div>

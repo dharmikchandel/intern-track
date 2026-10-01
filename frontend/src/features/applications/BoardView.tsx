@@ -186,7 +186,7 @@ export function BoardView({ q, needsFollowUp }: BoardViewProps) {
                     >
                         <Undo2 className="w-4 h-4" /> Undo
                     </NeoButton>
-                    <button className="text-sm underline p-2 min-h-11" onClick={() => setUndo(null)}>
+                    <button className="text-sm ui-link p-2 min-h-11" onClick={() => setUndo(null)}>
                         Dismiss
                     </button>
                 </div>
@@ -235,7 +235,7 @@ function Column({ status, total, cards, canShowMore, onShowMore, onMove }: Colum
                     <div className="text-center text-xs font-bold text-slate-600">
                         Showing {cards.length} of {total}
                         {canShowMore ? (
-                            <button className="block mx-auto px-3 py-2 min-h-11 underline" onClick={onShowMore}>
+                            <button className="block mx-auto px-3 py-2 min-h-11 ui-link" onClick={onShowMore}>
                                 Show more
                             </button>
                         ) : (
@@ -286,7 +286,7 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
         <div className={cn("bg-white border-2 border-black rounded-lg p-3 shadow-neo", floating && "rotate-2 shadow-neo-hover")}>
             <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                    <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black leading-tight hover:underline block truncate">
+                    <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black leading-tight ui-link-quiet block truncate">
                         {app.companyName}
                     </Link>
                     <p className="text-sm font-medium text-slate-700 truncate">{app.role}</p>
@@ -306,7 +306,7 @@ function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
             {onMove && (
                 // Tap/keyboard alternative to dragging, so moving a card never
                 // depends on a precise gesture (mobile) or a pointer (a11y).
-                <label className="relative mt-2 inline-flex items-center gap-1 min-h-11 md:min-h-0 cursor-pointer text-xs font-black uppercase tracking-wide hover:underline has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+                <label className="relative mt-2 inline-flex items-center gap-1 min-h-11 md:min-h-0 cursor-pointer text-xs font-black uppercase tracking-wide ui-link-quiet has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                     <span aria-hidden>Move to</span>
                     <ChevronDown className="w-3 h-3" aria-hidden />
                     {/* The native select sits invisibly on top, so keyboards and phone pickers work as usual. */}

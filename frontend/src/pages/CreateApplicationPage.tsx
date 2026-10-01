@@ -90,8 +90,8 @@ export function CreateApplicationPage() {
 
     return (
         <div className="max-w-2xl mx-auto">
-            <Link to="/applications" className="inline-flex items-center gap-2 font-bold mb-4 hover:underline">
-                <ArrowLeft className="w-4 h-4" /> Back to Applications
+            <Link to="/applications" className="group inline-flex items-center gap-2 font-bold mb-4 ui-link-quiet">
+                <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" aria-hidden /> Back to Applications
             </Link>
 
             <NeoCard>

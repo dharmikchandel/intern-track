@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Search } from "lucide-react";
 import { NeoInput } from "../../components/ui/NeoInput";
 import { NeoSelect } from "../../components/ui/NeoSelect";
@@ -7,6 +8,8 @@ import { STATUS_LABELS, STATUS_ORDER } from "./statusMeta";
 const selectClass = "w-auto p-2 font-bold";
 
 interface ApplicationFiltersProps {
+    // Rendered first in the row (the view switcher).
+    leading?: ReactNode;
     search: string;
     onSearchChange: (value: string) => void;
     needsFollowUp: boolean;
@@ -20,6 +23,7 @@ interface ApplicationFiltersProps {
 }
 
 export function ApplicationFilters({
+    leading,
     search,
     onSearchChange,
     needsFollowUp,
@@ -27,7 +31,8 @@ export function ApplicationFilters({
     listControls,
 }: ApplicationFiltersProps) {
     return (
-        <div className="flex flex-wrap items-end gap-4 mb-6">
+        <div className="flex flex-wrap items-center gap-4 mb-6">
+            {leading}
             <div className="relative w-full sm:w-72">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                 <NeoInput

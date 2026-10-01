@@ -23,7 +23,7 @@ const NeoNotice = forwardRef<HTMLDivElement, NeoNoticeProps>(
             >
                 {onDismiss ? <span>{children}</span> : children}
                 {onDismiss && (
-                    <button type="button" onClick={onDismiss} className="text-sm underline px-2 min-h-11 hover:bg-neo-primary">
+                    <button type="button" onClick={onDismiss} className="text-sm ui-link px-2 min-h-11">
                         Dismiss
                     </button>
                 )}

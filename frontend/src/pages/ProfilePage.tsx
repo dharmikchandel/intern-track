@@ -142,7 +142,7 @@ export function ProfilePage() {
                             <Share2 className="w-4 h-4 shrink-0" aria-hidden />
                             <span>
                                 {activeLinks === 0 ? "You have no public recap links." : `You have ${plural(activeLinks, "public recap link")}.`}{" "}
-                                <Link to="/recap" className="font-bold underline hover:bg-neo-primary">Manage sharing</Link>
+                                <Link to="/recap" className="font-bold ui-link">Manage sharing</Link>
                             </span>
                         </p>
                     </Panel>

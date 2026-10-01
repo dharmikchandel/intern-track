@@ -4,15 +4,19 @@ import type { ActivityDay } from "../../api/analytics";
 import { plural } from "../recap/format";
 
 // Applications per day for the last 12 weeks, as a calendar: one column per
-// week (Monday at the top), one square per day, filled from white to Signal
-// Blue by how many you sent. It is decorative to screen readers (one summary).
+// week, one row per weekday (Monday at the top, labelled Mon / Wed / Fri), one
+// square per day filled from white to Signal Blue by how many you sent. The grid
+// stretches to the card's width so it is centred in it, and the squares stay
+// square. Decorative to screen readers (one summary).
 const LEVELS = ["bg-white border-black/25", "bg-neo-blue-tint border-black", "bg-neo-blue-mid border-black", "bg-neo-primary border-black"];
 const level = (count: number) => (count === 0 ? 0 : count === 1 ? 1 : count === 2 ? 2 : 3);
+const WEEKDAY_LABELS = ["Mon", "", "Wed", "", "Fri", "", ""];
 
 export function ActivityHeatmap({ days }: { days: ActivityDay[] }) {
     const first = days[0] ? new Date(`${days[0].date}T00:00:00Z`) : null;
     const lead = first ? (first.getUTCDay() + 6) % 7 : 0; // Monday = 0
     const cells: Array<ActivityDay | null> = [...Array<null>(lead).fill(null), ...days];
+    const weeks = Math.ceil(cells.length / 7);
     const total = days.reduce((n, d) => n + d.count, 0);
     const best = days.reduce<ActivityDay | null>((b, d) => (d.count > (b?.count ?? 0) ? d : b), null);
     const label = (d: ActivityDay) => `${format(new Date(`${d.date}T00:00:00Z`), "MMM d")}: ${plural(d.count, "application")}`;
@@ -22,14 +26,17 @@ export function ActivityHeatmap({ days }: { days: ActivityDay[] }) {
             <div
                 role="img"
                 aria-label={`${plural(total, "application")} in the last 12 weeks${best ? `, most on ${format(new Date(`${best.date}T00:00:00Z`), "MMM d")} (${best.count})` : ""}`}
-                className="overflow-x-auto pb-1"
             >
-                <div className="grid grid-flow-col grid-rows-7 gap-1 w-max" aria-hidden>
+                {/* First column: weekday labels. Then one column per week; the cells set the row height, so labels line up with their row. */}
+                <div className="grid grid-flow-col grid-rows-7 gap-1" style={{ gridTemplateColumns: `auto repeat(${weeks}, minmax(0, 1fr))` }} aria-hidden>
+                    {WEEKDAY_LABELS.map((text, i) => (
+                        <span key={`label-${i}`} className="flex items-center pr-1.5 text-[10px] font-bold uppercase text-slate-600 leading-none">{text}</span>
+                    ))}
                     {cells.map((d, i) =>
                         d ? (
-                            <span key={d.date} title={label(d)} className={cn("w-4 h-4 sm:w-6 sm:h-6 border rounded-sm", LEVELS[level(d.count)])} />
+                            <span key={d.date} title={label(d)} className={cn("aspect-square w-full border rounded", LEVELS[level(d.count)])} />
                         ) : (
-                            <span key={`pad-${i}`} className="w-4 h-4 sm:w-6 sm:h-6" />
+                            <span key={`pad-${i}`} className="aspect-square w-full" />
                         )
                     )}
                 </div>

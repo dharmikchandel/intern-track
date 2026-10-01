@@ -25,6 +25,26 @@
     }
 }
 
+@layer components {
+    /* Links, in two flavours. Both leave the text colour alone (so contrast never
+       changes on hover) and answer the pointer with the underline: it thickens and
+       turns Signal Blue. .ui-link is underlined at rest (inline text, small actions);
+       .ui-link-quiet only shows the underline on hover (names in tables and cards,
+       back links). */
+    .ui-link {
+        @apply text-black underline decoration-2 underline-offset-4 transition-[text-decoration-color,text-decoration-thickness] duration-150 motion-reduce:transition-none hover:decoration-4 hover:decoration-neo-primary;
+    }
+    .ui-link-quiet {
+        @apply decoration-2 underline-offset-4 transition-[text-decoration-color,text-decoration-thickness] duration-150 motion-reduce:transition-none hover:underline hover:decoration-[3px] hover:decoration-neo-primary;
+    }
+    /* Signal Blue is too faint a mark on tinted or red surfaces: use ink there. */
+    .bg-neo-blue-tint .ui-link:hover,
+    .bg-neo-mint .ui-link:hover,
+    [role="alert"] .ui-link:hover {
+        @apply decoration-black;
+    }
+}
+
 @layer utilities {
     /* The app's scroll area: viewport minus the 64px header. dvh tracks mobile
        browser toolbars; the vh line is the fallback for browsers without it. */
@@ -46,7 +66,8 @@
 
     .animate-pulse,
     .animate-spin,
-    .animate-drawer-in {
+    .animate-drawer-in,
+    .animate-view-in {
         animation: none;
     }
 }

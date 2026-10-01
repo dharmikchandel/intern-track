@@ -162,7 +162,7 @@ function ImportCsvModal({ onClose }: { onClose: () => void }) {
                         {file && <span className="font-bold text-sm break-all">{file.name}</span>}
                         <button
                             type="button"
-                            className="font-bold text-sm underline ml-auto"
+                            className="font-bold text-sm ui-link ml-auto"
                             onClick={() => downloadBlob(new Blob(["﻿" + TEMPLATE], { type: "text/csv" }), "interntrack-import-template.csv")}
                         >
                             Download template

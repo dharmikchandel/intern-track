@@ -20,7 +20,7 @@ export function PipelineBar({ counts }: { counts: StatusCounts }) {
             <ul className="grid grid-cols-2 gap-x-6 gap-y-1 mt-4">
                 {STATUS_ORDER.map((s) => (
                     <li key={s}>
-                        <Link to={`/applications?status=${s}`} className="flex items-center gap-2 min-h-11 font-bold hover:underline">
+                        <Link to={`/applications?status=${s}`} className="flex items-center gap-2 min-h-11 font-bold ui-link-quiet">
                             <span className={cn("w-4 h-4 border-2 border-black rounded-sm shrink-0", STATUS_COLORS[s])} aria-hidden />
                             {STATUS_LABELS[s]}
                             <span className="ml-auto text-slate-600">{counts[s]}</span>

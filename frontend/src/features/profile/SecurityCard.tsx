@@ -77,7 +77,7 @@ export function SecurityCard() {
                     <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                         <button
                             type="button"
-                            className="inline-flex items-center min-h-11 text-sm font-bold underline hover:bg-neo-primary disabled:opacity-50 disabled:no-underline"
+                            className="inline-flex items-center min-h-11 text-sm font-bold ui-link disabled:opacity-50 disabled:no-underline"
                             disabled={resetLink.isPending || resetLink.isSuccess}
                             onClick={() => resetLink.mutate()}
                         >

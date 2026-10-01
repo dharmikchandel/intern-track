@@ -96,7 +96,7 @@ export function LoginPage() {
                                 {...register("password")}
                             />
                             <div className="text-right mt-1">
-                                <Link to="/forgot-password" className="inline-flex items-center min-h-11 text-sm font-bold underline hover:bg-neo-primary hover:text-black">
+                                <Link to="/forgot-password" className="inline-flex items-center min-h-11 text-sm font-bold ui-link">
                                     Forgot password?
                                 </Link>
                             </div>
@@ -113,7 +113,7 @@ export function LoginPage() {
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Don't have an account?{" "}
-                        <Link to="/register" className="underline hover:bg-neo-primary hover:text-black">
+                        <Link to="/register" className="ui-link">
                             Create one
                         </Link>
                     </div>

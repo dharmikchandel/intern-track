@@ -32,9 +32,11 @@ export default {
             },
             keyframes: {
                 'drawer-in': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(0)' } },
+                'view-in': { from: { opacity: '0', transform: 'translateY(6px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
             },
             animation: {
                 'drawer-in': 'drawer-in 200ms ease-out',
+                'view-in': 'view-in 180ms ease-out',
             },
             borderRadius: {
                 'neo': '0.75rem', // 12px

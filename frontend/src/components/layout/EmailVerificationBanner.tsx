@@ -28,14 +28,14 @@ export function EmailVerificationBanner() {
                     type="button"
                     onClick={() => mutation.mutate()}
                     disabled={mutation.isPending || mutation.isSuccess}
-                    className="text-sm underline px-2 min-h-11 hover:bg-neo-primary hover:text-black disabled:opacity-50 disabled:no-underline"
+                    className="text-sm ui-link px-2 min-h-11 disabled:opacity-50 disabled:no-underline"
                 >
                     {mutation.isPending ? "Sending..." : mutation.isSuccess ? "Sent" : "Resend email"}
                 </button>
                 <button
                     type="button"
                     onClick={() => setDismissed(true)}
-                    className="text-sm underline px-2 min-h-11 hover:bg-neo-destructive hover:text-black"
+                    className="text-sm ui-link px-2 min-h-11"
                 >
                     Dismiss
                 </button>

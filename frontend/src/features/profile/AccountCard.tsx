@@ -54,7 +54,7 @@ export function AccountCard() {
                     </NeoSelect>
                     <p className="text-xs font-bold text-slate-600 mt-1">Decides what "today" means for follow-up dates and your weekly email.</p>
                     {zone !== detected && (
-                        <button type="button" className="mt-1 inline-flex items-center min-h-11 text-sm font-bold underline hover:bg-neo-primary" onClick={() => setZone(detected)}>
+                        <button type="button" className="mt-1 inline-flex items-center min-h-11 text-sm font-bold ui-link" onClick={() => setZone(detected)}>
                             Use this browser's zone ({detected.replace(/_/g, " ")})
                         </button>
                     )}

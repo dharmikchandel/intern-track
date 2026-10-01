@@ -13,7 +13,7 @@ export function FollowUpCard({ overdue }: { overdue: number }) {
                 <p className="text-xl font-black text-neo-red-deep">
                     {overdue} {overdue === 1 ? "application needs" : "applications need"} a follow-up
                 </p>
-                <Link to="/applications?followUp=1" className="inline-flex items-center min-h-11 font-bold underline hover:bg-neo-primary">
+                <Link to="/applications?followUp=1" className="inline-flex items-center min-h-11 font-bold ui-link">
                     Review them
                 </Link>
             </div>

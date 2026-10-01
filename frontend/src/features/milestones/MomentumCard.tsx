@@ -13,11 +13,11 @@ export function MilestoneTile({ milestone }: { milestone: Milestone }) {
 
     return (
         <li
-            className={`relative border-2 p-3 ${achieved ? "border-black bg-neo-mint" : "border-dashed border-slate-500 bg-white"}`}
+            className={`relative border-2 rounded-lg p-3 ${achieved ? "border-black bg-neo-mint" : "border-dashed border-slate-500 bg-white"}`}
             aria-label={`${MILESTONE_TITLES[milestone.id]}: ${achieved ? "achieved" : "not yet"}`}
         >
             {isNew && (
-                <span className="absolute -top-2 -right-2 bg-neo-primary border-2 border-black text-[10px] font-black uppercase px-1.5 rotate-3">New</span>
+                <span className="absolute -top-2 -right-2 bg-neo-primary border-2 border-black rounded text-[10px] font-black uppercase px-1.5 rotate-3">New</span>
             )}
             <div className="flex items-start gap-2">
                 {achieved ? (
@@ -30,7 +30,7 @@ export function MilestoneTile({ milestone }: { milestone: Milestone }) {
                     {achieved && achievedAt && <p className="text-xs font-bold text-slate-600">{formatDay(achievedAt)}</p>}
                     {!achieved && progress && (
                         <>
-                            <div className="h-2 mt-1.5 bg-slate-100 border border-black overflow-hidden">
+                            <div className="h-2 mt-1.5 bg-slate-100 border border-black rounded-full overflow-hidden">
                                 <div className="h-full bg-neo-primary" style={{ width: `${pct}%` }} />
                             </div>
                             <p className="text-xs font-bold text-slate-500 mt-0.5">
@@ -80,8 +80,8 @@ export function MomentumCard({ variant = "full" }: { variant?: "full" | "compact
                             <Award className="w-4 h-4" aria-hidden /> Milestones ({earned} of {milestones.length})
                         </h3>
                         {compact && (
-                            <Link to="/profile" className="inline-flex items-center gap-1 min-h-11 text-sm font-bold underline hover:bg-neo-primary">
-                                See all <ArrowRight className="w-4 h-4" aria-hidden />
+                            <Link to="/profile" className="group inline-flex items-center gap-1 min-h-11 text-sm font-bold ui-link">
+                                See all <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                             </Link>
                         )}
                     </div>

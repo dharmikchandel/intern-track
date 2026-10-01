@@ -106,7 +106,7 @@ export function RegisterPage() {
 
                     <div className="mt-6 text-center text-sm font-bold">
                         Already have an account?{" "}
-                        <Link to="/login" className="underline hover:bg-neo-primary hover:text-black">
+                        <Link to="/login" className="ui-link">
                             Sign in
                         </Link>
                     </div>
