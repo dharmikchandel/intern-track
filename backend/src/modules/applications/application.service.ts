@@ -5,6 +5,7 @@ import { invalidateAnalyticsCache } from "../analytics/analytics.service.js";
 import type { BoardQuery, ListApplicationsQuery } from "./application.schema.js";
 import { diffActivities } from "./application.activity.js";
 import { ALL_STATUSES, buildApplicationWhere } from "./application.filters.js";
+import { getUserTimezone } from "../profile/profile.service.js";
 
 export async function createApplication(userId: string, data: any) {
   // The application and its APPLICATION_CREATED event commit together, so a
@@ -93,7 +94,7 @@ export async function listApplications(userId: string, query: ListApplicationsQu
   const limit = query.limit ?? 8;
   const skip = (page - 1) * limit;
 
-  const where = buildApplicationWhere(userId, query);
+  const where = buildApplicationWhere(userId, query, query.needsFollowUp ? await getUserTimezone(userId) : null);
 
   const sortField = query.sort ?? "appliedDate";
   const order = query.order ?? "desc";
@@ -133,7 +134,7 @@ const BOARD_ORDER: Prisma.ApplicationOrderByWithRelationInput[] = [
 // board never loads a user's whole history.
 export async function getBoard(userId: string, query: BoardQuery) {
   const perColumn = query.perColumn ?? 25;
-  const where = buildApplicationWhere(userId, query);
+  const where = buildApplicationWhere(userId, query, query.needsFollowUp ? await getUserTimezone(userId) : null);
 
   const [counts, ...slices] = await Promise.all([
     prisma.application.groupBy({ by: ["status"], where, _count: { _all: true } }),

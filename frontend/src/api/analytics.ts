@@ -25,3 +25,14 @@ export async function getFunnel() {
     const res = await client.get<FunnelMetrics>("/analytics/funnel");
     return res.data;
 }
+
+export interface ActivityDay {
+    date: string; // YYYY-MM-DD
+    count: number;
+}
+
+// Applications per day for the last 12 weeks, oldest first, zero days included.
+export async function getActivity(today: string) {
+    const res = await client.get<ActivityDay[]>("/analytics/activity", { params: { today } });
+    return res.data;
+}

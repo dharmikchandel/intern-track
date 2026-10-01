@@ -21,6 +21,7 @@ import { listApplications } from "../api/applications";
 import { ApplicationFilters } from "../features/applications/ApplicationFilters";
 import { ExportCsvButton, ImportCsvButton } from "../features/applications/CsvTools";
 import { isFollowUpDue } from "../features/applications/statusMeta";
+import { useTimeZone } from "../features/auth/useTimeZone";
 import { useDebouncedValue } from "../features/applications/useDebouncedValue";
 import { SortableHead } from "../features/applications/SortableHead";
 import { defaultOrderFor, parseListParams, withListParams, type ListParams, type ListView, type SortColumn } from "../features/applications/listParams";
@@ -45,6 +46,7 @@ function readStoredView(): ViewMode {
 }
 
 export function ApplicationsPage() {
+    const timeZone = useTimeZone();
     // The URL is the source of truth for the whole list view (search, status,
     // follow-up, sort, page, view), so Back, refresh and a shared link all
     // return to the same list. Changes replace the history entry instead of
@@ -143,7 +145,7 @@ export function ApplicationsPage() {
                     </h1>
                     <p className="text-slate-600 font-bold">Manage your job hunt</p>
                 </div>
-                <div className="flex flex-wrap items-start gap-4">
+                <div className="flex flex-wrap items-center gap-3">
                     <ImportCsvButton />
                     {/* The board has no status filter, so only send it from the list view. */}
                     <ExportCsvButton
@@ -242,7 +244,7 @@ export function ApplicationsPage() {
                                         <Link to={`/applications/${app.id}`} state={{ backTo: `/applications${location.search}` }} className="font-black hover:underline">
                                             {app.companyName}
                                         </Link>
-                                        {isFollowUpDue(app) && (
+                                        {isFollowUpDue(app, timeZone) && (
                                             <span className="flex items-center gap-1 text-xs font-bold text-neo-red-deep">
                                                 <AlertCircle className="w-3 h-3" aria-hidden /> Follow-up due
                                             </span>

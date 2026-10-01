@@ -44,13 +44,14 @@ export function ExportCsvButton({ filters, filtered }: { filters: { q?: string; 
     });
 
     return (
-        <div className="flex flex-col items-start">
+        <div className="relative">
             <NeoButton variant="ghost" className="flex items-center gap-2 px-4 py-2 text-sm min-h-11" disabled={exportCsv.isPending} onClick={() => exportCsv.mutate()}>
                 <Download className="w-4 h-4" />
                 {exportCsv.isPending ? "Exporting..." : filtered ? "Export filtered CSV" : "Export CSV"}
             </NeoButton>
+            {/* The error is out of the flow, so showing it never moves the buttons beside it. */}
             {exportCsv.isError && (
-                <p role="alert" className="text-sm font-bold text-neo-red-deep mt-1">
+                <p role="alert" className="absolute left-0 top-full mt-1 whitespace-nowrap text-sm font-bold text-neo-red-deep">
                     {getErrorMessage(exportCsv.error, "Couldn't export. Please try again.")}
                 </p>
             )}

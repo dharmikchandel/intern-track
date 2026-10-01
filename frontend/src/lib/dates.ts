@@ -22,3 +22,44 @@ export function formatCalendarDayShort(iso: string, now = new Date()): string {
     const day = calendarDay(iso);
     return format(day, day.getFullYear() === now.getFullYear() ? "MMM d" : "MMM d, yyyy");
 }
+
+// ---- the viewer's timezone ----------------------------------------------------
+// "Today" depends on where you are. Follow-up dates are saved as midnight UTC of
+// the day the user picked, so whether one is due is decided by the user's own
+// calendar day. This mirrors `startOfTomorrowInZone` in the backend, so the
+// badges on screen and the server-side filter agree.
+
+export function browserTimeZone(): string {
+    try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    } catch {
+        return "UTC";
+    }
+}
+
+export function startOfTomorrowInZone(now: Date, timeZone?: string | null): Date {
+    let y = now.getUTCFullYear();
+    let m = now.getUTCMonth() + 1;
+    let d = now.getUTCDate();
+    if (timeZone) {
+        try {
+            const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+            const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
+            [y, m, d] = [get("year"), get("month"), get("day")];
+        } catch {
+            /* unknown zone: stay on UTC */
+        }
+    }
+    return new Date(Date.UTC(y, m - 1, d + 1));
+}
+
+// Every IANA zone the browser knows, sorted. Falls back to a short list on
+// runtimes without Intl.supportedValuesOf.
+export function timeZoneOptions(): string[] {
+    try {
+        const all = Intl.supportedValuesOf("timeZone");
+        return all.includes("UTC") ? all : ["UTC", ...all];
+    } catch {
+        return ["UTC", "America/New_York", "America/Chicago", "America/Los_Angeles", "Europe/London", "Europe/Berlin", "Asia/Kolkata", "Asia/Singapore", "Asia/Tokyo", "Australia/Sydney"];
+    }
+}

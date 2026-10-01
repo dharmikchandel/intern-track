@@ -1,6 +1,7 @@
 import { prisma } from "../../config/prisma.js";
 import { redis } from "../../config/redis.js";
 import { logger } from "../../config/logger.js";
+import { bucketActivity, lastDays } from "./analytics.activity.js";
 
 const TTL_SECONDS = 60 * 5; // 5 minutes
 
@@ -115,4 +116,14 @@ export async function invalidateAnalyticsCache(userId: string): Promise<void> {
   } catch (err) {
     logger.warn({ err, userId }, "Redis cache invalidation failed");
   }
+}
+
+// Applications per day for the last `days` days (default 84 = 12 weeks).
+export async function getActivity(userId: string, today: string, days = 84) {
+  const [start] = lastDays(today, days) as [string];
+  const rows = await prisma.application.findMany({
+    where: { userId, appliedDate: { gte: new Date(`${start}T00:00:00.000Z`) } },
+    select: { appliedDate: true },
+  });
+  return bucketActivity(rows.map((r) => r.appliedDate), today, days);
 }

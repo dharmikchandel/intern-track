@@ -5,6 +5,7 @@ import { logger } from "../../config/logger.js";
 import { toUtcDay } from "../../utils/days.js";
 import { invalidateAnalyticsCache } from "../analytics/analytics.service.js";
 import { buildApplicationWhere, type ApplicationFilters } from "../applications/application.filters.js";
+import { getUserTimezone } from "../profile/profile.service.js";
 import { csvLine } from "./csv.codec.js";
 import { analyzeCsv, dayToDate, duplicateKey, type Analysis, type ColumnMapping, type DateFormat, type ImportRow, type RowError } from "./csv.import.js";
 
@@ -148,7 +149,7 @@ const EXPORT_BATCH = 500;
 // matter how many applications a user has. Cursor pagination in the same order
 // as the list page, so it reuses the (userId, appliedDate) index.
 export async function* exportChunks(userId: string, filters: ApplicationFilters): AsyncGenerator<string> {
-  const where = buildApplicationWhere(userId, filters);
+  const where = buildApplicationWhere(userId, filters, filters.needsFollowUp ? await getUserTimezone(userId) : null);
   let cursor: string | undefined;
   let total = 0;
   const started = Date.now();

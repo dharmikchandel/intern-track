@@ -6,19 +6,28 @@ import { AppError } from "../../utils/AppError.js";
 import { logger } from "../../config/logger.js";
 import { sendVerificationEmail } from "../email-verification/email-verification.service.js";
 
-const USER_SELECT = { id: true, email: true, createdAt: true, emailVerifiedAt: true } as const;
+export const USER_SELECT = { id: true, email: true, createdAt: true, emailVerifiedAt: true, displayName: true, timezone: true } as const;
 
 // The frontend only needs to know verified-or-not, not the timestamp.
-function toPublicUser(user: { id: string; email: string; createdAt: Date; emailVerifiedAt: Date | null }) {
+export function toPublicUser(user: {
+  id: string;
+  email: string;
+  createdAt: Date;
+  emailVerifiedAt: Date | null;
+  displayName: string | null;
+  timezone: string | null;
+}) {
   return {
     id: user.id,
     email: user.email,
     createdAt: user.createdAt,
     emailVerified: !!user.emailVerifiedAt,
+    displayName: user.displayName,
+    timezone: user.timezone,
   };
 }
 
-async function issueSession(userId: string) {
+export async function issueSession(userId: string) {
   const accessToken = signAccessToken({ userId });
   const { token: refreshToken, tokenHash } = generateRefreshToken();
 
@@ -121,9 +130,13 @@ export async function logoutSession(rawToken: string) {
   });
 }
 
+// Ending every session deletes the tokens rather than marking them revoked. A
+// revoked token that is presented again is treated as theft (see refreshSession)
+// and kills every session, including a fresh one the user has just started on
+// this device. After "sign out everywhere" other devices still hold their old
+// cookie and will present it, so those tokens must simply be unknown (a plain
+// 401), not "revoked". Rotated tokens keep their revoked rows, so real theft
+// detection is unchanged.
 export async function logoutAllSessions(userId: string) {
-  await prisma.refreshToken.updateMany({
-    where: { userId, revokedAt: null },
-    data: { revokedAt: new Date() },
-  });
+  await prisma.refreshToken.deleteMany({ where: { userId } });
 }

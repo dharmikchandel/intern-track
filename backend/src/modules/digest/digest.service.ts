@@ -29,18 +29,20 @@ export async function runWeeklyDigest(now = new Date()): Promise<DigestRunResult
   const notRecentlySent: Prisma.UserWhereInput = {
     OR: [{ lastDigestSentAt: null }, { lastDigestSentAt: { lt: cutoff } }],
   };
-  const due = followUpDueWhere(now);
+  // Candidates are picked with the most generous boundary (UTC+14 is the furthest
+  // ahead any zone gets); each user is then judged on their own calendar day below.
+  const anyZoneDue = followUpDueWhere(new Date(now.getTime() + 14 * 60 * 60 * 1000));
 
   // Verified, opted in, not mailed this week, and with something actually
-  // overdue. Terminal statuses (OFFER/REJECTED) are excluded by `due`.
+  // overdue. Terminal statuses (OFFER/REJECTED) are excluded by the due filter.
   const candidates = await prisma.user.findMany({
     where: {
       emailVerifiedAt: { not: null },
       emailDigestEnabled: true,
       ...notRecentlySent,
-      applications: { some: due },
+      applications: { some: anyZoneDue },
     },
-    select: { id: true, email: true, lastDigestSentAt: true },
+    select: { id: true, email: true, lastDigestSentAt: true, timezone: true },
     orderBy: { id: "asc" },
     take: MAX_USERS_PER_RUN + 1,
   });
@@ -73,7 +75,7 @@ export async function runWeeklyDigest(now = new Date()): Promise<DigestRunResult
       });
 
     try {
-      const where = { userId: user.id, ...due };
+      const where = { userId: user.id, ...followUpDueWhere(now, user.timezone) };
       const [total, items] = await Promise.all([
         prisma.application.count({ where }),
         prisma.application.findMany({

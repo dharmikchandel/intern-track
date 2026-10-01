@@ -26,6 +26,11 @@ model User {
   email                   String                   @unique
   passwordHash            String
   emailVerifiedAt         DateTime?
+  // Shown in the app instead of the email address; optional.
+  displayName             String?
+  // IANA zone name (for example "Asia/Kolkata"). Decides which calendar day "today"
+  // is for follow-up due dates and the weekly digest; null behaves as UTC.
+  timezone                String?
   // Weekly follow-up digest. Opt-out (default on) with a one-click unsubscribe
   // link in every email; lastDigestSentAt is the idempotency guard that keeps
   // a retried or double-fired scheduler from sending twice.

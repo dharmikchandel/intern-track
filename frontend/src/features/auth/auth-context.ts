@@ -5,6 +5,8 @@ interface User {
     email: string;
     emailVerified: boolean;
     createdAt?: string;
+    displayName?: string | null;
+    timezone?: string | null;
 }
 
 export interface AuthContextType {
@@ -12,6 +14,8 @@ export interface AuthContextType {
     token: string | null;
     login: (token: string, user: User) => void;
     logout: () => void;
+    // Merge fresh profile fields (name, timezone) into the signed-in user.
+    updateUser: (patch: Partial<User>) => void;
     isAuthenticated: boolean;
     // True while the initial silent-refresh check (on app load) is in
     // flight — consumers like RequireAuth should wait for this before

@@ -43,10 +43,10 @@ export async function confirmPasswordReset(rawToken: string, newPassword: string
     prisma.user.update({ where: { id: stored.userId }, data: { passwordHash } }),
     prisma.passwordResetToken.update({ where: { id: stored.id }, data: { usedAt: new Date() } }),
     // A password reset means "this account may have been compromised" —
-    // every existing session should die, not just get left valid.
-    prisma.refreshToken.updateMany({
-      where: { userId: stored.userId, revokedAt: null },
-      data: { revokedAt: new Date() },
-    }),
+    // every existing session should die, not just get left valid. Deleted, not
+    // marked revoked: an old device presenting a revoked token would otherwise
+    // trip theft detection and kill the session the user starts after the reset
+    // (see logoutAllSessions).
+    prisma.refreshToken.deleteMany({ where: { userId: stored.userId } }),
   ]);
 }

@@ -46,3 +46,14 @@ export const createApplicationSchema = z.object({
 });
 
 export type CreateApplicationFormData = z.infer<typeof createApplicationSchema>;
+
+export const changePasswordSchema = z.object({
+    currentPassword: z.string().min(1, "Enter your current password"),
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+});
+
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;

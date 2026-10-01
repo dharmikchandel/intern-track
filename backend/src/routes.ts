@@ -7,11 +7,13 @@ import passwordResetRoutes from "./modules/password-reset/password-reset.routes.
 import { digestRouter, internalDigestRouter } from "./modules/digest/digest.routes.js";
 import { recapRouter, publicRecapRouter } from "./modules/recap/recap.routes.js";
 import { internalKeepaliveRouter } from "./modules/keepalive/keepalive.routes.js";
+import profileRoutes from "./modules/profile/profile.routes.js";
 import emailVerificationRoutes from "./modules/email-verification/email-verification.routes.js";
 
 const router = Router();
 
 router.use("/auth", authRoutes);
+router.use("/profile", profileRoutes);
 router.use("/applications", applicationRoutes);
 router.use("/analytics", analyticsRoutes);
 router.use("/milestones", milestonesRoutes);

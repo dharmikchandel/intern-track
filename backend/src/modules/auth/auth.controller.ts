@@ -28,11 +28,11 @@ function refreshCookieOptions() {
   };
 }
 
-function setRefreshCookie(res: Response, token: string) {
+export function setRefreshCookie(res: Response, token: string) {
   res.cookie(REFRESH_COOKIE_NAME, token, refreshCookieOptions());
 }
 
-function clearRefreshCookie(res: Response) {
+export function clearRefreshCookie(res: Response) {
   const options = refreshCookieOptions();
   res.clearCookie(REFRESH_COOKIE_NAME, options);
 }

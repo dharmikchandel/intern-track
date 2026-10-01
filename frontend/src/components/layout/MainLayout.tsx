@@ -77,10 +77,10 @@ export function MainLayout() {
                     to="/profile"
                     aria-label="Your profile"
                     aria-current={location.pathname === "/profile" ? "page" : undefined}
-                    title={user?.email}
+                    title={user?.displayName || user?.email}
                     className="w-11 h-11 bg-neo-primary border-2 border-black rounded-full flex items-center justify-center text-black font-black shadow-neo-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-0 active:translate-y-0 active:shadow-none"
                 >
-                    {user?.email?.charAt(0).toUpperCase()}
+                    {(user?.displayName || user?.email || "?").charAt(0).toUpperCase()}
                 </Link>
             </header>
 

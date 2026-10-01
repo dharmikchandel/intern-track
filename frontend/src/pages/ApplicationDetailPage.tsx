@@ -16,6 +16,7 @@ import { NeoAlert } from "../components/ui/NeoAlert";
 import { getApplication, updateApplication, deleteApplication, type UpdateApplicationPayload } from "../api/applications";
 import { ActivityTimeline } from "../features/applications/ActivityTimeline";
 import { isFollowUpDue, STATUS_LABELS, STATUS_ORDER } from "../features/applications/statusMeta";
+import { useTimeZone } from "../features/auth/useTimeZone";
 import { type CreateApplicationFormData, createApplicationSchema } from "../lib/schemas";
 import { getErrorMessage } from "../lib/utils";
 import { ArrowLeft, Trash2, ExternalLink, Calendar } from "lucide-react";
@@ -25,6 +26,7 @@ import { formatCalendarDay } from "../lib/dates";
 export function ApplicationDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const timeZone = useTimeZone();
     // Back returns to the list as you left it (search, filters, sort, page).
     const backTo = (useLocation().state as { backTo?: string } | null)?.backTo ?? "/applications";
     const queryClient = useQueryClient();
@@ -243,10 +245,10 @@ export function ApplicationDetailPage() {
                         {application.followUpDate && (
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase">Follow-up Date</span>
-                                <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application) ? "text-neo-red-deep" : ""}`}>
+                                <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application, timeZone) ? "text-neo-red-deep" : ""}`}>
                                     <Calendar className="w-5 h-5" />
                                     {formatCalendarDay(application.followUpDate, "PPP")}
-                                    {isFollowUpDue(application) && <span className="text-xs uppercase border-2 border-black bg-neo-destructive text-black px-1">Overdue</span>}
+                                    {isFollowUpDue(application, timeZone) && <span className="text-xs uppercase border-2 border-black bg-neo-destructive text-black px-1">Overdue</span>}
                                 </div>
                             </div>
                         )}

@@ -1,4 +1,5 @@
 import type { Prisma } from "@prisma/client";
+import { startOfTomorrowInZone } from "../../utils/timezone.js";
 
 export const ALL_STATUSES = ["APPLIED", "OA", "INTERVIEW", "OFFER", "REJECTED"] as const;
 export type StatusValue = (typeof ALL_STATUSES)[number];
@@ -8,17 +9,14 @@ export type StatusValue = (typeof ALL_STATUSES)[number];
 // dashboard count and the digest job so they can't disagree.
 export const ACTIVE_STATUSES: StatusValue[] = ["APPLIED", "OA", "INTERVIEW"];
 
-// A follow-up is due once its date is today or earlier. Dates are compared in
-// UTC (the form stores date-only values at midnight), so "due" means
-// followUpDate < start of tomorrow.
-function startOfTomorrowUtc(now: Date): Date {
-  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
-}
-
-export function followUpDueWhere(now = new Date()): Prisma.ApplicationWhereInput {
+// A follow-up is due once its date is today or earlier on the user's own
+// calendar. The form stores date-only values at midnight UTC, so "due" means
+// followUpDate < the day after "today" in the user's timezone (UTC when the
+// user has not set one).
+export function followUpDueWhere(now = new Date(), timeZone?: string | null): Prisma.ApplicationWhereInput {
   return {
     status: { in: ACTIVE_STATUSES },
-    followUpDate: { lt: startOfTomorrowUtc(now) },
+    followUpDate: { lt: startOfTomorrowInZone(now, timeZone) },
   };
 }
 
@@ -39,7 +37,8 @@ export type ApplicationFilters = {
 // and the follow-up filter (which also constrains status) can be combined.
 export function buildApplicationWhere(
   userId: string,
-  { q, status, needsFollowUp }: ApplicationFilters
+  { q, status, needsFollowUp }: ApplicationFilters,
+  timeZone?: string | null
 ): Prisma.ApplicationWhereInput {
   const and: Prisma.ApplicationWhereInput[] = [];
 
@@ -53,7 +52,7 @@ export function buildApplicationWhere(
     });
   }
   if (status) and.push({ status });
-  if (needsFollowUp) and.push(followUpDueWhere());
+  if (needsFollowUp) and.push(followUpDueWhere(new Date(), timeZone));
 
   return { userId, ...(and.length && { AND: and }) };
 }

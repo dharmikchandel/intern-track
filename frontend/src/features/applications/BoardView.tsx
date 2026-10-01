@@ -23,6 +23,7 @@ import { NeoSkeleton } from "../../components/ui/NeoSkeleton";
 import { cn, getErrorMessage } from "../../lib/utils";
 import { getBoard, updateApplication, type Application, type ApplicationStatus, type BoardResponse } from "../../api/applications";
 import { moveCardInBoard } from "./board";
+import { useTimeZone } from "../auth/useTimeZone";
 import { isFollowUpDue, STATUS_COLORS, STATUS_LABELS, STATUS_ORDER } from "./statusMeta";
 
 const PAGE_STEP = 25;
@@ -279,7 +280,7 @@ interface CardBodyProps {
 
 function CardBody({ app, handle, onMove, floating }: CardBodyProps) {
     const location = useLocation();
-    const due = isFollowUpDue(app);
+    const due = isFollowUpDue(app, useTimeZone());
 
     return (
         <div className={cn("bg-white border-2 border-black rounded-lg p-3 shadow-neo", floating && "rotate-2 shadow-neo-hover")}>
