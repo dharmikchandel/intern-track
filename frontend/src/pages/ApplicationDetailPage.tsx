@@ -244,7 +244,7 @@ export function ApplicationDetailPage() {
                                 <div className={`flex items-center gap-2 mt-1 font-bold ${isFollowUpDue(application, timeZone) ? "text-neo-red-deep" : ""}`}>
                                     <Calendar className="w-5 h-5" />
                                     {formatCalendarDay(application.followUpDate, "PPP")}
-                                    {isFollowUpDue(application, timeZone) && <span className="text-xs uppercase border-2 border-black bg-neo-destructive text-black px-1">Overdue</span>}
+                                    {isFollowUpDue(application, timeZone) && <span className="inline-flex items-center justify-center px-2 py-1 border-2 border-black rounded-md text-xs font-bold whitespace-nowrap bg-neo-destructive text-black">Overdue</span>}
                                 </div>
                             </div>
                         )}
@@ -266,7 +266,7 @@ export function ApplicationDetailPage() {
                         {application.notes && (
                             <div>
                                 <span className="block text-sm font-bold text-slate-500 uppercase mb-2">Notes</span>
-                                <div className="bg-neo-bg p-4 border-2 border-black font-medium whitespace-pre-wrap">
+                                <div className="bg-neo-bg p-4 border-2 border-black rounded-lg font-medium whitespace-pre-wrap">
                                     {application.notes}
                                 </div>
                             </div>
