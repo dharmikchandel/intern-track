@@ -5,7 +5,7 @@
 // instance-hours well under the 750 free hours.
 //
 // /health does not touch the database, so a ping is as cheap as a request gets.
-// The database and Redis are kept alive by a separate daily job
+// Redis is kept alive by a separate daily job
 // (.github/workflows/keepalive.yml).
 
 const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;

@@ -1,9 +1,8 @@
-name: database keepalive
+name: redis keepalive
 
-# Free-tier Supabase pauses a project after about a week with no activity (and
-# Redis Cloud's free plan can reclaim an idle database). Once a day, the backend
-# runs one trivial query against each. The job goes red, and GitHub emails the
-# repo owner, if either check fails or the backend can't be reached.
+# Redis Cloud's free plan can reclaim an idle database. Once a day, the backend
+# sends it one PING. The job goes red, and GitHub emails the repo owner, if the
+# ping fails or the backend can't be reached. Postgres (Neon) needs no keepalive.
 #
 # Keeping the backend itself awake is a separate job: see infra/cloudflare-keepalive.
 #
