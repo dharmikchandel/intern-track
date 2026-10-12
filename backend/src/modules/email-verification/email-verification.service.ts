@@ -2,6 +2,7 @@ import { prisma } from "../../config/prisma.js";
 import { env } from "../../config/env.js";
 import { generateSecureToken, hashSecureToken } from "../../utils/secureToken.js";
 import { sendEmail } from "../mail/mail.service.js";
+import { buildVerificationEmail } from "../mail/account.email.js";
 import { AppError } from "../../utils/AppError.js";
 
 const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -13,12 +14,7 @@ export async function sendVerificationEmail(userId: string, email: string) {
   });
 
   const verifyLink = `${env.FRONTEND_URL}/verify-email?token=${token}`;
-  await sendEmail({
-    to: email,
-    subject: "Verify your TRACKr email",
-    html: `<p>Welcome to TRACKr! Please confirm your email address to finish setting up your account.</p>
-           <p><a href="${verifyLink}">Click here to verify your email</a>. This link expires in 24 hours.</p>`,
-  });
+  await sendEmail({ to: email, ...buildVerificationEmail({ verifyUrl: verifyLink }) });
 }
 
 export async function verifyEmail(rawToken: string) {

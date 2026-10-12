@@ -19,6 +19,9 @@ export const env = {
   FRONTEND_URL: resolveFrontendUrl(),
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   EMAIL_FROM: process.env.EMAIL_FROM || "TRACKr <onboarding@resend.dev>",
+  // Sender for the weekly digest, so reminders can come from a different
+  // (neutral) domain than login emails. Falls back to EMAIL_FROM when unset.
+  EMAIL_FROM_REMINDERS: process.env.EMAIL_FROM_REMINDERS || process.env.EMAIL_FROM || "TRACKr <onboarding@resend.dev>",
   // Shared secret the external scheduler sends to trigger the weekly digest.
   // Unset = the trigger endpoint is disabled (404), so it is off by default.
   CRON_SECRET: process.env.CRON_SECRET,

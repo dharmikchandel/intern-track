@@ -95,7 +95,7 @@ export async function runWeeklyDigest(now = new Date()): Promise<DigestRunResult
 
       const token = createUnsubscribeToken(user.id);
       const unsubscribeUrl = `${env.FRONTEND_URL}/unsubscribe?token=${token}`;
-      const { subject, html } = buildDigestEmail({
+      const { subject, html, text } = buildDigestEmail({
         items: items.map((i) => ({ ...i, followUpDate: i.followUpDate! })),
         total,
         unsubscribeUrl,
@@ -104,8 +104,10 @@ export async function runWeeklyDigest(now = new Date()): Promise<DigestRunResult
 
       await sendEmail({
         to: user.email,
+        from: env.EMAIL_FROM_REMINDERS,
         subject,
         html,
+        text,
         ...(env.API_URL && {
           headers: {
             "List-Unsubscribe": `<${env.API_URL}/api/v1/digest/unsubscribe?token=${token}>`,

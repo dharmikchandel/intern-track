@@ -3,6 +3,7 @@ import { env } from "../../config/env.js";
 import { hashPassword } from "../../utils/password.js";
 import { generateSecureToken, hashSecureToken } from "../../utils/secureToken.js";
 import { sendEmail } from "../mail/mail.service.js";
+import { buildPasswordResetEmail } from "../mail/account.email.js";
 import { AppError } from "../../utils/AppError.js";
 
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
@@ -20,13 +21,7 @@ export async function requestPasswordReset(email: string) {
   });
 
   const resetLink = `${env.FRONTEND_URL}/reset-password?token=${token}`;
-  await sendEmail({
-    to: user.email,
-    subject: "Reset your TRACKr password",
-    html: `<p>Someone requested a password reset for your TRACKr account.</p>
-           <p><a href="${resetLink}">Click here to reset your password</a>. This link expires in 1 hour.</p>
-           <p>If you didn't request this, you can safely ignore this email — your password won't change.</p>`,
-  });
+  await sendEmail({ to: user.email, ...buildPasswordResetEmail({ resetUrl: resetLink }) });
 }
 
 export async function confirmPasswordReset(rawToken: string, newPassword: string) {
